@@ -1,0 +1,127 @@
+name: Verify Package
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  verify-package:
+    name: Verify Package Structure
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine check-manifest
+
+    - name: Verify package manifest
+      run: |
+        check-manifest
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Check distribution
+      run: |
+        twine check dist/*
+
+    - name: Verify package installation
+      run: |
+        pip install dist/*.whl
+        python -c "import research_collector; print('✓ Package installed successfully')"
+
+    - name: Verify package metadata
+      run: |
+        python -c "
+        import research_collector
+        print(f'Version: {research_collector.__version__}')
+        print(f'Package: {research_collector.__name__}')
+        print('✓ Package metadata verified')
+        "
+
+  verify-imports:
+    name: Verify Imports
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+
+    - name: Verify all imports work
+      run: |
+        python -c "
+        # Test core imports
+        from research_collector.config import Config
+        from research_collector.pipeline import Pipeline
+        from research_collector.cli import CLI
+        
+        # Test source imports
+        from research_collector.sources.pubmed import PubMedSource
+        from research_collector.sources.crossref import CrossrefSource
+        from research_collector.sources.semantic_scholar import SemanticScholarSource
+        from research_collector.sources.paperswithcode import PapersWithCodeSource
+        
+        # Test exporter imports
+        from research_collector.exporters.json_exporter import JSONExporter
+        from research_collector.exporters.html import HTMLExporter
+        from research_collector.exporters.huggingface import HuggingFaceExporter
+        
+        # Test utility imports
+        from research_collector.utils import retry_on_failure
+        from research_collector.cache import Cache
+        from research_collector.history import History
+        from research_collector.monitor import Monitor
+        
+        print('✓ All imports verified')
+        "
+
+  verify-setup:
+    name: Verify setup.py
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Verify setup.py
+      run: |
+        python -c "
+        import setup
+        print(f'Package name: {setup.setup_args[\"name\"]}')
+        print(f'Version: {setup.setup_args[\"version\"]}')
+        print(f'Author: {setup.setup_args[\"author\"]}')
+        print('✓ setup.py verified')
+        "
+
+    - name: Verify package can be installed in development mode
+      run: |
+        pip install -e .
+        python -c "import research_collector; print('✓ Development installation verified')"

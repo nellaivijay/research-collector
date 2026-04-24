@@ -1,0 +1,38 @@
+name: Docker
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  docker-build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: |
+        docker build -t research-collector:test .
+
+    - name: Test Docker image
+      run: |
+        docker run --rm research-collector:test python -c "import research_collector; print('✓ Docker image test passed')"
+
+    - name: Save Docker image
+      run: |
+        docker save research-collector:test | gzip > research-collector.tar.gz
+
+    - name: Upload Docker image artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: research-collector.tar.gz
+        retention-days: 7

@@ -1,0 +1,29 @@
+name: Copilot Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  copilot-review:
+    name: Copilot Code Review
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Run Copilot Code Review
+      uses: github/copilot-code-review-action@v1
+      with:
+        filters: |
+          severity: high,medium
+          category: security,performance,correctness
+        summary: true
+        fail-on: high

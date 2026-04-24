@@ -1,0 +1,153 @@
+name: Verify Generated Artifacts
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  verify-html-exports:
+    name: Verify HTML Exports
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+
+    - name: Test HTML export generation
+      run: |
+        python -c "
+        from research_collector.exporters.html import HTMLExporter
+        from research_collector.config import Config
+        
+        config = Config()
+        exporter = HTMLExporter()
+        
+        # Test data
+        test_results = [
+            {
+                'id': '1',
+                'title': 'Test Paper',
+                'source': 'pubmed',
+                'url': 'https://example.com',
+                'author': 'Test Author',
+                'published_date': '2024-01-01',
+                'content': 'Test content',
+                'score': 0.9
+            }
+        ]
+        
+        # Generate HTML
+        html_content = exporter.export(test_results, 'test-output.html')
+        
+        # Verify HTML is valid
+        assert '<!DOCTYPE html>' in html_content
+        assert 'Test Paper' in html_content
+        print('✓ HTML export verification passed')
+        "
+
+  verify-json-exports:
+    name: Verify JSON Exports
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+
+    - name: Test JSON export generation
+      run: |
+        python -c "
+        from research_collector.exporters.json_exporter import JSONExporter
+        
+        exporter = JSONExporter()
+        
+        # Test data
+        test_results = [
+            {
+                'id': '1',
+                'title': 'Test Paper',
+                'source': 'pubmed',
+                'url': 'https://example.com',
+                'author': 'Test Author',
+                'published_date': '2024-01-01',
+                'content': 'Test content',
+                'score': 0.9
+            }
+        ]
+        
+        # Generate JSON
+        json_content = exporter.export(test_results, 'test-output.json')
+        
+        # Verify JSON is valid
+        import json
+        data = json.loads(json_content)
+        assert len(data) == 1
+        assert data[0]['title'] == 'Test Paper'
+        print('✓ JSON export verification passed')
+        "
+
+  verify-templates:
+    name: Verify HTML Templates
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install jinja2
+
+    - name: Verify HTML templates
+      run: |
+        python -c "
+        from jinja2 import Environment, FileSystemLoader
+        import os
+        
+        template_dir = 'research_collector/templates'
+        if not os.path.exists(template_dir):
+            print(f'Template directory not found: {template_dir}')
+            exit(1)
+        
+        env = Environment(loader=FileSystemLoader(template_dir))
+        
+        # Try to load and parse all templates
+        for template_file in os.listdir(template_dir):
+            if template_file.endswith('.html'):
+                try:
+                    template = env.get_template(template_file)
+                    print(f'✓ Template {template_file} is valid')
+                except Exception as e:
+                    print(f'✗ Template {template_file} error: {e}')
+                    exit(1)
+        
+        print('✓ All templates verified')
+        "
