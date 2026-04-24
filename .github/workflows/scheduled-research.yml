@@ -71,6 +71,20 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-hf-
     
+    - name: Validate HF_TOKEN
+      run: |
+        if [ -z "$HF_TOKEN" ]; then
+          echo "Error: HF_TOKEN is not set"
+          echo "Please add HF_TOKEN to GitHub Secrets"
+          echo "Get your token from: https://huggingface.co/settings/tokens"
+          exit 1
+        fi
+        if [ ${#HF_TOKEN} -lt 10 ]; then
+          echo "Error: HF_TOKEN appears to be invalid (too short)"
+          exit 1
+        fi
+        echo "HF_TOKEN is set and appears valid"
+    
     - name: Run ML research and export to Hugging Face
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -128,6 +142,20 @@ jobs:
         key: ${{ runner.os }}-hf-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-hf-
+    
+    - name: Validate HF_TOKEN
+      run: |
+        if [ -z "$HF_TOKEN" ]; then
+          echo "Error: HF_TOKEN is not set"
+          echo "Please add HF_TOKEN to GitHub Secrets"
+          echo "Get your token from: https://huggingface.co/settings/tokens"
+          exit 1
+        fi
+        if [ ${#HF_TOKEN} -lt 10 ]; then
+          echo "Error: HF_TOKEN appears to be invalid (too short)"
+          exit 1
+        fi
+        echo "HF_TOKEN is set and appears valid"
     
     - name: Run LLM research and export to Hugging Face
       env:
@@ -187,6 +215,20 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-hf-
     
+    - name: Validate HF_TOKEN
+      run: |
+        if [ -z "$HF_TOKEN" ]; then
+          echo "Error: HF_TOKEN is not set"
+          echo "Please add HF_TOKEN to GitHub Secrets"
+          echo "Get your token from: https://huggingface.co/settings/tokens"
+          exit 1
+        fi
+        if [ ${#HF_TOKEN} -lt 10 ]; then
+          echo "Error: HF_TOKEN appears to be invalid (too short)"
+          exit 1
+        fi
+        echo "HF_TOKEN is set and appears valid"
+    
     - name: Run AGI research and export to Hugging Face
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -244,6 +286,20 @@ jobs:
         key: ${{ runner.os }}-hf-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-hf-
+    
+    - name: Validate HF_TOKEN
+      run: |
+        if [ -z "$HF_TOKEN" ]; then
+          echo "Error: HF_TOKEN is not set"
+          echo "Please add HF_TOKEN to GitHub Secrets"
+          echo "Get your token from: https://huggingface.co/settings/tokens"
+          exit 1
+        fi
+        if [ ${#HF_TOKEN} -lt 10 ]; then
+          echo "Error: HF_TOKEN appears to be invalid (too short)"
+          exit 1
+        fi
+        echo "HF_TOKEN is set and appears valid"
     
     - name: Run ASI research and export to Hugging Face
       env:
@@ -303,6 +359,20 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-hf-
     
+    - name: Validate HF_TOKEN
+      run: |
+        if [ -z "$HF_TOKEN" ]; then
+          echo "Error: HF_TOKEN is not set"
+          echo "Please add HF_TOKEN to GitHub Secrets"
+          echo "Get your token from: https://huggingface.co/settings/tokens"
+          exit 1
+        fi
+        if [ ${#HF_TOKEN} -lt 10 ]; then
+          echo "Error: HF_TOKEN appears to be invalid (too short)"
+          exit 1
+        fi
+        echo "HF_TOKEN is set and appears valid"
+    
     - name: Run ANI research and export to Hugging Face
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -361,6 +431,20 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-hf-
     
+    - name: Validate HF_TOKEN
+      run: |
+        if [ -z "$HF_TOKEN" ]; then
+          echo "Error: HF_TOKEN is not set"
+          echo "Please add HF_TOKEN to GitHub Secrets"
+          echo "Get your token from: https://huggingface.co/settings/tokens"
+          exit 1
+        fi
+        if [ ${#HF_TOKEN} -lt 10 ]; then
+          echo "Error: HF_TOKEN appears to be invalid (too short)"
+          exit 1
+        fi
+        echo "HF_TOKEN is set and appears valid"
+    
     - name: Run ACI research and export to Hugging Face
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -418,6 +502,20 @@ jobs:
         key: ${{ runner.os }}-hf-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-hf-
+    
+    - name: Validate HF_TOKEN
+      run: |
+        if [ -z "$HF_TOKEN" ]; then
+          echo "Error: HF_TOKEN is not set"
+          echo "Please add HF_TOKEN to GitHub Secrets"
+          echo "Get your token from: https://huggingface.co/settings/tokens"
+          exit 1
+        fi
+        if [ ${#HF_TOKEN} -lt 10 ]; then
+          echo "Error: HF_TOKEN appears to be invalid (too short)"
+          exit 1
+        fi
+        echo "HF_TOKEN is set and appears valid"
     
     - name: Run custom research and export to Hugging Face
       env:

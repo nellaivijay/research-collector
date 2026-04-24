@@ -142,8 +142,23 @@ def research(topic, query, days, sources, export, output, hf_token, depth, inclu
                 click.echo("Error: --output (HF repo ID) required for huggingface export")
                 click.echo("Format: username/dataset-name")
                 return
-            exporter.export(results, output)
-            click.echo(f"Results pushed to Hugging Face Hub: {output}")
+            
+            # Check if HF token is available
+            if not hf_token:
+                click.echo("Error: HF_TOKEN not found")
+                click.echo("Please set HF_TOKEN environment variable or use --hf-token parameter")
+                click.echo("Get your token from: https://huggingface.co/settings/tokens")
+                return
+            
+            try:
+                exporter.export(results, output)
+                click.echo(f"Results pushed to Hugging Face Hub: {output}")
+            except ValueError as e:
+                click.echo(f"Error: {e}")
+                return
+            except Exception as e:
+                click.echo(f"Error pushing to Hugging Face: {e}")
+                return
         else:
             exporter.export(results, output)
             click.echo(f"Results saved to {output} in {export} format")

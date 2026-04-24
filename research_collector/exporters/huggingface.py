@@ -48,6 +48,10 @@ class HuggingFaceExporter:
         if not repo_id:
             raise ValueError("Repository ID required (format: username/dataset-name)")
         
+        # Validate token if provided
+        if self.token and not self.token.strip():
+            raise ValueError("Hugging Face token is empty. Please provide a valid token.")
+        
         # Convert results to dataset format
         dataset = self._convert_to_dataset(results)
         
@@ -68,16 +72,24 @@ class HuggingFaceExporter:
         
         # Push to Hub
         print(f"Pushing dataset to Hugging Face Hub: {repo_id}")
-        dataset_dict.push_to_hub(
-            repo_id=repo_id,
-            token=self.token,
-            commit_message=f"Research results for {metadata['topic']}"
-        )
-        
-        # Update dataset card
-        self._update_dataset_card(repo_id, metadata)
-        
-        print(f"Dataset successfully pushed to: https://huggingface.co/datasets/{repo_id}")
+        try:
+            dataset_dict.push_to_hub(
+                repo_id=repo_id,
+                token=self.token,
+                commit_message=f"Research results for {metadata['topic']}"
+            )
+            
+            # Update dataset card
+            self._update_dataset_card(repo_id, metadata)
+            
+            print(f"Dataset successfully pushed to: https://huggingface.co/datasets/{repo_id}")
+        except Exception as e:
+            if "Bearer" in str(e) and "Illegal header value" in str(e):
+                raise ValueError(
+                    "Invalid Hugging Face token. Please check that HF_TOKEN is set correctly "
+                    "in your environment or GitHub Secrets."
+                ) from e
+            raise
     
     def _convert_to_dataset(self, results: Dict[str, Any]) -> 'Dataset':
         """Convert research results to Hugging Face Dataset format.
