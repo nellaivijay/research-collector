@@ -14,15 +14,52 @@ def cli():
 
 
 @cli.command()
-@click.argument("topic")
+@click.option("--topic", help="Predefined topic key (e.g., agi, ml, llm)")
+@click.option("--query", help="Custom search query (alternative to --topic)")
 @click.option("--days", default=7, help="Number of days to search back (default: 7)")
 @click.option("--sources", help="Comma-separated list of sources")
 @click.option("--export", default="markdown", help="Export format")
 @click.option("--output", help="Output file path")
 @click.option("--depth", default="default", help="Search depth: quick, default, standard, deep, historical, extended")
-def research(topic, days, sources, export, output, depth):
+@click.option("--list-topics", is_flag=True, help="List all available predefined topics")
+def research(topic, query, days, sources, export, output, depth, list_topics):
     """Research a topic across multiple sources."""
     config = Config()
+    
+    # List all predefined topics if requested
+    if list_topics:
+        topics = config.get_all_predefined_topics()
+        click.echo("Available predefined topics:")
+        click.echo("")
+        for key, topic_info in topics.items():
+            click.echo(f"  {key}: {topic_info['name']}")
+            click.echo(f"    Keywords: {', '.join(topic_info['keywords'][:3])}...")
+        click.echo("")
+        click.echo("Usage: python -m research_collector research --topic <key>")
+        return
+    
+    # Determine search query
+    if topic:
+        predefined = config.get_predefined_topic(topic)
+        if predefined:
+            search_topic = predefined['name']
+            keywords = predefined['keywords']
+            click.echo(f"Using predefined topic: {predefined['name']}")
+            click.echo(f"Keywords: {', '.join(keywords)}")
+            # Use the first keyword as the main search term
+            search_query = keywords[0]
+        else:
+            click.echo(f"Unknown predefined topic: {topic}")
+            click.echo("Use --list-topics to see available topics")
+            return
+    elif query:
+        search_query = query
+        search_topic = query
+    else:
+        click.echo("Error: Either --topic or --query must be specified")
+        click.echo("Use --list-topics to see available predefined topics")
+        return
+    
     pipeline = Pipeline(config)
     
     # Use depth-based time range if depth is specified and not custom days
@@ -35,7 +72,7 @@ def research(topic, days, sources, export, output, depth):
     source_list = sources.split(",") if sources else None
     
     results = pipeline.run(
-        topic=topic,
+        topic=search_query,
         from_date=from_date,
         to_date=to_date,
         sources=source_list,
@@ -55,6 +92,20 @@ def research(topic, days, sources, export, output, depth):
 def interactive():
     """Start interactive research mode."""
     click.echo("Interactive mode coming soon!")
+
+
+@cli.command()
+def topics():
+    """List all available predefined research topics."""
+    config = Config()
+    topics = config.get_all_predefined_topics()
+    
+    click.echo("Available predefined research topics:")
+    click.echo("")
+    for key, topic_info in topics.items():
+        click.echo(f"  {key}: {topic_info['name']}")
+        click.echo(f"    Keywords: {', '.join(topic_info['keywords'])}")
+        click.echo("")
 
 
 @cli.command()

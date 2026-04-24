@@ -44,39 +44,90 @@ python -m research_collector "machine learning"
 
 ```bash
 # Research with default settings (7-day window)
-python -m research_collector "AI safety"
+python -m research_collector research --query "AI safety"
+
+# Use predefined topic
+python -m research_collector research --topic agi
+
+# List all available predefined topics
+python -m research_collector topics
+python -m research_collector research --list-topics
 
 # Custom time range (15 days)
-python -m research_collector "transformer architecture" --days=15
+python -m research_collector research --query "transformer architecture" --days=15
 
 # Quick search (3 days using depth)
-python -m research_collector "quantum computing" --depth=quick
+python -m research_collector research --query "quantum computing" --depth=quick
 
 # Standard search (15 days using depth)
-python -m research_collector "quantum computing" --depth=standard
+python -m research_collector research --query "quantum computing" --depth=standard
 
 # Deep search (30 days using depth)
-python -m research_collector "quantum computing" --depth=deep
+python -m research_collector research --query "quantum computing" --depth=deep
 
 # Historical search (90 days using depth)
-python -m research_collector "quantum computing" --depth=historical
+python -m research_collector research --query "quantum computing" --depth=historical
 
 # Extended search (365 days using depth)
-python -m research_collector "quantum computing" --depth=extended
+python -m research_collector research --query "quantum computing" --depth=extended
 
 # Specific sources only
-python -m research_collector "quantum computing" --sources=pubmed,crossref,semantic_scholar
+python -m research_collector research --query "quantum computing" --sources=pubmed,crossref,semantic_scholar
 
 # Export to different formats
-python -m research_collector "climate change" --export=json
-python -m research_collector "climate change" --export=csv
-python -m research_collector "climate change" --export=bibliography
+python -m research_collector research --query "climate change" --export=json
+python -m research_collector research --query "climate change" --export=csv
+python -m research_collector research --query "climate change" --export=bibliography
 
 # Academic research with citation filtering
-python -m research_collector "deep learning" --min-citations=50 --sources=academic
+python -m research_collector research --query "deep learning" --min-citations=50 --sources=academic
 
 # Interactive mode
 python -m research_collector interactive
+```
+
+## Predefined Research Topics
+
+Research-Collector includes predefined research topics with corresponding keywords for common AI and technology research areas:
+
+### Available Topics
+
+- **agi**: Artificial General Intelligence (AGI, general AI, human-level AI, strong AI)
+- **aci**: Artificial Conscious Intelligence (machine consciousness, sentient AI, conscious AI)
+- **asi**: Artificial Super Intelligence (superintelligent AI, ASI, superintelligence)
+- **ani**: Artificial Narrow Intelligence (weak AI, ANI, specialized AI, task-specific AI)
+- **ml**: Machine Learning (deep learning, neural networks, supervised/unsupervised learning)
+- **llm**: Large Language Models (language models, GPT, transformer models, foundation models)
+- **rl**: Reinforcement Learning (Q-learning, policy gradient, reward learning)
+- **cv**: Computer Vision (image recognition, object detection, visual AI)
+- **nlp**: Natural Language Processing (text analysis, language understanding, computational linguistics)
+- **robotics**: Robotics and Automation (robotic systems, autonomous systems, mechatronics)
+
+### Using Predefined Topics
+
+```bash
+# List all available topics
+python -m research_collector topics
+
+# Research using a predefined topic
+python -m research_collector research --topic agi
+
+# Combine with other options
+python -m research_collector research --topic ml --days=30 --sources=academic
+```
+
+### Customizing Topics
+
+You can add your own predefined topics in the configuration file:
+
+```yaml
+predefined_topics:
+  my_topic:
+    name: "My Custom Research Topic"
+    keywords:
+      - "keyword1"
+      - "keyword2"
+      - "keyword3"
 ```
 
 ## Source Categories
@@ -109,37 +160,43 @@ python -m research_collector interactive
 ### Academic Research
 ```bash
 # Literature review with citation tracking
-python -m research_collector "transformer efficiency" --sources=academic --min-citations=20
+python -m research_collector research --query "transformer efficiency" --sources=academic --min-citations=20
 
 # Export bibliography for paper
-python -m research_collector "attention mechanisms" --export=bibliography --days=365
+python -m research_collector research --query "attention mechanisms" --export=bibliography --days=365
+
+# Use predefined topic for literature review
+python -m research_collector research --topic agi --sources=academic --days=90
 ```
 
 ### Technical Due Diligence
 ```bash
 # Evaluate technology with community sentiment
-python -m research_collector "kubernetes vs docker" --sources=social,professional
+python -m research_collector research --query "kubernetes vs docker" --sources=social,professional
 
 # Check implementation challenges
-python -m research_collector "react server components" --sources=stackoverflow,github
+python -m research_collector research --query "react server components" --sources=stackoverflow,github
 ```
 
 ### Market Intelligence
 ```bash
 # Industry trend analysis
-python -m research_collector "generative AI adoption" --sources=news,academic --days=90
+python -m research_collector research --query "generative AI adoption" --sources=news,academic --days=90
 
 # Competitive landscape
-python -m research_collector "openai vs anthropic" --sources=all
+python -m research_collector research --query "openai vs anthropic" --sources=all
+
+# Use predefined topic for market analysis
+python -m research_collector research --topic llm --sources=news,academic --days=30
 ```
 
 ### Policy Research
 ```bash
 # Regulation tracking
-python -m research_collector "AI regulation" --sources=news,academic,government
+python -m research_collector research --query "AI regulation" --sources=news,academic,government
 
 # Public sentiment analysis
-python -m research_collector "data privacy laws" --sources=social,news
+python -m research_collector research --query "data privacy laws" --sources=social,news
 ```
 
 ## Configuration

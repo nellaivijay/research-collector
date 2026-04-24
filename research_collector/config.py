@@ -3,7 +3,7 @@
 import os
 import yaml
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 
 class Config:
@@ -78,6 +78,118 @@ class Config:
                     "recency": 0.3,
                     "engagement": 0.3,
                 }
+            },
+            "predefined_topics": {
+                "agi": {
+                    "name": "Artificial General Intelligence",
+                    "keywords": [
+                        "artificial general intelligence",
+                        "AGI",
+                        "general AI",
+                        "human-level AI",
+                        "strong AI",
+                        "universal AI"
+                    ]
+                },
+                "aci": {
+                    "name": "Artificial Conscious Intelligence",
+                    "keywords": [
+                        "artificial consciousness",
+                        "machine consciousness",
+                        "AI consciousness",
+                        "sentient AI",
+                        "conscious AI",
+                        "ACI"
+                    ]
+                },
+                "asi": {
+                    "name": "Artificial Super Intelligence",
+                    "keywords": [
+                        "artificial super intelligence",
+                        "superintelligent AI",
+                        "ASI",
+                        "superintelligence",
+                        "beyond human AI"
+                    ]
+                },
+                "ani": {
+                    "name": "Artificial Narrow Intelligence",
+                    "keywords": [
+                        "artificial narrow intelligence",
+                        "weak AI",
+                        "ANI",
+                        "specialized AI",
+                        "task-specific AI",
+                        "narrow AI"
+                    ]
+                },
+                "ml": {
+                    "name": "Machine Learning",
+                    "keywords": [
+                        "machine learning",
+                        "ML",
+                        "deep learning",
+                        "neural networks",
+                        "supervised learning",
+                        "unsupervised learning",
+                        "reinforcement learning"
+                    ]
+                },
+                "llm": {
+                    "name": "Large Language Models",
+                    "keywords": [
+                        "large language models",
+                        "LLM",
+                        "language models",
+                        "GPT",
+                        "transformer models",
+                        "foundation models"
+                    ]
+                },
+                "rl": {
+                    "name": "Reinforcement Learning",
+                    "keywords": [
+                        "reinforcement learning",
+                        "RL",
+                        "Q-learning",
+                        "policy gradient",
+                        "reward learning",
+                        "agent-based learning"
+                    ]
+                },
+                "cv": {
+                    "name": "Computer Vision",
+                    "keywords": [
+                        "computer vision",
+                        "CV",
+                        "image recognition",
+                        "object detection",
+                        "visual AI",
+                        "image processing"
+                    ]
+                },
+                "nlp": {
+                    "name": "Natural Language Processing",
+                    "keywords": [
+                        "natural language processing",
+                        "NLP",
+                        "text analysis",
+                        "language understanding",
+                        "computational linguistics",
+                        "text mining"
+                    ]
+                },
+                "robotics": {
+                    "name": "Robotics and Automation",
+                    "keywords": [
+                        "robotics",
+                        "automation",
+                        "robotic systems",
+                        "autonomous systems",
+                        "robot control",
+                        "mechatronics"
+                    ]
+                }
             }
         }
         
@@ -148,3 +260,38 @@ class Config:
                     if is_enabled:
                         enabled.append(source)
         return enabled
+    
+    def get_predefined_topic(self, topic_key: str) -> Optional[Dict[str, Any]]:
+        """
+        Get predefined topic by key.
+        
+        Args:
+            topic_key: Key of the predefined topic (e.g., 'agi', 'ml')
+        
+        Returns:
+            Dictionary with topic name and keywords, or None if not found
+        """
+        topics = self.config.get("predefined_topics", {})
+        return topics.get(topic_key)
+    
+    def get_all_predefined_topics(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Get all predefined topics.
+        
+        Returns:
+            Dictionary of all predefined topics
+        """
+        return self.config.get("predefined_topics", {})
+    
+    def get_predefined_topic_keywords(self, topic_key: str) -> Optional[List[str]]:
+        """
+        Get keywords for a predefined topic.
+        
+        Args:
+            topic_key: Key of the predefined topic
+        
+        Returns:
+            List of keywords, or None if topic not found
+        """
+        topic = self.get_predefined_topic(topic_key)
+        return topic["keywords"] if topic else None

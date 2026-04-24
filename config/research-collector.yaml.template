@@ -44,6 +44,78 @@ scoring:
     recency: 0.3
     engagement: 0.3
 
+# Predefined research topics with corresponding keywords
+# Customize or add your own topics here
+predefined_topics:
+  agi:
+    name: "Artificial General Intelligence"
+    keywords:
+      - "artificial general intelligence"
+      - "AGI"
+      - "general AI"
+      - "human-level AI"
+      - "strong AI"
+      - "universal AI"
+  
+  aci:
+    name: "Artificial Conscious Intelligence"
+    keywords:
+      - "artificial consciousness"
+      - "machine consciousness"
+      - "AI consciousness"
+      - "sentient AI"
+      - "conscious AI"
+      - "ACI"
+  
+  asi:
+    name: "Artificial Super Intelligence"
+    keywords:
+      - "artificial super intelligence"
+      - "superintelligent AI"
+      - "ASI"
+      - "superintelligence"
+      - "beyond human AI"
+  
+  ani:
+    name: "Artificial Narrow Intelligence"
+    keywords:
+      - "artificial narrow intelligence"
+      - "weak AI"
+      - "ANI"
+      - "specialized AI"
+      - "task-specific AI"
+      - "narrow AI"
+  
+  ml:
+    name: "Machine Learning"
+    keywords:
+      - "machine learning"
+      - "ML"
+      - "deep learning"
+      - "neural networks"
+      - "supervised learning"
+      - "unsupervised learning"
+      - "reinforcement learning"
+  
+  llm:
+    name: "Large Language Models"
+    keywords:
+      - "large language models"
+      - "LLM"
+      - "language models"
+      - "GPT"
+      - "transformer models"
+      - "foundation models"
+  
+  # Add your custom topics here
+  # example:
+  # custom_topic:
+  #   name: "Your Custom Topic"
+  #   keywords:
+  #     - "keyword1"
+  #     - "keyword2"
+  #     - "keyword3"
+
 # Optional API keys for enhanced rate limits
 # Set these as environment variables instead of hardcoding
 api_keys:
