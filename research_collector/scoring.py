@@ -70,13 +70,14 @@ def _calculate_recency(result: Dict) -> float:
 
 def _calculate_engagement(result: Dict) -> float:
     """Calculate engagement score from various metrics."""
-    engagement = result.get("engagement", {})
     total_engagement = (
-        engagement.get("citations", 0) * 10 +
-        engagement.get("upvotes", 0) +
-        engagement.get("downloads", 0) * 0.1 +
-        engagement.get("comments", 0) * 0.5
+        result.get("citations", 0) * 10 +
+        result.get("upvotes", 0) +
+        result.get("downloads", 0) * 0.1 +
+        result.get("comments", 0) * 0.5
     )
     # Normalize to 0-1 range (log scale)
     import math
+    # Ensure total_engagement is non-negative for log1p
+    total_engagement = max(0, total_engagement)
     return min(math.log1p(total_engagement) / 10.0, 1.0)

@@ -46,6 +46,19 @@ setup(
         "academic": [
             "biopython>=1.83.0",
         ],
+        "huggingface": [
+            "huggingface_hub>=0.19.0",
+            "datasets>=2.14.0",
+        ],
+        "web": [
+            "flask>=2.3.0",
+        ],
+        "all": [
+            "biopython>=1.83.0",
+            "huggingface_hub>=0.19.0",
+            "datasets>=2.14.0",
+            "flask>=2.3.0",
+        ],
     },
     entry_points={
         "console_scripts": [

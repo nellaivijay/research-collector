@@ -39,8 +39,12 @@ Thumbs.db
 
 # ResearchCollector specific
 research_outputs/
+results/
 *.log
 .env.local
+
+# Cache directories
+.cache/
 
 # Testing
 .pytest_cache/

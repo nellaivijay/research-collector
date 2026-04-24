@@ -1,0 +1,492 @@
+{
+  "topic": "machine learning",
+  "from_date": "2026-04-17T14:08:36.967368",
+  "to_date": "2026-04-24T14:08:36.967375",
+  "sources_used": [
+    "stackoverflow",
+    "reddit"
+  ],
+  "items": [
+    {
+      "id": "reddit_1sucaju",
+      "title": "Using machine learning to analyze patterns of anti-Muslim hate speech online in Norway shows that the number of hateful posts is growing and that most are posted by a small group of users who often don\u2019t remain active for long. Engaging with them can be effective in getting them to stop.",
+      "source": "reddit",
+      "author": "oslomet",
+      "published_date": "2026-04-24T06:52:49",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 735,
+        "downloads": 0,
+        "comments": 235
+      },
+      "content": "Using machine learning to analyze patterns of anti-Muslim hate speech online in Norway shows that the number of hateful posts is growing and that most are posted by a small group of users who often don\u2019t remain active for long. Engaging with them can be effective in getting them to stop.",
+      "metadata": {
+        "subreddit": "science",
+        "score": 735,
+        "num_comments": 235,
+        "over_18": false
+      },
+      "score": 0.9024803662670348
+    },
+    {
+      "id": "reddit_1sqi69n",
+      "title": "[D] It seems that EVERY DAY there are around 100 - 200 new machine learning papers uploaded on Arxiv.",
+      "source": "reddit",
+      "author": "NeighborhoodFatCat",
+      "published_date": "2026-04-20T03:19:02",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 159,
+        "downloads": 0,
+        "comments": 61
+      },
+      "content": "Only counting those categorized as cs.LG. I'm sure there are multiple other subcategories with even more ML papers uploaded such as cs.AI, and math.OC\n\nHow are you keeping up with the research in this field?",
+      "metadata": {
+        "subreddit": "MachineLearning",
+        "score": 159,
+        "num_comments": 61,
+        "over_18": false
+      },
+      "score": 0.854201894604126
+    },
+    {
+      "id": "reddit_1sr39sq",
+      "title": "Machine Learning maths for begineers",
+      "source": "reddit",
+      "author": "Big-Stick4446",
+      "published_date": "2026-04-20T17:14:46",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 125,
+        "downloads": 0,
+        "comments": 7
+      },
+      "content": "I have written more than 60 blogs for free which covers all the mathematics you need to understand **Machine learning.**\n\n  \nTo make it more intuitive, I have added interactive simulations for every concept.  \nYou can find all the topics such as - \n\n**&gt; Linear Algebra (Matmul, eigenvalues, eigenvectors)**  \n**&gt; Probability (Bayes theorm, random variables)**  \n**&gt; Statistics (CLT, population vs sample, p-value, MLE)**  \n**&gt; Graph Theory (GNNs, Backprop)**  \n**&gt; Optimization (SGD, A",
+      "metadata": {
+        "subreddit": "learnmachinelearning",
+        "score": 125,
+        "num_comments": 7,
+        "over_18": false
+      },
+      "score": 0.8434446730095302
+    },
+    {
+      "id": "reddit_1ss255d",
+      "title": "[USA][Remote] Senior AI Software Engineer and Applied Machine Learning Engineer @ Allstate",
+      "source": "reddit",
+      "author": "VP_Allstate",
+      "published_date": "2026-04-21T17:56:42",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 73,
+        "downloads": 0,
+        "comments": 69
+      },
+      "content": "Hi Reddit, Allstate is currently hiring AI/ML engineers who will design and deploy LLMs and Agentic AI solutions throughout our technical ecosystem. I am currently supporting two roles and inviting you to apply while the role is currently posted.\n\nQualified talent should apply using the link below and send a note to [victoria.pena@allstate.com](mailto:victoria.pena@allstate.com) so your application can be prioritized.\n\nSponsorship is not being offered at this time and permanent work authorizatio",
+      "metadata": {
+        "subreddit": "cscareerquestions",
+        "score": 73,
+        "num_comments": 69,
+        "over_18": false
+      },
+      "score": 0.838958669572977
+    },
+    {
+      "id": "reddit_1spp2lv",
+      "title": "I ran analytics on 43000+ JEE questions as a Machine Learning Engineer helping my sister prep for JEE Advanced",
+      "source": "reddit",
+      "author": "Ok_Tax9187",
+      "published_date": "2026-04-19T06:15:05",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 74,
+        "downloads": 0,
+        "comments": 50
+      },
+      "content": "Pulled the difficulty data across 43,055 questions from JEE Main papers (2019-2025). Here's the subject breakdown nobody talks about:\n\n|Subject|% Easy|% Hard|Avg Difficulty|\n|:-|:-|:-|:-|\n|Physics|37.4%|1.4%|1.53|\n|Chemistry|36.1%|1.4%|1.54|\n|Math|6.8%|10.8%|2.03|\n\nMath is 7.7x harder than Physics or Chemistry. And it's getting worse \u2014 Math difficulty went from 1.84 in 2019 to 2.12 in 2025. That's 15% harder in 6 years.\n\nThe strategic implication most people ignore:\n\nIn Physics and Chemistry, 36",
+      "metadata": {
+        "subreddit": "JEEAdv26dailyupdates",
+        "score": 74,
+        "num_comments": 50,
+        "over_18": false
+      },
+      "score": 0.8340455165385469
+    },
+    {
+      "id": "reddit_1sp7u57",
+      "title": "[Hiring] Machine Learning Developers (Remote)",
+      "source": "reddit",
+      "author": "Global-Habit2923",
+      "published_date": "2026-04-18T16:02:52",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 44,
+        "downloads": 0,
+        "comments": 102
+      },
+      "content": "We\u2019re looking for AI/ML developers to build and improve real-world AI products.\n\n\n\nWhat you\u2019ll do:\n\n\n\nTrain and optimize ML models\n\nWork with large datasets and APIs\n\nImprove model performance\n\nDeploy AI solutions to production\n\n\n\nRequirements:\n\n\n\nStrong AI/ML experience\n\nPython (or similar)\n\nTensorFlow, PyTorch, or scikit-learn\n\nData preprocessing, evaluation, deployment knowledge\n\nRemote work experience\n\n\n\nOffer:\n\n\n\nRemote (EU/America)\n\nFlexible, part-time\n\n$40\u2013$70/hour\n\n\n\nInterested? Send you",
+      "metadata": {
+        "subreddit": "MachineLearningJobs",
+        "score": 44,
+        "num_comments": 102,
+        "over_18": false
+      },
+      "score": 0.8328208567029393
+    },
+    {
+      "id": "reddit_1sqijau",
+      "title": "\"Attention Is All You Need\" is a 2017 research paper in machine learning authored by eight scientists working at Google. The paper introduced a new deep learning architecture known as the transformer [...] and what is now known as multimodal generative AI.",
+      "source": "reddit",
+      "author": "webrender",
+      "published_date": "2026-04-20T03:40:18",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 68,
+        "downloads": 0,
+        "comments": 13
+      },
+      "content": "\"Attention Is All You Need\" is a 2017 research paper in machine learning authored by eight scientists working at Google. The paper introduced a new deep learning architecture known as the transformer [...] and what is now known as multimodal generative AI.",
+      "metadata": {
+        "subreddit": "wikipedia",
+        "score": 68,
+        "num_comments": 13,
+        "over_18": false
+      },
+      "score": 0.8264363084547727
+    },
+    {
+      "id": "reddit_1ssqj70",
+      "title": "What do you think of Reddit's machine translation (Eng&gt;Malay)? Is it good for people learning Malay?",
+      "source": "reddit",
+      "author": "bellepomme",
+      "published_date": "2026-04-22T12:29:35",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 61,
+        "downloads": 0,
+        "comments": 14
+      },
+      "content": "What do you think of Reddit's machine translation (Eng&gt;Malay)? Is it good for people learning Malay?",
+      "metadata": {
+        "subreddit": "bahasamelayu",
+        "score": 61,
+        "num_comments": 14,
+        "over_18": false
+      },
+      "score": 0.8253793595214794
+    },
+    {
+      "id": "reddit_1sqz3hf",
+      "title": "[Remote Machine Learning Freelancer Role] Develop and Deploy Practical ML Solutions",
+      "source": "reddit",
+      "author": "OrchidAlternative401",
+      "published_date": "2026-04-20T15:00:37",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 30,
+        "downloads": 0,
+        "comments": 78
+      },
+      "content": "We\u2019re a small, execution-focused team building real-world AI and machine learning systems, no unnecessary bureaucracy, just impactful models and solutions.\n\nWhat You\u2019ll Do  \n\n\n\nDesign, develop, and optimize machine learning models and algorithms  \n\nWork with structured and unstructured data to derive insights and predictions  \n\nIntegrate ML models into production systems and APIs  \n\nDebug, troubleshoot, and improve model performance and reliability  \n\nCollaborate with developers to deploy scalab",
+      "metadata": {
+        "subreddit": "MachineLearningJobs",
+        "score": 30,
+        "num_comments": 78,
+        "over_18": false
+      },
+      "score": 0.8249891038368232
+    },
+    {
+      "id": "reddit_1srul2d",
+      "title": "I\u2019m a board-certified dermatologist, machine learning scientist, and co-founder of the teledermatology platform DermFlo - AMA",
+      "source": "reddit",
+      "author": "DermFlo",
+      "published_date": "2026-04-21T13:29:10",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 2,
+        "downloads": 0,
+        "comments": 43
+      },
+      "content": "My name is Dr. Vamsi Varra. I\u2019m a board-certified dermatologist, machine learning scientist, and Co-Founder/CEO of DermFlo, a virtual teledermatology platform built for college students who can\u2019t afford the wait or the copay. I do my own ML work in derm independently, including training segmentation models for skin disease severity assessment. AMA on dermatology, telehealth, building health tech as a clinician-founder, or AI in medicine.\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b\u200b",
+      "metadata": {
+        "subreddit": "AMA",
+        "score": 2,
+        "num_comments": 43,
+        "over_18": false
+      },
+      "score": 0.7934944401018629
+    },
+    {
+      "id": "reddit_1sujp6j",
+      "title": "Today I learned that my washing machine is a LIAR!",
+      "source": "reddit",
+      "author": "MadamStrawberry14",
+      "published_date": "2026-04-24T11:54:47",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 888,
+        "downloads": 0,
+        "comments": 146
+      },
+      "content": "I wash these sheets weekly but the stains just would not budge. So I figured I'd give them a soak in the tub with dishwasher detergent and YUCK!!!! Now, I think my weekend will consist of soaking everything I own. ",
+      "metadata": {
+        "subreddit": "CleaningTips",
+        "score": 888,
+        "num_comments": 146,
+        "over_18": false
+      },
+      "score": 0.7060704335199712
+    },
+    {
+      "id": "reddit_1sqq6x9",
+      "title": "Ba\u0144ka GenAI popsu\u0142a Machine Learning...",
+      "source": "reddit",
+      "author": "Leniwcowaty",
+      "published_date": "2026-04-20T10:00:17",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 319,
+        "downloads": 0,
+        "comments": 98
+      },
+      "content": "Co\u015b dla mo\u017ce bardziej technicznych os\u00f3b, a mo\u017ce w\u0142a\u015bnie nie. Mo\u017ce kto\u015b nie techniczny si\u0119\u00a0tym zainteresuje.\n\nOd razu zaznacz\u0119, bo mi si\u0119 znudzi\u0142o czytanie debilnych komentarzy - ten post nie jest napisany przez Gen AI, nie by\u0142\u00a0edytowany, czy przerabiany przez AI. Wszystko napisane przeze mnie osobi\u015bcie. We cool now?\n\nNo wi\u0119c tak. Gen AI, niekt\u00f3rzy kochaj\u0105, wi\u0119kszo\u015b\u0107 pogardza. Nie dziwi\u0119 si\u0119, te\u017c nie przepadam za t\u0105 technologi\u0105. W sensie rozumiem jej mocne strony, widz\u0119 przydatno\u015b\u0107, ale zwyczajni",
+      "metadata": {
+        "subreddit": "Polska",
+        "score": 319,
+        "num_comments": 98,
+        "over_18": false
+      },
+      "score": 0.6740362280883391
+    },
+    {
+      "id": "reddit_1srxitn",
+      "title": "Latest trend in machine learning: shamelessly publishing standard textbook results in control",
+      "source": "reddit",
+      "author": "NeighborhoodFatCat",
+      "published_date": "2026-04-21T15:09:37",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 169,
+        "downloads": 0,
+        "comments": 19
+      },
+      "content": "Another \"foundational\" paper in ML [https://arxiv.org/pdf/2111.00396](https://arxiv.org/pdf/2111.00396) (cited close to 5000 times). The lemma, which is completed with a proof, can be found in almost all standard textbooks in the control field and even course notes.\n\nAccepted to ICRL 2022 [https://openreview.net/forum?id=uYLFoz1vlAC](https://openreview.net/forum?id=uYLFoz1vlAC) and rated \"highly novel\".\n\nAlso Figure 1 is just...speechless. How can a figure look both AI generated and drawn by a 1",
+      "metadata": {
+        "subreddit": "ControlTheory",
+        "score": 169,
+        "num_comments": 19,
+        "over_18": false
+      },
+      "score": 0.6540614206214117
+    },
+    {
+      "id": "reddit_1ss8h1x",
+      "title": "An open letter to Anthropic",
+      "source": "reddit",
+      "author": "roblenfestey",
+      "published_date": "2026-04-21T22:24:57",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 3905,
+        "downloads": 0,
+        "comments": 571
+      },
+      "content": "**April 21, 2026**\n\nDear Anthropic,\n\nI am a Max-level user at the 20x tier. I run multiple high-level projects using Claude Co-work. And I need to tell you something from the bottom of my heart.\n\nI am autistic, diagnosed as a small child. I have had super-organized Google Drive files for the last twenty years \u2014 systems, methods, writings, and techniques that I have been sharing with people in person for years. Twenty years of my visionary and creative process. And finally, finally, I have had th",
+      "metadata": {
+        "subreddit": "ClaudeAI",
+        "score": 3905,
+        "num_comments": 571,
+        "over_18": false
+      },
+      "score": 0.5485805827058989
+    },
+    {
+      "id": "reddit_1stlnt2",
+      "title": "Scalloped pockets - trouser hack",
+      "source": "reddit",
+      "author": "Happy_Membership9497",
+      "published_date": "2026-04-23T11:14:20",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 3357,
+        "downloads": 0,
+        "comments": 140
+      },
+      "content": "ETA: check the comments if you want to see the moodboard and planning stage. Totally forgot to add it here. \n\nHi everyone.\n\nI\u2019ve recently made this whole outfit and I thought I\u2019d share how I worked out some parts of it, as a lot of you liked seeing my process with my yellow dress last year.\n\n**Patterns used:**\n\n\\- Anthea blouse from Anna Allen (no modifications) in cotton voile\n\n\\- Flint trousers from Megan Nielsen (several mods, described below) in cotton gabardine (it\u2019s a khaki colour that is ",
+      "metadata": {
+        "subreddit": "sewing",
+        "score": 3357,
+        "num_comments": 140,
+        "over_18": false
+      },
+      "score": 0.5433700505833109
+    },
+    {
+      "id": "reddit_1sr9kvm",
+      "title": "College Art Teacher wants AI Generated Content.",
+      "source": "reddit",
+      "author": "MySchoolsWifiSucks",
+      "published_date": "2026-04-20T21:33:37",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 2222,
+        "downloads": 0,
+        "comments": 425
+      },
+      "content": "I currently take an online art history class\u2013Introduction to Art.\n\nI'd suspected in the past that the teacher uses AI for assignments with how how they're structured, how text is formatted, incorrect information, and incorrect dates. On top of that, each unit we have to talk to an AI about the Unit content.\n\nNow, for our next assignment\u2013due in about 3 hours\u2013the teacher wants us to generate AI art and have a discussion about said \"artworks\". This is a genuine, actual interpretation of machine-cre",
+      "metadata": {
+        "subreddit": "mildlyinfuriating",
+        "score": 2222,
+        "num_comments": 425,
+        "over_18": false
+      },
+      "score": 0.5314714671727404
+    },
+    {
+      "id": "so_79928214",
+      "title": "What are a good books to read in Bayesian Learning",
+      "source": "stackoverflow",
+      "author": "Gaming Music",
+      "published_date": "2026-04-19T04:57:30",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 2,
+        "downloads": 0,
+        "comments": 0
+      },
+      "content": "What are a good books to read in Bayesian Learning",
+      "metadata": {
+        "tags": [
+          "deep-learning",
+          "nlp",
+          "artificial-intelligence",
+          "bayesian-networks",
+          "bayesian-deep-learning"
+        ],
+        "answer_count": 0,
+        "score": 2,
+        "view_count": 49,
+        "is_answered": false
+      },
+      "score": 0.5288487796189474
+    },
+    {
+      "id": "reddit_1su89jb",
+      "title": "Saros Review Thread",
+      "source": "reddit",
+      "author": "Turbostrider27",
+      "published_date": "2026-04-24T03:00:40",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 897,
+        "downloads": 0,
+        "comments": 674
+      },
+      "content": "\nGame Information\n--------------------\n\n**Game Title**: Saros\n\n**Platforms**:\n\n- PlayStation 5 (Apr 30, 2026)\n\n**Trailer**:\n\n\n\n\n**Developer**: Housemarque\n\n**Publisher**: PlayStation Studios\n\n**Review Aggregator**:\n\n**[OpenCritic - 90 average - 93% recommended - 61 reviews](https://opencritic.com/game/19375/saros)**\n\nCritic Reviews\n-------------\n    \n\n**[4News.it](https://opencritic.com/outlet/917/4news-it)** - [Vincenzo D'Alcantara](https://opencritic.com/critic/10823/vincenzo-dalcantara) - *It",
+      "metadata": {
+        "subreddit": "Games",
+        "score": 897,
+        "num_comments": 674,
+        "over_18": false
+      },
+      "score": 0.5135647874718623
+    },
+    {
+      "id": "reddit_1srzoft",
+      "title": "Got hired in JP morgan with this resume, check it out",
+      "source": "reddit",
+      "author": "desi_coder04",
+      "published_date": "2026-04-21T16:26:40",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 1094,
+        "downloads": 0,
+        "comments": 212
+      },
+      "content": "One of my close friend got hired in jp morgan with resume, i'm a fresher i dont have much knowledge, is this resume good enough, or not then roast it",
+      "metadata": {
+        "subreddit": "developersIndia",
+        "score": 1094,
+        "num_comments": 212,
+        "over_18": false
+      },
+      "score": 0.5110834590459612
+    },
+    {
+      "id": "reddit_1sor7e5",
+      "title": "Owning Harley x440 is like a humiliation ritual",
+      "source": "reddit",
+      "author": "Odd-Connection1800",
+      "published_date": "2026-04-18T03:43:53",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 1051,
+        "downloads": 0,
+        "comments": 285
+      },
+      "content": "So recently a friend of mine bought the Harley X440.\n\nHe was always a fan of bikes but came from a financially strained family and struggled a lot to find stability in life. Last year he managed to pay off his education and his family\u2019s personal loans and got a well-paying job.\n\nThe bike was symbolic to him. I didn\u2019t want to be a prick and split hairs telling him it\u2019s \u201cnot a real Harley\u201d like some people do, I was just genuinely happy to see him finally reach a place in life where he could enjoy",
+      "metadata": {
+        "subreddit": "indianbikes",
+        "score": 1051,
+        "num_comments": 285,
+        "over_18": false
+      },
+      "score": 0.5076329821536608
+    },
+    {
+      "id": "reddit_1sq94qf",
+      "title": "Sew excited to start learning! First Machine!",
+      "source": "reddit",
+      "author": "texasbarkintrilobite",
+      "published_date": "2026-04-19T19:54:05",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 337,
+        "downloads": 0,
+        "comments": 21
+      },
+      "content": "My local sewing shop (Northwest Sewing Center in Austin, Texas) had an outstanding sale on new machines and as a bonus, they offer unlimited classes with the purchase of the machine. I am going to take advantage of that and start developing some skills. My goals are to make Curtains and Potholders for around the house, custom bags for my ham radio field gear, and most fun, renfaire costumes!",
+      "metadata": {
+        "subreddit": "SewingForBeginners",
+        "score": 337,
+        "num_comments": 21,
+        "over_18": false
+      },
+      "score": 0.47232147567314064
+    },
+    {
+      "id": "so_79929510",
+      "title": "Do you use raw pytorch or some wrapper or such?",
+      "source": "stackoverflow",
+      "author": "hugon5",
+      "published_date": "2026-04-21T10:07:29",
+      "engagement": {
+        "citations": 0,
+        "upvotes": 0,
+        "downloads": 0,
+        "comments": 0
+      },
+      "content": "Do you use raw pytorch or some wrapper or such?",
+      "metadata": {
+        "tags": [
+          "python",
+          "deep-learning",
+          "pytorch"
+        ],
+        "answer_count": 2,
+        "score": 0,
+        "view_count": 69,
+        "is_answered": true
+      },
+      "score": 0.29753424657534244
+    }
+  ],
+  "metadata": {
+    "total_items": 22,
+    "source_counts": {
+      "stackoverflow": 2,
+      "reddit": 20
+    }
+  }
+}

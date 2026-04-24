@@ -5,20 +5,28 @@ from typing import Dict, List, Any, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from research_collector.config import Config
+from research_collector.cache import Cache
+from research_collector.history import HistoryManager
 
 
 class Pipeline:
     """Main research pipeline orchestrator."""
     
-    def __init__(self, config: Config):
+    def __init__(self, config: Config, use_cache: bool = True, save_history: bool = True):
         """
         Initialize the research pipeline.
         
         Args:
             config: Configuration object
+            use_cache: Whether to use caching for API responses
+            save_history: Whether to save search history
         """
         self.config = config
         self.sources = self._load_sources()
+        self.use_cache = use_cache
+        self.cache = Cache() if use_cache else None
+        self.save_history = save_history
+        self.history = HistoryManager() if save_history else None
     
     def _load_sources(self) -> Dict[str, Any]:
         """Load available source modules."""
@@ -102,24 +110,44 @@ class Pipeline:
                 "items": []
             }
         
-        # Run parallel searches
+        # Run parallel searches with caching
         all_results = {}
+        from_date_str = from_date.isoformat()
+        to_date_str = to_date.isoformat()
+        
         with ThreadPoolExecutor(max_workers=len(active_sources)) as executor:
-            futures = {
-                executor.submit(
-                    source.search,
-                    topic,
-                    from_date,
-                    to_date,
-                    depth
-                ): name for name, source in active_sources.items()
-            }
+            futures = {}
             
+            for source_name, source in active_sources.items():
+                # Check cache first
+                cached_data = None
+                if self.use_cache and self.cache:
+                    cached_data = self.cache.get(source_name, topic, from_date_str, to_date_str)
+                
+                if cached_data is not None:
+                    all_results[source_name] = cached_data
+                else:
+                    # Submit API request
+                    future = executor.submit(
+                        source.search,
+                        topic,
+                        from_date,
+                        to_date,
+                        depth
+                    )
+                    futures[future] = source_name
+            
+            # Wait for API requests
             for future in as_completed(futures):
                 source_name = futures[future]
                 try:
                     results = future.result()
                     all_results[source_name] = results
+                    
+                    # Cache the results
+                    if self.use_cache and self.cache:
+                        self.cache.set(source_name, topic, from_date_str, to_date_str, results)
+                        
                 except Exception as e:
                     print(f"Error in {source_name}: {e}")
                     all_results[source_name] = []
@@ -136,7 +164,7 @@ class Pipeline:
             for result in ranked_results:
                 result.pop("url", None)
         
-        return {
+        results = {
             "topic": topic,
             "from_date": from_date.isoformat(),
             "to_date": to_date.isoformat(),
@@ -147,6 +175,50 @@ class Pipeline:
                 "source_counts": {name: len(results) for name, results in all_results.items()}
             }
         }
+        
+        # Save to history
+        self._save_to_history(topic, from_date, to_date, sources, depth, results)
+        
+        return results
+    
+    def _save_to_history(
+        self,
+        topic: str,
+        from_date: datetime,
+        to_date: datetime,
+        sources: Optional[List[str]],
+        depth: str,
+        results: Dict[str, Any]
+    ) -> Optional[int]:
+        """Save search to history.
+        
+        Args:
+            topic: Search topic
+            from_date: Start date
+            to_date: End date
+            sources: Sources used
+            depth: Search depth
+            results: Research results
+        
+        Returns:
+            Search ID or None if history disabled
+        """
+        if not self.save_history or not self.history:
+            return None
+        
+        search_id = self.history.add_search(
+            topic=topic,
+            from_date=from_date.isoformat(),
+            to_date=to_date.isoformat(),
+            sources=sources,
+            depth=depth,
+            result_count=len(results['items']),
+            metadata=results.get('metadata')
+        )
+        
+        self.history.add_results(search_id, results['items'])
+        
+        return search_id
     
     def _normalize_results(self, raw_results: Dict[str, List], topic: str) -> List[Dict]:
         """Normalize results from all sources."""

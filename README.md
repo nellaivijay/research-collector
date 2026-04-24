@@ -19,7 +19,7 @@ This tool is designed for educational purposes to help students and researchers:
 - **Flexible Time Windows**: Research any time period - last 3 days, 7 days (default), 15 days, 30 days, 90 days, 365 days, or custom ranges
 - **Engagement-Based Ranking**: Results scored by citations, upvotes, answers, downloads - not SEO
 - **Cross-Platform Clustering**: Same story across multiple sources merged into unified insights
-- **Multiple Export Formats**: Markdown, JSON, CSV, HTML, BibTeX for academic workflows
+- **Multiple Export Formats**: Markdown, JSON, CSV, HTML, BibTeX, and Hugging Face Datasets for sharing and collaboration
 - **Local-First Privacy**: All processing happens locally, your research stays private
 - **Extensible Architecture**: Plugin system for custom sources and scoring algorithms
 - **Educational Documentation**: Comprehensive examples and explanations for learning
@@ -35,6 +35,12 @@ cd research-collector
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Optional: Install Hugging Face integration for dataset export
+pip install -e ".[huggingface]"
+
+# Optional: Install all optional features
+pip install -e ".[all]"
 
 # Run your first research (default: last 7 days)
 python -m research_collector "machine learning"
@@ -78,6 +84,10 @@ python -m research_collector research --query "quantum computing" --sources=pubm
 python -m research_collector research --query "climate change" --export=json
 python -m research_collector research --query "climate change" --export=csv
 python -m research_collector research --query "climate change" --export=bibliography
+python -m research_collector research --query "climate change" --export=html
+
+# Export to Hugging Face Datasets
+python -m research_collector research --query "machine learning" --export=huggingface --output username/dataset-name --hf-token YOUR_HF_TOKEN
 
 # Academic research with citation filtering
 python -m research_collector research --query "deep learning" --min-citations=50 --sources=academic
@@ -262,6 +272,74 @@ export NEWSAPI_API_KEY=your_key_here
 export STACKEXCHANGE_API_KEY=your_key_here
 ```
 
+## Hugging Face Integration
+
+Research-Collector supports exporting results to Hugging Face Datasets for easy sharing and collaboration in the ML community.
+
+### Setup
+
+1. Install Hugging Face dependencies:
+```bash
+pip install -e ".[huggingface]"
+```
+
+2. Get your Hugging Face token from https://huggingface.co/settings/tokens
+
+3. Set the token as environment variable or pass it as parameter:
+```bash
+export HF_TOKEN=your_hf_token_here
+```
+
+### Usage
+
+```bash
+# Export to Hugging Face Datasets
+python -m research_collector research \
+  --query "machine learning" \
+  --export=huggingface \
+  --output username/dataset-name \
+  --hf-token $HF_TOKEN
+
+# Or use environment variable for token
+python -m research_collector research \
+  --query "AI safety" \
+  --export=huggingface \
+  --output username/ai-safety-research
+```
+
+### Features
+
+- **Automatic dataset card generation**: Creates a README.md with dataset metadata
+- **Structured data**: Converts results to Hugging Face Dataset format
+- **Version control**: Each export creates a new version on the Hub
+- **Easy sharing**: Share datasets with the ML community
+- **Integration**: Works seamlessly with other Hugging Face tools
+
+### Dataset Structure
+
+The exported dataset includes:
+- Research items with all metadata
+- Source information
+- Engagement metrics
+- Relevance scores
+- Publication dates
+- Content/abstracts
+
+### Accessing Your Dataset
+
+```python
+from datasets import load_dataset
+
+dataset = load_dataset("username/dataset-name")
+train_data = dataset["train"]
+
+# Filter by source
+pubmed_items = train_data.filter(lambda x: x["source"] == "pubmed")
+
+# Sort by score
+sorted_items = train_data.sort("score", reverse=True)
+```
+
 ## Architecture
 
 ResearchCollector uses a modular pipeline architecture:
@@ -349,6 +427,50 @@ Then register it in `research_collector/__init__.py` and the pipeline.
 | Time-flexible | ✅ Any range | ❌ Historical | ❌ Mixed |
 | Local-privacy | ✅ Local processing | ❌ Cloud-based | ❌ Cloud-based |
 | Extensible | ✅ Plugin system | ❌ Fixed | ❌ Fixed |
+
+## CI/CD and GitHub Actions
+
+This project includes comprehensive GitHub Actions workflows for continuous integration and deployment.
+
+### Workflows
+
+See `.github/workflows/` for:
+- **CI** (`.github/workflows/ci.yml`): Testing, linting, security checks
+- **Publish** (`.github/workflows/publish.yml`): PyPI publishing on version tags
+- **Scheduled Research** (`.github/workflows/scheduled-research.yml`): Daily automated research with Hugging Face export
+- **Code Quality** (`.github/workflows/code-quality.yml`): Type checking and documentation
+
+### Scheduled Research with Hugging Face
+
+The scheduled research workflow automatically:
+- Runs daily research on 6 topics (ML, LLM, AGI, ASI, ANI, ACI)
+- Exports results to Hugging Face Datasets:
+  - `nellaivijay/ml-research-daily`
+  - `nellaivijay/llm-research-daily`
+  - `nellaivijay/agi-research-daily`
+  - `nellaivijay/asi-research-daily`
+  - `nellaivijay/ani-research-daily`
+  - `nellaivijay/aci-research-daily`
+- Includes automatic dataset validation and error handling
+- Supports manual triggers for custom research (exports to `nellaivijay/custom-research`)
+
+**Setup**: See [GITHUB_ACTIONS.md](./GITHUB_ACTIONS.md) for detailed setup instructions.
+
+### GitHub Actions Setup
+
+1. Add secrets to your GitHub repository:
+   - `HF_TOKEN`: Hugging Face authentication token (required for scheduled research)
+   - `PYPI_API_TOKEN`: For publishing to PyPI (optional)
+
+2. The workflows will automatically run on:
+   - Push to main/develop branches
+   - Pull requests
+   - Version tags (for publishing)
+   - Daily schedule (for research)
+
+### Manual Triggers
+
+All workflows support manual triggering via the GitHub Actions UI. The scheduled research workflow supports custom topics and time ranges.
 
 ## Contributing
 
