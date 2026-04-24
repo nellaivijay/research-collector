@@ -13,37 +13,37 @@ The scheduled research workflow is configured for daily research on 6 topics (ML
 - **Topics**: Machine Learning (ML), Large Language Models (LLM), Artificial General Intelligence (AGI), Artificial Super Intelligence (ASI), Artificial Narrow Intelligence (ANI), Artificial Collective Intelligence (ACI)
 - **Time Range**: 7 days
 - **Datasets**:
-  - `nellaivijay/ml-research-daily`
-  - `nellaivijay/llm-research-daily`
-  - `nellaivijay/agi-research-daily`
-  - `nellaivijay/asi-research-daily`
-  - `nellaivijay/ani-research-daily`
-  - `nellaivijay/aci-research-daily`
+  - `{repository-owner}/ml-research-daily`
+  - `{repository-owner}/llm-research-daily`
+  - `{repository-owner}/agi-research-daily`
+  - `{repository-owner}/asi-research-daily`
+  - `{repository-owner}/ani-research-daily`
+  - `{repository-owner}/aci-research-daily`
 - **Platform**: Hugging Face Hub
 
 ### Manual Research
 - **Topics Available**: ML, LLM, AGI, ASI, ANI, ACI, Custom
 - **Time Ranges**: 3, 7, 14, or 30 days
-- **Dataset**: `nellaivijay/custom-research` (for custom queries)
+- **Dataset**: `{repository-owner}/custom-research` (for custom queries)
 - **Source Filtering**: Optional
 
 ## Dataset Information
 
 ### Primary Datasets
-- **ML**: `nellaivijay/ml-research-daily` - https://huggingface.co/datasets/nellaivijay/ml-research-daily
-- **LLM**: `nellaivijay/llm-research-daily` - https://huggingface.co/datasets/nellaivijay/llm-research-daily
-- **AGI**: `nellaivijay/agi-research-daily` - https://huggingface.co/datasets/nellaivijay/agi-research-daily
-- **ASI**: `nellaivijay/asi-research-daily` - https://huggingface.co/datasets/nellaivijay/asi-research-daily
-- **ANI**: `nellaivijay/ani-research-daily` - https://huggingface.co/datasets/nellaivijay/ani-research-daily
-- **ACI**: `nellaivijay/aci-research-daily` - https://huggingface.co/datasets/nellaivijay/aci-research-daily
+- **ML**: `{repository-owner}/ml-research-daily` - https://huggingface.co/datasets/{repository-owner}/ml-research-daily
+- **LLM**: `{repository-owner}/llm-research-daily` - https://huggingface.co/datasets/{repository-owner}/llm-research-daily
+- **AGI**: `{repository-owner}/agi-research-daily` - https://huggingface.co/datasets/{repository-owner}/agi-research-daily
+- **ASI**: `{repository-owner}/asi-research-daily` - https://huggingface.co/datasets/{repository-owner}/asi-research-daily
+- **ANI**: `{repository-owner}/ani-research-daily` - https://huggingface.co/datasets/{repository-owner}/ani-research-daily
+- **ACI**: `{repository-owner}/aci-research-daily` - https://huggingface.co/datasets/{repository-owner}/aci-research-daily
 
 **Update Frequency**: Daily
 **Research Window**: 7 days
 **Content**: Research results from multiple sources
 
 ### Custom Research Dataset
-- **Name**: `nellaivijay/custom-research`
-- **URL**: https://huggingface.co/datasets/nellaivijay/custom-research
+- **Name**: `{repository-owner}/custom-research`
+- **URL**: https://huggingface.co/datasets/{repository-owner}/custom-research
 - **Update Frequency**: On-demand (manual trigger)
 - **Content**: Custom query research results
 
@@ -74,21 +74,21 @@ The scheduled research workflow is configured for daily research on 6 topics (ML
    - Value: Your Hugging Face token (starts with `hf_`)
 
 ### 3. Repository Owner
-The workflow uses your GitHub username automatically. For your setup:
-- GitHub repository: `nellaivijay/research-collector`
-- Repository owner: `nellaivijay`
-- Dataset namespace: `nellaivijay`
+The workflow uses your GitHub username automatically via `github.repository_owner` context variable.
+- GitHub repository: `{repository-owner}/research-collector`
+- Repository owner: `{repository-owner}`
+- Dataset namespace: `{repository-owner}`
 
 ## Workflow Structure
 
 ### Daily Schedule (Automatic)
 ```
-research-ml → nellaivijay/ml-research-daily
-research-llm → nellaivijay/llm-research-daily
-research-agi → nellaivijay/agi-research-daily
-research-asi → nellaivijay/asi-research-daily
-research-ani → nellaivijay/ani-research-daily
-research-aci → nellaivijay/aci-research-daily
+research-ml → {repository-owner}/ml-research-daily
+research-llm → {repository-owner}/llm-research-daily
+research-agi → {repository-owner}/agi-research-daily
+research-asi → {repository-owner}/asi-research-daily
+research-ani → {repository-owner}/ani-research-daily
+research-aci → {repository-owner}/aci-research-daily
 ```
 
 All jobs run in parallel at midnight UTC.
@@ -96,13 +96,13 @@ All jobs run in parallel at midnight UTC.
 ### Manual Trigger
 ```
 User selects topic:
-  - ml → research-ml job → nellaivijay/ml-research-daily
-  - llm → research-llm job → nellaivijay/llm-research-daily
-  - agi → research-agi job → nellaivijay/agi-research-daily
-  - asi → research-asi job → nellaivijay/asi-research-daily
-  - ani → research-ani job → nellaivijay/ani-research-daily
-  - aci → research-aci job → nellaivijay/aci-research-daily
-  - custom → custom-research job → nellaivijay/custom-research
+  - ml → research-ml job → {repository-owner}/ml-research-daily
+  - llm → research-llm job → {repository-owner}/llm-research-daily
+  - agi → research-agi job → {repository-owner}/agi-research-daily
+  - asi → research-asi job → {repository-owner}/asi-research-daily
+  - ani → research-ani job → {repository-owner}/ani-research-daily
+  - aci → research-aci job → {repository-owner}/aci-research-daily
+  - custom → custom-research job → {repository-owner}/custom-research
 ```
 
 ## Usage
@@ -137,7 +137,7 @@ User selects topic:
    - days: 7
    - sources: pubmed,reddit (optional)
 4. Click "Run workflow"
-5. Results go to `nellaivijay/custom-research`
+5. Results go to `{repository-owner}/custom-research`
 
 ### Manual Research on Other Topics
 1. Go to Actions → Scheduled Research
@@ -160,6 +160,7 @@ User selects topic:
 - ✅ Performance caching
 - ✅ Timeout protection
 - ✅ Parallel job execution
+- ✅ Dynamic repository owner detection
 
 ## Monitoring
 

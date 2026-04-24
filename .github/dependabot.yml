@@ -8,10 +8,6 @@ updates:
       day: "monday"
       time: "00:00"
     open-pull-requests-limit: 10
-    reviewers:
-      - "nellaivijay"
-    assignees:
-      - "nellaivijay"
     labels:
       - "dependencies"
       - "python"
@@ -30,10 +26,6 @@ updates:
       day: "monday"
       time: "00:00"
     open-pull-requests-limit: 5
-    reviewers:
-      - "nellaivijay"
-    assignees:
-      - "nellaivijay"
     labels:
       - "dependencies"
       - "github-actions"

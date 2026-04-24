@@ -330,12 +330,12 @@ Research-Collector includes GitHub Actions workflows for automated daily researc
 - **Daily Schedule**: Midnight UTC
 - **Topics**: ML, LLM, AGI, ASI, ANI, ACI (6 topics)
 - **Datasets**:
-  - `nellaivijay/ml-research-daily`
-  - `nellaivijay/llm-research-daily`
-  - `nellaivijay/agi-research-daily`
-  - `nellaivijay/asi-research-daily`
-  - `nellaivijay/ani-research-daily`
-  - `nellaivijay/aci-research-daily`
+  - `{repository-owner}/ml-research-daily`
+  - `{repository-owner}/llm-research-daily`
+  - `{repository-owner}/agi-research-daily`
+  - `{repository-owner}/asi-research-daily`
+  - `{repository-owner}/ani-research-daily`
+  - `{repository-owner}/aci-research-daily`
 - **Manual Triggers**: Available for custom research on any topic
 
 See [GITHUB_ACTIONS.md](./GITHUB_ACTIONS.md) for complete setup and usage instructions.

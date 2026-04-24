@@ -227,13 +227,13 @@ This document describes the GitHub Actions workflows configured for Research-Col
 - Manual trigger via GitHub Actions UI
 
 **Jobs**:
-- **research-ml**: Daily ML research, exports to `nellaivijay/ml-research-daily`
-- **research-llm**: Daily LLM research, exports to `nellaivijay/llm-research-daily`
-- **research-agi**: Daily AGI research, exports to `nellaivijay/agi-research-daily`
-- **research-asi**: Daily ASI research, exports to `nellaivijay/asi-research-daily`
-- **research-ani**: Daily ANI research, exports to `nellaivijay/ani-research-daily`
-- **research-aci**: Daily ACI research, exports to `nellaivijay/aci-research-daily`
-- **custom-research**: Manual custom research with parameters, exports to `nellaivijay/custom-research`
+- **research-ml**: Daily ML research, exports to `{repository-owner}/ml-research-daily`
+- **research-llm**: Daily LLM research, exports to `{repository-owner}/llm-research-daily`
+- **research-agi**: Daily AGI research, exports to `{repository-owner}/agi-research-daily`
+- **research-asi**: Daily ASI research, exports to `{repository-owner}/asi-research-daily`
+- **research-ani**: Daily ANI research, exports to `{repository-owner}/ani-research-daily`
+- **research-aci**: Daily ACI research, exports to `{repository-owner}/aci-research-daily`
+- **custom-research**: Manual custom research with parameters, exports to `{repository-owner}/custom-research`
 
 **Required Secrets**:
 - `HF_TOKEN`: Hugging Face authentication token for dataset export

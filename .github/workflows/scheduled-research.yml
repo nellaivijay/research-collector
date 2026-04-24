@@ -39,6 +39,7 @@ on:
 env:
   PYTHONUNBUFFERED: 1
   HF_HUB_ENABLE_HF_TRANSFER: 1
+  DATASET_OWNER: ${{ github.repository_owner }}
 
 jobs:
   research-ml:
@@ -81,7 +82,7 @@ jobs:
           --topic ml \
           --days ${{ github.event.inputs.days || '7' }} \
           --export=huggingface \
-          --output nellaivijay/ml-research-daily \
+          --output $DATASET_OWNER/ml-research-daily \
           --no-cache \
           --no-history
     
@@ -91,7 +92,7 @@ jobs:
         python -c "
         from datasets import load_dataset
         try:
-            dataset = load_dataset('nellaivijay/ml-research-daily')
+            dataset = load_dataset('$DATASET_OWNER/ml-research-daily')
             print(f'Dataset loaded successfully: {len(dataset[\"train\"])} items')
             assert len(dataset['train']) > 0, 'Dataset is empty'
         except Exception as e:
@@ -139,7 +140,7 @@ jobs:
           --topic llm \
           --days 7 \
           --export=huggingface \
-          --output nellaivijay/llm-research-daily \
+          --output $DATASET_OWNER/llm-research-daily \
           --no-cache \
           --no-history
     
@@ -149,7 +150,7 @@ jobs:
         python -c "
         from datasets import load_dataset
         try:
-            dataset = load_dataset('nellaivijay/llm-research-daily')
+            dataset = load_dataset('$DATASET_OWNER/llm-research-daily')
             print(f'Dataset loaded successfully: {len(dataset[\"train\"])} items')
             assert len(dataset['train']) > 0, 'Dataset is empty'
         except Exception as e:
@@ -197,7 +198,7 @@ jobs:
           --topic agi \
           --days 7 \
           --export=huggingface \
-          --output nellaivijay/agi-research-daily \
+          --output $DATASET_OWNER/agi-research-daily \
           --no-cache \
           --no-history
     
@@ -207,7 +208,7 @@ jobs:
         python -c "
         from datasets import load_dataset
         try:
-            dataset = load_dataset('nellaivijay/agi-research-daily')
+            dataset = load_dataset('$DATASET_OWNER/agi-research-daily')
             print(f'Dataset loaded successfully: {len(dataset[\"train\"])} items')
             assert len(dataset['train']) > 0, 'Dataset is empty'
         except Exception as e:
@@ -255,7 +256,7 @@ jobs:
           --topic asi \
           --days 7 \
           --export=huggingface \
-          --output nellaivijay/asi-research-daily \
+          --output $DATASET_OWNER/asi-research-daily \
           --no-cache \
           --no-history
     
@@ -265,7 +266,7 @@ jobs:
         python -c "
         from datasets import load_dataset
         try:
-            dataset = load_dataset('nellaivijay/asi-research-daily')
+            dataset = load_dataset('$DATASET_OWNER/asi-research-daily')
             print(f'Dataset loaded successfully: {len(dataset[\"train\"])} items')
             assert len(dataset['train']) > 0, 'Dataset is empty'
         except Exception as e:
@@ -313,7 +314,7 @@ jobs:
           --topic ani \
           --days 7 \
           --export=huggingface \
-          --output nellaivijay/ani-research-daily \
+          --output $DATASET_OWNER/ani-research-daily \
           --no-cache \
           --no-history
     
@@ -323,7 +324,7 @@ jobs:
         python -c "
         from datasets import load_dataset
         try:
-            dataset = load_dataset('nellaivijay/ani-research-daily')
+            dataset = load_dataset('$DATASET_OWNER/ani-research-daily')
             print(f'Dataset loaded successfully: {len(dataset[\"train\"])} items')
             assert len(dataset['train']) > 0, 'Dataset is empty'
         except Exception as e:
@@ -371,7 +372,7 @@ jobs:
           --topic aci \
           --days 7 \
           --export=huggingface \
-          --output nellaivijay/aci-research-daily \
+          --output $DATASET_OWNER/aci-research-daily \
           --no-cache \
           --no-history
     
@@ -381,7 +382,7 @@ jobs:
         python -c "
         from datasets import load_dataset
         try:
-            dataset = load_dataset('nellaivijay/aci-research-daily')
+            dataset = load_dataset('$DATASET_OWNER/aci-research-daily')
             print(f'Dataset loaded successfully: {len(dataset[\"train\"])} items')
             assert len(dataset['train']) > 0, 'Dataset is empty'
         except Exception as e:
@@ -435,6 +436,6 @@ jobs:
           --days ${{ github.event.inputs.days || '7' }} \
           $SOURCES_ARG \
           --export=huggingface \
-          --output nellaivijay/custom-research \
+          --output $DATASET_OWNER/custom-research \
           --no-cache \
           --no-history

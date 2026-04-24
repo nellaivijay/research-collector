@@ -445,14 +445,14 @@ See `.github/workflows/` for:
 The scheduled research workflow automatically:
 - Runs daily research on 6 topics (ML, LLM, AGI, ASI, ANI, ACI)
 - Exports results to Hugging Face Datasets:
-  - `nellaivijay/ml-research-daily`
-  - `nellaivijay/llm-research-daily`
-  - `nellaivijay/agi-research-daily`
-  - `nellaivijay/asi-research-daily`
-  - `nellaivijay/ani-research-daily`
-  - `nellaivijay/aci-research-daily`
+  - `{repository-owner}/ml-research-daily`
+  - `{repository-owner}/llm-research-daily`
+  - `{repository-owner}/agi-research-daily`
+  - `{repository-owner}/asi-research-daily`
+  - `{repository-owner}/ani-research-daily`
+  - `{repository-owner}/aci-research-daily`
 - Includes automatic dataset validation and error handling
-- Supports manual triggers for custom research (exports to `nellaivijay/custom-research`)
+- Supports manual triggers for custom research (exports to `{repository-owner}/custom-research`)
 
 **Setup**: See [GITHUB_ACTIONS.md](./GITHUB_ACTIONS.md) for detailed setup instructions.
 
