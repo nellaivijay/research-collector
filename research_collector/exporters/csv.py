@@ -16,16 +16,31 @@ class CSVExporter:
         with open(output_file, 'w', newline='') as f:
             writer = csv.writer(f)
             
+            # Check if any item has URLs
+            has_urls = any('url' in item for item in results['items'])
+            
             # Write header
-            writer.writerow(['Title', 'URL', 'Source', 'Author', 'Date', 'Score'])
+            if has_urls:
+                writer.writerow(['Title', 'URL', 'Source', 'Author', 'Date', 'Score'])
+            else:
+                writer.writerow(['Title', 'Source', 'Author', 'Date', 'Score'])
             
             # Write data
             for item in results['items']:
-                writer.writerow([
-                    item['title'],
-                    item['url'],
-                    item['source'],
-                    item['author'],
-                    item['published_date'],
-                    item.get('score', 0)
-                ])
+                if has_urls:
+                    writer.writerow([
+                        item['title'],
+                        item.get('url', ''),
+                        item['source'],
+                        item['author'],
+                        item['published_date'],
+                        item.get('score', 0)
+                    ])
+                else:
+                    writer.writerow([
+                        item['title'],
+                        item['source'],
+                        item['author'],
+                        item['published_date'],
+                        item.get('score', 0)
+                    ])

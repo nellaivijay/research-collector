@@ -26,8 +26,9 @@ class BibliographyExporter:
             lines.append(f"@article{{{entry_id},")
             lines.append(f"  title = {{{item['title']}}},")
             lines.append(f"  author = {{{item['author']}}},")
-            lines.append(f"  year = {{{item['published_date'][:4]}}},")
-            lines.append(f"  url = {{{item['url']}}}")
+            lines.append(f"  year = {{{item['published_date'][:4] if len(item['published_date']) >= 4 else 'Unknown'}}},")
+            if 'url' in item:
+                lines.append(f"  url = {{{item['url']}}}")
             lines.append(f"}}")
             lines.append("")
         

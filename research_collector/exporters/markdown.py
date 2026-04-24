@@ -40,7 +40,8 @@ class MarkdownExporter:
         for item in results['items']:
             lines.append(f"### {item['title']}")
             lines.append(f"**Source:** {item['source']}")
-            lines.append(f"**URL:** {item['url']}")
+            if 'url' in item:
+                lines.append(f"**URL:** {item['url']}")
             lines.append(f"**Author:** {item['author']}")
             lines.append(f"**Date:** {item['published_date']}")
             lines.append(f"**Score:** {item.get('score', 0):.2f}")

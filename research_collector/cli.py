@@ -83,9 +83,24 @@ def research(topic, query, days, sources, export, output, depth, include_urls, l
     
     # Output results
     if output:
-        with open(output, 'w') as f:
-            f.write(str(results))
-        click.echo(f"Results saved to {output}")
+        # Use the specified export format
+        from research_collector.exporters import (
+            MarkdownExporter, 
+            JSONExporter, 
+            CSVExporter, 
+            BibliographyExporter
+        )
+        
+        exporters = {
+            "markdown": MarkdownExporter(),
+            "json": JSONExporter(),
+            "csv": CSVExporter(),
+            "bibliography": BibliographyExporter()
+        }
+        
+        exporter = exporters.get(export.lower(), MarkdownExporter())
+        exporter.export(results, output)
+        click.echo(f"Results saved to {output} in {export} format")
     else:
         click.echo(f"Found {len(results['items'])} results")
 
