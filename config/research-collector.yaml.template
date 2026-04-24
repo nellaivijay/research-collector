@@ -1,0 +1,60 @@
+# ResearchCollector Configuration Template
+# Copy this file to researchcollector.yaml and customize for your needs
+
+sources:
+  academic:
+    pubmed: true
+    crossref: true
+    semantic_scholar: true
+    paperswithcode: true
+    arxiv: true
+  
+  professional:
+    stackoverflow: true
+    github: true
+    devto: false
+    hashnode: false
+  
+  social:
+    reddit: true
+    hackernews: true
+    bluesky: false
+    threads: false
+  
+  news:
+    gdelt: true
+    newsapi: false  # Requires NEWSAPI_API_KEY
+
+time_ranges:
+  default: 30
+  quick: 7
+  deep: 90
+  historical: 365
+
+exports:
+  default: markdown
+  directory: ~/research_outputs
+  include_metadata: true
+
+scoring:
+  weights:
+    relevance: 0.4
+    recency: 0.3
+    engagement: 0.3
+
+# Optional API keys for enhanced rate limits
+# Set these as environment variables instead of hardcoding
+api_keys:
+  # pubmed: ${PUBMED_API_KEY}
+  # crossref: ${CROSSREF_API_KEY}
+  # semantic_scholar: ${SEMANTIC_SCHOLAR_API_KEY}
+  # newsapi: ${NEWSAPI_API_KEY}
+  # stackexchange: ${STACKEXCHANGE_API_KEY}
+  # github: ${GITHUB_TOKEN}
+
+# Advanced settings
+advanced:
+  max_results_per_source: 100
+  clustering_similarity_threshold: 0.85
+  enable_caching: true
+  cache_ttl_hours: 24
