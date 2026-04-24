@@ -60,10 +60,12 @@ class Config:
                 }
             },
             "time_ranges": {
-                "default": 30,
-                "quick": 7,
-                "deep": 90,
-                "historical": 365,
+                "default": 7,
+                "quick": 3,
+                "standard": 15,
+                "deep": 30,
+                "historical": 90,
+                "extended": 365,
             },
             "exports": {
                 "default": "markdown",

@@ -9,7 +9,7 @@ def test_config_loading():
     """Test configuration loading."""
     config = Config()
     assert config is not None
-    assert config.get("time_ranges.default") == 30
+    assert config.get("time_ranges.default") == 7
 
 
 def test_pipeline_initialization():

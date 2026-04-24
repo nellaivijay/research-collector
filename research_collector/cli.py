@@ -15,14 +15,19 @@ def cli():
 
 @cli.command()
 @click.argument("topic")
-@click.option("--days", default=30, help="Number of days to search back")
+@click.option("--days", default=7, help="Number of days to search back (default: 7)")
 @click.option("--sources", help="Comma-separated list of sources")
 @click.option("--export", default="markdown", help="Export format")
 @click.option("--output", help="Output file path")
-def research(topic, days, sources, export, output):
+@click.option("--depth", default="default", help="Search depth: quick, default, standard, deep, historical, extended")
+def research(topic, days, sources, export, output, depth):
     """Research a topic across multiple sources."""
     config = Config()
     pipeline = Pipeline(config)
+    
+    # Use depth-based time range if depth is specified and not custom days
+    if depth != "default" and days == 7:
+        days = config.get(f"time_ranges.{depth}", days)
     
     from_date = datetime.now() - timedelta(days=days)
     to_date = datetime.now()
@@ -33,7 +38,8 @@ def research(topic, days, sources, export, output):
         topic=topic,
         from_date=from_date,
         to_date=to_date,
-        sources=source_list
+        sources=source_list,
+        depth=depth
     )
     
     # Output results
@@ -53,7 +59,7 @@ def interactive():
 
 @cli.command()
 @click.argument("topic")
-@click.option("--days", default=7, help="Number of days to monitor")
+@click.option("--days", default=7, help="Number of days to monitor (default: 7)")
 def monitor(topic, days):
     """Monitor a topic for new research."""
     click.echo(f"Monitoring {topic} for {days} days - coming soon!")
@@ -68,7 +74,7 @@ def compare(sessions):
 
 @cli.command()
 @click.argument("topic")
-@click.option("--days", default=90, help="Number of days to analyze")
+@click.option("--days", default=30, help="Number of days to analyze (default: 30)")
 def timeline(topic, days):
     """Analyze topic evolution over time."""
     click.echo(f"Timeline analysis for {topic} over {days} days - coming soon!")

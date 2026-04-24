@@ -1,5 +1,5 @@
-# ResearchCollector Configuration Template
-# Copy this file to researchcollector.yaml and customize for your needs
+# Research-Collector Configuration Template
+# Copy this file to research-collector.yaml and customize for your needs
 
 sources:
   academic:
@@ -26,10 +26,12 @@ sources:
     newsapi: false  # Requires NEWSAPI_API_KEY
 
 time_ranges:
-  default: 30
-  quick: 7
-  deep: 90
-  historical: 365
+  default: 7
+  quick: 3
+  standard: 15
+  deep: 30
+  historical: 90
+  extended: 365
 
 exports:
   default: markdown

@@ -12,10 +12,10 @@ def basic_research_example():
     # Initialize pipeline
     pipeline = Pipeline(config)
     
-    # Define research parameters
+    # Define research parameters (default: 7 days)
     topic = "machine learning"
     to_date = datetime.now()
-    from_date = to_date - timedelta(days=30)
+    from_date = to_date - timedelta(days=7)
     
     # Run research
     results = pipeline.run(
@@ -40,7 +40,7 @@ def academic_research_example():
     
     topic = "transformer architecture"
     to_date = datetime.now()
-    from_date = to_date - timedelta(days=90)
+    from_date = to_date - timedelta(days=30)  # Deep search
     
     # Use only academic sources
     results = pipeline.run(

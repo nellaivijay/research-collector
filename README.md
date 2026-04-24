@@ -16,7 +16,7 @@ This tool is designed for educational purposes to help students and researchers:
 ## Key Features
 
 - **15+ Data Sources**: Academic (PubMed, Crossref, Papers With Code), Professional (Stack Overflow), Social (Reddit), News (GDELT)
-- **Flexible Time Windows**: Research any time period - last 7 days, 90 days, custom ranges, or historical analysis
+- **Flexible Time Windows**: Research any time period - last 3 days, 7 days (default), 15 days, 30 days, 90 days, 365 days, or custom ranges
 - **Engagement-Based Ranking**: Results scored by citations, upvotes, answers, downloads - not SEO
 - **Cross-Platform Clustering**: Same story across multiple sources merged into unified insights
 - **Multiple Export Formats**: Markdown, JSON, CSV, HTML, BibTeX for academic workflows
@@ -36,32 +36,47 @@ cd research-collector
 # Install dependencies
 pip install -r requirements.txt
 
-# Run your first research
-python -m research_collector "machine learning" --days=30
+# Run your first research (default: last 7 days)
+python -m research_collector "machine learning"
 ```
 
 ### Basic Usage
 
 ```bash
-# Research with default settings (30-day window)
-python -m researchcollector "AI safety"
+# Research with default settings (7-day window)
+python -m research_collector "AI safety"
 
-# Custom time range
-python -m researchcollector "transformer architecture" --days=90
+# Custom time range (15 days)
+python -m research_collector "transformer architecture" --days=15
+
+# Quick search (3 days using depth)
+python -m research_collector "quantum computing" --depth=quick
+
+# Standard search (15 days using depth)
+python -m research_collector "quantum computing" --depth=standard
+
+# Deep search (30 days using depth)
+python -m research_collector "quantum computing" --depth=deep
+
+# Historical search (90 days using depth)
+python -m research_collector "quantum computing" --depth=historical
+
+# Extended search (365 days using depth)
+python -m research_collector "quantum computing" --depth=extended
 
 # Specific sources only
-python -m researchcollector "quantum computing" --sources=pubmed,crossref,semantic_scholar
+python -m research_collector "quantum computing" --sources=pubmed,crossref,semantic_scholar
 
 # Export to different formats
-python -m researchcollector "climate change" --export=json
-python -m researchcollector "climate change" --export=csv
-python -m researchcollector "climate change" --export=bibliography
+python -m research_collector "climate change" --export=json
+python -m research_collector "climate change" --export=csv
+python -m research_collector "climate change" --export=bibliography
 
 # Academic research with citation filtering
-python -m researchcollector "deep learning" --min-citations=50 --sources=academic
+python -m research_collector "deep learning" --min-citations=50 --sources=academic
 
 # Interactive mode
-python -m researchcollector interactive
+python -m research_collector interactive
 ```
 
 ## Source Categories
@@ -94,37 +109,37 @@ python -m researchcollector interactive
 ### Academic Research
 ```bash
 # Literature review with citation tracking
-python -m researchcollector "transformer efficiency" --sources=academic --min-citations=20
+python -m research_collector "transformer efficiency" --sources=academic --min-citations=20
 
 # Export bibliography for paper
-python -m researchcollector "attention mechanisms" --export=bibliography --days=365
+python -m research_collector "attention mechanisms" --export=bibliography --days=365
 ```
 
 ### Technical Due Diligence
 ```bash
 # Evaluate technology with community sentiment
-python -m researchcollector "kubernetes vs docker" --sources=social,professional
+python -m research_collector "kubernetes vs docker" --sources=social,professional
 
 # Check implementation challenges
-python -m researchcollector "react server components" --sources=stackoverflow,github
+python -m research_collector "react server components" --sources=stackoverflow,github
 ```
 
 ### Market Intelligence
 ```bash
 # Industry trend analysis
-python -m researchcollector "generative AI adoption" --sources=news,academic --days=90
+python -m research_collector "generative AI adoption" --sources=news,academic --days=90
 
 # Competitive landscape
-python -m researchcollector "openai vs anthropic" --sources=all
+python -m research_collector "openai vs anthropic" --sources=all
 ```
 
 ### Policy Research
 ```bash
 # Regulation tracking
-python -m researchcollector "AI regulation" --sources=news,academic,government
+python -m research_collector "AI regulation" --sources=news,academic,government
 
 # Public sentiment analysis
-python -m researchcollector "data privacy laws" --sources=social,news
+python -m research_collector "data privacy laws" --sources=social,news
 ```
 
 ## Configuration
@@ -150,10 +165,12 @@ sources:
     newsapi: false  # Requires API key
 
 time_ranges:
-  default: 30
-  quick: 7
-  deep: 90
-  historical: 365
+  default: 7
+  quick: 3
+  standard: 15
+  deep: 30
+  historical: 90
+  extended: 365
 
 exports:
   default: markdown
