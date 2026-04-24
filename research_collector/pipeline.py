@@ -72,7 +72,8 @@ class Pipeline:
         from_date: datetime,
         to_date: datetime,
         sources: Optional[List[str]] = None,
-        depth: str = "default"
+        depth: str = "default",
+        include_urls: bool = False
     ) -> Dict[str, Any]:
         """
         Run research pipeline for a topic.
@@ -83,6 +84,7 @@ class Pipeline:
             to_date: End date
             sources: List of sources to use (None = all enabled)
             depth: Search depth (quick, default, deep)
+            include_urls: Whether to include source URLs in results
         
         Returns:
             Research results with metadata
@@ -128,6 +130,11 @@ class Pipeline:
         # Cluster and rank
         clustered_results = self._cluster_results(normalized_results)
         ranked_results = self._rank_results(clustered_results, topic)
+        
+        # Filter URLs if not requested
+        if not include_urls:
+            for result in ranked_results:
+                result.pop("url", None)
         
         return {
             "topic": topic,

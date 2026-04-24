@@ -21,8 +21,9 @@ def cli():
 @click.option("--export", default="markdown", help="Export format")
 @click.option("--output", help="Output file path")
 @click.option("--depth", default="default", help="Search depth: quick, default, standard, deep, historical, extended")
+@click.option("--include-urls", is_flag=True, help="Include source URLs in results (default: no)")
 @click.option("--list-topics", is_flag=True, help="List all available predefined topics")
-def research(topic, query, days, sources, export, output, depth, list_topics):
+def research(topic, query, days, sources, export, output, depth, include_urls, list_topics):
     """Research a topic across multiple sources."""
     config = Config()
     
@@ -76,7 +77,8 @@ def research(topic, query, days, sources, export, output, depth, list_topics):
         from_date=from_date,
         to_date=to_date,
         sources=source_list,
-        depth=depth
+        depth=depth,
+        include_urls=include_urls
     )
     
     # Output results
