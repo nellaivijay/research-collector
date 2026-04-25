@@ -229,6 +229,9 @@ class Config:
             "NEWSAPI_API_KEY": os.getenv("NEWSAPI_API_KEY"),
             "STACKEXCHANGE_API_KEY": os.getenv("STACKEXCHANGE_API_KEY"),
             "GITHUB_TOKEN": os.getenv("GITHUB_TOKEN"),
+            "REDDIT": os.getenv("REDDIT_CLIENT_ID"),
+            "REDDIT_SECRET": os.getenv("REDDIT_CLIENT_SECRET"),
+            "REDDIT_USER_AGENT": os.getenv("REDDIT_USER_AGENT"),
         }
         
         # Filter out None values

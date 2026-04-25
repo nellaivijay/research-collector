@@ -13,7 +13,38 @@ class RedditSource:
         """Initialize Reddit source."""
         self.config = config
         self.base_url = "https://www.reddit.com"
-        self.user_agent = "Research-Collector/1.0 (Educational Purpose)"
+        self.user_agent = config.get_api_key("reddit_user_agent") or "Research-Collector/1.0 (Educational Purpose)"
+        self.client_id = config.get_api_key("reddit")
+        self.client_secret = config.get_api_key("reddit_secret")
+        
+        # OAuth token cache
+        self.access_token = None
+    
+    def _get_access_token(self) -> Optional[str]:
+        """Get OAuth access token using client credentials."""
+        if not self.client_id or not self.client_secret:
+            return None
+        
+        # Return cached token if still valid
+        if self.access_token:
+            return self.access_token
+        
+        try:
+            auth_url = "https://www.reddit.com/api/v1/access_token"
+            auth = requests.auth.HTTPBasicAuth(self.client_id, self.client_secret)
+            data = {"grant_type": "client_credentials"}
+            headers = {"User-Agent": self.user_agent}
+            
+            response = requests.post(auth_url, auth=auth, data=data, headers=headers, timeout=10)
+            response.raise_for_status()
+            
+            token_data = response.json()
+            self.access_token = token_data.get("access_token")
+            return self.access_token
+            
+        except Exception as e:
+            print(f"Error getting Reddit access token: {e}")
+            return None
     
     def search(
         self,
@@ -47,12 +78,19 @@ class RedditSource:
             else:
                 time_filter = "all"
             
-            # Search Reddit using the public API (no auth required for basic search)
+            # Get OAuth token if credentials are available
+            access_token = self._get_access_token()
+            
+            # Search Reddit using the API (with OAuth if available)
             search_url = f"{self.base_url}/search.json"
             
             headers = {
                 "User-Agent": self.user_agent
             }
+            
+            # Add authorization header if we have an access token
+            if access_token:
+                headers["Authorization"] = f"bearer {access_token}"
             
             params = {
                 "q": topic,
