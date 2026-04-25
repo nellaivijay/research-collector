@@ -360,11 +360,11 @@ If you use this dataset, please cite:
 ```bibtex
 @dataset{{research_collector_{metadata['topic'].lower().replace(' ', '_')}_2026,
   author = {{Research-Collector}},
-  title = {{{metadata['topic']} Research Dataset}},
+  title = {{{metadata['topic']}}} Research Dataset}},
   year = {{2026}},
   publisher = {{Hugging Face}},
-  howpublished = {{https://huggingface.co/datasets/{repo_id}}}}
-}}
+  howpublished = {{https://huggingface.co/datasets/{repo_id}}}
+}
 ```
 """
         
