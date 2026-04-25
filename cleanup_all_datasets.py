@@ -26,12 +26,15 @@ def cleanup_datasets(datasets_to_clean):
     for dataset in datasets_to_clean:
         print(f"  - {dataset}")
     
-    # Only ask for confirmation if running interactively (not in GitHub Actions)
-    if not os.environ.get("GITHUB_ACTIONS"):
+    # Only ask for confirmation if running interactively (not in CI/CD)
+    is_ci = os.environ.get("GITHUB_ACTIONS") or os.environ.get("GITLAB_CI")
+    if not is_ci:
         response = input("\nAre you sure you want to proceed? (yes/no): ")
         if response.lower() != "yes":
             print("Cleanup cancelled.")
             return False
+    else:
+        print("Running in CI/CD mode - skipping confirmation")
     
     success_count = 0
     for repo_id in datasets_to_clean:

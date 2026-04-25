@@ -1,0 +1,158 @@
+# GitLab CI/CD for Research-Collector
+# Schedules daily research for all topics with append mode
+
+stages:
+  - research
+  - cleanup
+
+variables:
+  PYTHONUNBUFFERED: 1
+  HF_HUB_ENABLE_HF_TRANSFER: 1
+  DATASET_OWNER: $CI_PROJECT_NAMESPACE
+
+# ML Research - Daily Schedule
+research-ml:
+  stage: research
+  image: python:3.10
+  script:
+    - pip install --upgrade pip
+    - pip install -r requirements-dev.txt
+    - python -m research_collector research --topic ml --days 7 --export huggingface --output $DATASET_OWNER/ml-research-daily --append --no-cache --no-history
+  only:
+    - schedules
+    - main
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
+  tags:
+    - docker
+
+# LLM Research - Daily Schedule
+research-llm:
+  stage: research
+  image: python:3.10
+  script:
+    - pip install --upgrade pip
+    - pip install -r requirements-dev.txt
+    - python -m research_collector research --topic llm --days 7 --export huggingface --output $DATASET_OWNER/llm-research-daily --append --no-cache --no-history
+  only:
+    - schedules
+    - main
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
+  tags:
+    - docker
+
+# AGI Research - Daily Schedule
+research-agi:
+  stage: research
+  image: python:3.10
+  script:
+    - pip install --upgrade pip
+    - pip install -r requirements-dev.txt
+    - python -m research_collector research --topic agi --days 7 --export huggingface --output $DATASET_OWNER/agi-research-daily --append --no-cache --no-history
+  only:
+    - schedules
+    - main
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
+  tags:
+    - docker
+
+# ASI Research - Daily Schedule
+research-asi:
+  stage: research
+  image: python:3.10
+  script:
+    - pip install --upgrade pip
+    - pip install -r requirements-dev.txt
+    - python -m research_collector research --topic asi --days 7 --export huggingface --output $DATASET_OWNER/asi-research-daily --append --no-cache --no-history
+  only:
+    - schedules
+    - main
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
+  tags:
+    - docker
+
+# ANI Research - Daily Schedule
+research-ani:
+  stage: research
+  image: python:3.10
+  script:
+    - pip install --upgrade pip
+    - pip install -r requirements-dev.txt
+    - python -m research_collector research --topic ani --days 7 --export huggingface --output $DATASET_OWNER/ani-research-daily --append --no-cache --no-history
+  only:
+    - schedules
+    - main
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
+  tags:
+    - docker
+
+# ACI Research - Daily Schedule
+research-aci:
+  stage: research
+  image: python:3.10
+  script:
+    - pip install --upgrade pip
+    - pip install -r requirements-dev.txt
+    - python -m research_collector research --topic aci --days 7 --export huggingface --output $DATASET_OWNER/aci-research-daily --append --no-cache --no-history
+  only:
+    - schedules
+    - main
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
+  tags:
+    - docker
+
+# Manual Research - Can be triggered manually for any topic
+research-manual:
+  stage: research
+  image: python:3.10
+  script:
+    - pip install --upgrade pip
+    - pip install -r requirements-dev.txt
+    - python -m research_collector research --topic $TOPIC --days $DAYS --export huggingface --output $DATASET_OWNER/$TOPIC-research-daily --append --no-cache --no-history
+  only:
+    - main
+  when: manual
+  variables:
+    TOPIC: "ml"
+    DAYS: "7"
+  tags:
+    - docker
+
+# Cleanup All Datasets - Manual trigger only
+cleanup-all-datasets:
+  stage: cleanup
+  image: python:3.10
+  script:
+    - pip install huggingface_hub
+    - python cleanup_all_datasets.py --dataset all
+  only:
+    - main
+  when: manual
+  tags:
+    - docker
+
+# Cleanup Specific Dataset - Manual trigger
+cleanup-dataset:
+  stage: cleanup
+  image: python:3.10
+  script:
+    - pip install huggingface_hub
+    - python cleanup_all_datasets.py --dataset $DATASET
+  only:
+    - main
+  when: manual
+  variables:
+    DATASET: "ml"
+  tags:
+    - docker
