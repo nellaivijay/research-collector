@@ -1,7 +1,8 @@
-"""Clean up Hugging Face dataset by deleting and recreating it."""
+"""Clean up Hugging Face dataset by truncating records (not deleting the dataset)."""
 
 import os
-from huggingface_hub import HfApi
+from huggingface_hub import HfApi, HfFileSystem
+from huggingface_hub.utils import hf_hub_url
 
 # Your Hugging Face token
 HF_TOKEN = os.environ.get("HF_TOKEN")  # Or paste your token directly
@@ -9,23 +10,56 @@ HF_TOKEN = os.environ.get("HF_TOKEN")  # Or paste your token directly
 # Dataset repo ID
 REPO_ID = "nellaivijay/ml-research-daily"
 
-def cleanup_dataset():
-    """Delete the existing dataset."""
+# Files to preserve (not deleted)
+PRESERVE_FILES = ["README.md", ".gitattributes", "dataset_card.json"]
+
+def truncate_dataset():
+    """Truncate all records from the dataset while keeping the repository."""
     api = HfApi(token=HF_TOKEN)
+    fs = HfFileSystem(token=HF_TOKEN)
     
     try:
-        # Delete the repository
-        api.delete_repo(repo_id=REPO_ID, repo_type="dataset")
-        print(f"✓ Deleted dataset: {REPO_ID}")
+        # List all files in the dataset
+        repo_files = api.list_repo_files(repo_id=REPO_ID, repo_type="dataset")
+        print(f"Found {len(repo_files)} files in dataset")
+        
+        # Filter out files to preserve
+        files_to_delete = [f for f in repo_files if f not in PRESERVE_FILES]
+        
+        if not files_to_delete:
+            print("No data files to delete (dataset is already empty)")
+            return True
+        
+        print(f"Deleting {len(files_to_delete)} data files (preserving: {', '.join(PRESERVE_FILES)})")
+        
+        # Delete each data file
+        deleted_count = 0
+        for file_path in files_to_delete:
+            try:
+                api.delete_file(
+                    path_in_repo=file_path,
+                    repo_id=REPO_ID,
+                    repo_type="dataset",
+                    token=HF_TOKEN
+                )
+                deleted_count += 1
+                print(f"  ✓ Deleted: {file_path}")
+            except Exception as e:
+                print(f"  ✗ Error deleting {file_path}: {e}")
+        
+        print(f"\n✓ Successfully deleted {deleted_count}/{len(files_to_delete)} data files")
+        print(f"✓ Dataset repository preserved: {REPO_ID}")
+        print(f"✓ Preserved files: {', '.join(PRESERVE_FILES)}")
+        
+        return deleted_count == len(files_to_delete)
+        
     except Exception as e:
-        print(f"✗ Error deleting dataset: {e}")
+        print(f"✗ Error truncating dataset: {e}")
         return False
-    
-    return True
 
-def recreate_dataset():
-    """Create a fresh dataset using the research collector."""
-    print("\nNow run the research command to create fresh data:")
+def refresh_dataset():
+    """Refresh the dataset with fresh data using the research collector."""
+    print("\nNow run the research command to populate with fresh data:")
     print(f"python -m research_collector research --topic ml --days 7 --export huggingface --output {REPO_ID}")
 
 if __name__ == "__main__":
@@ -34,14 +68,15 @@ if __name__ == "__main__":
         print("Set it with: export HF_TOKEN=your_token_here")
         exit(1)
     
-    print(f"Cleaning up dataset: {REPO_ID}")
-    print("This will delete ALL data in the dataset.")
+    print(f"Truncating dataset records: {REPO_ID}")
+    print("This will DELETE ALL DATA FILES while preserving the dataset repository.")
+    print(f"Preserved files: {', '.join(PRESERVE_FILES)}")
     
-    # Confirm deletion
+    # Confirm truncation
     response = input("Are you sure you want to proceed? (yes/no): ")
     if response.lower() != "yes":
-        print("Cleanup cancelled.")
+        print("Truncation cancelled.")
         exit(0)
     
-    if cleanup_dataset():
-        recreate_dataset()
+    if truncate_dataset():
+        refresh_dataset()

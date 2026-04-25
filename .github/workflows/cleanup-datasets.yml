@@ -1,14 +1,14 @@
-name: Cleanup Datasets
+name: Truncate Dataset Records
 
 on:
   workflow_dispatch:
     inputs:
       confirm:
-        description: 'Type "yes" to confirm deletion of ALL datasets'
+        description: 'Type "yes" to confirm truncation of ALL dataset records'
         required: true
         type: string
       dataset:
-        description: 'Dataset to clean (all, ml, llm, agi, asi, ani, aci)'
+        description: 'Dataset to truncate (all, ml, llm, agi, asi, ani, aci)'
         required: true
         default: 'all'
         type: choice
@@ -27,7 +27,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  cleanup:
+  truncate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     
@@ -50,7 +50,7 @@ jobs:
       run: |
         if [ "${{ github.event.inputs.confirm }}" != "yes" ]; then
           echo "Error: Confirmation must be 'yes'"
-          echo "Please type 'yes' to confirm deletion"
+          echo "Please type 'yes' to confirm truncation"
           exit 1
         fi
         echo "Confirmation verified"
@@ -68,6 +68,6 @@ jobs:
         fi
         echo "HF_TOKEN is valid"
     
-    - name: Cleanup datasets
+    - name: Truncate dataset records
       run: |
         python cleanup_all_datasets.py --dataset ${{ github.event.inputs.dataset }}
