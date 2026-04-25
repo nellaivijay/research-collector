@@ -42,7 +42,14 @@ class PapersWithCodeSource:
             response = requests.get(search_url, params=params, timeout=10)
             response.raise_for_status()
             
-            data = response.json()
+            # Check if response is valid JSON
+            try:
+                data = response.json()
+            except ValueError as e:
+                print(f"Error parsing Papers With Code JSON response: {e}")
+                print(f"Response text: {response.text[:500]}")
+                return []
+            
             results = data.get("results", [])
             
             formatted_results = []

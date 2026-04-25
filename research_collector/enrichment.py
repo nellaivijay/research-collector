@@ -144,6 +144,9 @@ def classify_ml_subfield(title: str, content: str, tags: List[str] = None) -> Li
     # Also check existing tags
     if tags:
         for tag in tags:
+            # Handle cases where tag might not be a string
+            if not isinstance(tag, str):
+                continue
             tag_lower = tag.lower()
             for subfield, keywords in subfields.items():
                 if any(keyword in tag_lower for keyword in keywords):

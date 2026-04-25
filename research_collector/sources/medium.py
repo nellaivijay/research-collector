@@ -12,13 +12,13 @@ class MediumSource:
     def __init__(self, config: Config):
         """Initialize Medium source."""
         self.config = config
-        # Medium RSS feeds for ML/AI topics
+        # Medium RSS feeds - only working publication feeds
+        # Note: Medium tag-based feeds (medium.com/tag/*/feed) are deprecated and return 404
         self.feeds = {
-            'ml': 'https://medium.com/tag/machine-learning/feed',
             'towards-data-science': 'https://towardsdatascience.com/feed',
-            'artificial-intelligence': 'https://medium.com/tag/artificial-intelligence/feed',
-            'deep-learning': 'https://medium.com/tag/deep-learning/feed',
-            'data-science': 'https://medium.com/tag/data-science/feed'
+            # Add other working Medium publication feeds as needed
+            # 'towards-ai': 'https://towardsai.com/feed',  # Add if available
+            # 'medium-blog': 'https://blog.medium.com/feed',  # Add if available
         }
     
     def search(
@@ -32,23 +32,9 @@ class MediumSource:
         try:
             results = []
             
-            # Try relevant feeds based on topic
-            topic_lower = topic.lower()
-            relevant_feeds = []
-            
-            if 'ml' in topic_lower or 'machine' in topic_lower:
-                relevant_feeds.append(self.feeds['ml'])
-            if 'data' in topic_lower:
-                relevant_feeds.append(self.feeds['data-science'])
-                relevant_feeds.append(self.feeds['towards-data-science'])
-            if 'ai' in topic_lower or 'artificial' in topic_lower:
-                relevant_feeds.append(self.feeds['artificial-intelligence'])
-            if 'deep' in topic_lower:
-                relevant_feeds.append(self.feeds['deep-learning'])
-            
-            # If no specific match, use all feeds
-            if not relevant_feeds:
-                relevant_feeds = list(self.feeds.values())
+            # Use all available feeds (currently only Towards Data Science)
+            # Medium tag-based feeds are deprecated, so we use publication-specific feeds
+            relevant_feeds = list(self.feeds.values())
             
             # Fetch from each relevant feed
             for feed_url in relevant_feeds:
@@ -84,6 +70,13 @@ class MediumSource:
                             # Calculate engagement metrics
                             comments = entry.get('comments', 0)
                             
+                            # Convert tags to list of strings (feedparser returns FeedParserDict)
+                            tags = entry.get('tags', [])
+                            if tags and isinstance(tags, dict):
+                                tags = list(tags.keys()) if hasattr(tags, 'keys') else []
+                            elif tags and hasattr(tags, '__iter__') and not isinstance(tags, str):
+                                tags = [str(tag) for tag in tags]
+                            
                             formatted_result = {
                                 "id": f"medium_{entry.get('link', '').split('/')[-1].replace('-', '_')}",
                                 "title": entry.get('title', 'No title'),
@@ -97,7 +90,7 @@ class MediumSource:
                                 "content": content,
                                 "metadata": {
                                     "source_feed": feed_url,
-                                    "tags": entry.get('tags', []),
+                                    "tags": tags,
                                     "author": author,
                                     "word_count": len(content.split()),
                                     "has_images": '<img' in entry.get('summary', ''),

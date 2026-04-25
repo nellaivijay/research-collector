@@ -148,12 +148,14 @@ class PubMedSource:
                     year = pub_date_elem.find("Year")
                     month = pub_date_elem.find("Month")
                     day = pub_date_elem.find("Day")
-                    if year is not None:
+                    if year is not None and year.text:
                         pub_date = year.text
-                        if month is not None:
-                            pub_date += f"-{month.zfill(2) if len(month.text) == 1 else month.text}"
-                            if day is not None:
-                                pub_date += f"-{day.zfill(2) if len(day.text) == 1 else day.text}"
+                        if month is not None and month.text:
+                            month_text = month.text.zfill(2) if len(month.text) == 1 else month.text
+                            pub_date += f"-{month_text}"
+                            if day is not None and day.text:
+                                day_text = day.text.zfill(2) if len(day.text) == 1 else day.text
+                                pub_date += f"-{day_text}"
                 
                 # Extract journal
                 journal_elem = article_info.find(".//Journal/Title")
