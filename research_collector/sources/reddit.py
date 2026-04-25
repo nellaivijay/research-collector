@@ -25,6 +25,28 @@ class RedditSource:
     ) -> List[Dict[str, Any]]:
         """Search Reddit for discussions."""
         try:
+            # Get max results from config or parameter
+            if max_results is None:
+                max_results = self.config.get("limits.max_results_per_source", 20)
+            
+            # Ensure max_results is within reasonable bounds
+            max_results = min(max(max_results, 1), 100)
+            
+            # Calculate time difference for Reddit API time filter
+            days_diff = (to_date - from_date).days
+            
+            # Map time difference to Reddit's time filter
+            if days_diff <= 1:
+                time_filter = "day"
+            elif days_diff <= 7:
+                time_filter = "week"
+            elif days_diff <= 30:
+                time_filter = "month"
+            elif days_diff <= 365:
+                time_filter = "year"
+            else:
+                time_filter = "all"
+            
             # Search Reddit using the public API (no auth required for basic search)
             search_url = f"{self.base_url}/search.json"
             
@@ -35,8 +57,8 @@ class RedditSource:
             params = {
                 "q": topic,
                 "sort": "relevance",
-                "limit": 200,  # Increased from 100 to 200 for better coverage
-                "t": "week"  # Time filter: hour, day, week, month, year, all
+                "limit": min(max_results * 2, 100),  # Get more results to filter by date
+                "t": time_filter  # Use dynamic time filter based on date range
             }
             
             response = requests.get(search_url, headers=headers, params=params, timeout=10)
@@ -128,7 +150,8 @@ class RedditSource:
                 except Exception:
                     continue
             
-            return results  # Return all results (no limit)
+            # Limit results to max_results
+            return results[:max_results]
             
         except requests.exceptions.RequestException as e:
             print(f"Error fetching Reddit data: {e}")
