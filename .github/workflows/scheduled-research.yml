@@ -41,6 +41,7 @@ env:
   HF_HUB_ENABLE_HF_TRANSFER: 1
   DATASET_OWNER: ${{ github.repository_owner }}
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+  HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
 jobs:
   research-ml:
@@ -87,8 +88,6 @@ jobs:
         echo "HF_TOKEN is set and appears valid"
     
     - name: Run ML research and export to Hugging Face
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         set -e
         echo "Starting ML research..."
@@ -171,8 +170,6 @@ jobs:
         echo "HF_TOKEN is set and appears valid"
     
     - name: Run LLM research and export to Hugging Face
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         set -e
         echo "Starting LLM research..."
@@ -249,8 +246,6 @@ jobs:
         echo "HF_TOKEN is set and appears valid"
     
     - name: Run AGI research and export to Hugging Face
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         set -e
         echo "Starting AGI research..."
@@ -327,8 +322,6 @@ jobs:
         echo "HF_TOKEN is set and appears valid"
     
     - name: Run ASI research and export to Hugging Face
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         set -e
         echo "Starting ASI research..."
@@ -405,8 +398,6 @@ jobs:
         echo "HF_TOKEN is set and appears valid"
     
     - name: Run ANI research and export to Hugging Face
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         set -e
         echo "Starting ANI research..."
@@ -483,8 +474,6 @@ jobs:
         echo "HF_TOKEN is set and appears valid"
     
     - name: Run ACI research and export to Hugging Face
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         set -e
         echo "Starting ACI research..."
@@ -561,8 +550,6 @@ jobs:
         echo "HF_TOKEN is set and appears valid"
     
     - name: Run custom research and export to Hugging Face
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         set -e
         echo "Starting custom research..."
