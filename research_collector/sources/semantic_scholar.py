@@ -36,7 +36,7 @@ class SemanticScholarSource:
             params = {
                 "query": topic,
                 "fields": "title,authors,year,citationCount,url,abstract,publicationDate,publicationVenue,journal,fieldsOfStudy,influentialCitationCount,openAccessPdf,publicationTypes",
-                "limit": 100,  # Increased from 20 to 100
+                "limit": 200,  # Increased from 100 to 200 for better coverage
                 "minCitationDate": from_date_str,
                 "maxCitationDate": to_date_str
             }

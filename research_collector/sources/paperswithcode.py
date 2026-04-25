@@ -36,7 +36,7 @@ class PapersWithCodeSource:
                 "q": topic,
                 "fields": "title,authors,publishedDate,repositoryUrl,stars,citationCount,abstract",
                 "filter": f"published_date:{from_date_str}:{to_date_str}",
-                "limit": 100  # Increased from 20 to 100
+                "limit": 200  # Increased from 100 to 200 for better coverage
             }
             
             response = requests.get(search_url, params=params, timeout=10)

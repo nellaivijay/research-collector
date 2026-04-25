@@ -34,7 +34,7 @@ class RedditSource:
             params = {
                 "q": topic,
                 "sort": "relevance",
-                "limit": 100,  # Increased from 25 to 100
+                "limit": 200,  # Increased from 100 to 200 for better coverage
                 "t": "week"  # Time filter: hour, day, week, month, year, all
             }
             

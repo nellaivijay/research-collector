@@ -31,7 +31,7 @@ class HackerNewsSource:
             story_ids = response.json()
             
             # Limit to recent stories for performance
-            story_ids = story_ids[:100]  # Increased from 50 to 100
+            story_ids = story_ids[:200]  # Increased from 100 to 200 for better coverage
             
             results = []
             for story_id in story_ids:

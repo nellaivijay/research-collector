@@ -34,7 +34,7 @@ class ArxivSource:
             params = {
                 "search_query": query,
                 "start": 0,
-                "max_results": 100,  # Increased from 20 to 100
+                "max_results": 200,  # Increased from 100 to 200 for better coverage
                 "sortBy": "submittedDate",
                 "sortOrder": "descending"
             }

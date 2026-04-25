@@ -262,6 +262,60 @@ def calculate_content_quality_score(item: Dict[str, Any]) -> Dict[str, Any]:
     return scores
 
 
+def add_sentiment_analysis(item: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Add sentiment analysis to an item.
+    
+    Args:
+        item: Research item dictionary
+    
+    Returns:
+        Item with sentiment analysis added
+    """
+    try:
+        # Try to use textblob if available
+        from textblob import TextBlob
+        text = f"{item.get('title', '')} {item.get('content', '')[:1000]}"
+        
+        blob = TextBlob(text)
+        sentiment = blob.sentiment
+        
+        item['metadata']['sentiment_polarity'] = sentiment.polarity
+        item['metadata']['sentiment_subjectivity'] = sentiment.subjectivity
+        
+        # Add sentiment category
+        if sentiment.polarity > 0.3:
+            item['metadata']['sentiment_category'] = 'positive'
+        elif sentiment.polarity < -0.3:
+            item['metadata']['sentiment_category'] = 'negative'
+        else:
+            item['metadata']['sentiment_category'] = 'neutral'
+            
+    except ImportError:
+        # TextBlob not available, use simple rule-based sentiment
+        text = f"{item.get('title', '')} {item.get('content', '')[:500]}".lower()
+        
+        positive_words = ['good', 'great', 'excellent', 'amazing', 'best', 'success', 'improve', 'advance', 'breakthrough', 'innovative']
+        negative_words = ['bad', 'poor', 'fail', 'error', 'problem', 'issue', 'worse', 'decline', 'limitation']
+        
+        positive_count = sum(1 for word in positive_words if word in text)
+        negative_count = sum(1 for word in negative_words if word in text)
+        
+        if positive_count > negative_count:
+            item['metadata']['sentiment_category'] = 'positive'
+            item['metadata']['sentiment_polarity'] = 0.3
+        elif negative_count > positive_count:
+            item['metadata']['sentiment_category'] = 'negative'
+            item['metadata']['sentiment_polarity'] = -0.3
+        else:
+            item['metadata']['sentiment_category'] = 'neutral'
+            item['metadata']['sentiment_polarity'] = 0.0
+        
+        item['metadata']['sentiment_subjectivity'] = 0.5  # Default value
+    
+    return item
+
+
 def determine_content_type(item: Dict[str, Any]) -> str:
     """
     Determine the content type of an item.
@@ -351,6 +405,9 @@ def enrich_item(item: Dict[str, Any]) -> Dict[str, Any]:
     # Add searchable flags
     item["metadata"]["has_code"] = quality_scores["has_code_score"] > 0
     item["metadata"]["has_doi"] = quality_scores["has_doi_score"] > 0
+    
+    # Add sentiment analysis
+    item = add_sentiment_analysis(item)
     
     return item
 

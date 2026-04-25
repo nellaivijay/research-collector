@@ -245,6 +245,9 @@ This dataset contains research results aggregated from multiple sources by the R
 - `metadata_content_type`: Content type (paper, preprint, repository, discussion, qa, news)
 - `metadata_has_code`: Whether item contains code
 - `metadata_has_doi`: Whether item has DOI
+- `metadata_sentiment_polarity`: Sentiment polarity score (-1 to 1)
+- `metadata_sentiment_subjectivity`: Sentiment subjectivity score (0 to 1)
+- `metadata_sentiment_category`: Sentiment category (positive, negative, neutral)
 
 ### Source-Specific Metadata
 - **PubMed**: `metadata_journal`, `metadata_doi`, `metadata_mesh_terms`, `metadata_publication_types`, `metadata_abstract_length`

@@ -37,7 +37,7 @@ class StackOverflowSource:
                 "q": topic,
                 "site": "stackoverflow",
                 "filter": "withbody",  # Include question bodies
-                "pagesize": 100,  # Increased from 20 to 100
+                "pagesize": 200,  # Increased from 100 to 200 for better coverage
                 "fromdate": from_timestamp,
                 "todate": to_timestamp
             }

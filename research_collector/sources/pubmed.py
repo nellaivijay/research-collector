@@ -56,7 +56,7 @@ class PubMedSource:
                 "db": "pubmed",
                 "term": query,
                 "retmode": "json",
-                "retmax": 100  # Increased from 20 to 100 for better coverage
+                "retmax": 200  # Increased from 100 to 200 for better coverage
             }
             
             # Add API key if available for higher rate limits
@@ -83,7 +83,7 @@ class PubMedSource:
                 "db": "pubmed",
                 "id": ",".join(id_list),
                 "retmode": "xml",
-                "retmax": 100
+                "retmax": 200  # Increased from 100 to 200 for better coverage
             }
             
             if self.api_key:

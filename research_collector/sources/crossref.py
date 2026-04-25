@@ -39,7 +39,7 @@ class CrossrefSource:
             params = {
                 "query": query,
                 "filter": f"from-pub-date:{from_date_str},until-pub-date:{to_date_str}",
-                "rows": 100,  # Increased from 20 to 100
+                "rows": 200,  # Increased from 100 to 200 for better coverage
                 "sort": "published",
                 "order": "desc",
                 "mailto": self.api_key

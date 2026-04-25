@@ -39,7 +39,7 @@ class GitHubSource:
                 "q": query,
                 "sort": "updated",
                 "order": "desc",
-                "per_page": 100  # Increased from 20 to 100
+                "per_page": 200  # Increased from 100 to 200 for better coverage
             }
             
             response = requests.get(
