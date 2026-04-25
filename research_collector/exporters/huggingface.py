@@ -363,7 +363,7 @@ If you use this dataset, please cite:
   title = {{{metadata['topic']} Research Dataset}},
   year = {{2026}},
   publisher = {{Hugging Face}},
-  howpublished = {{https://huggingface.co/datasets/{repo_id}}}
+  howpublished = {{https://huggingface.co/datasets/{repo_id}}}}
 }}
 ```
 """
