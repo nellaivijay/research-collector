@@ -7,11 +7,12 @@ on:
   workflow_dispatch:
     inputs:
       topic:
-        description: 'Research topic (ml, llm, agi, asi, ani, aci, or custom)'
+        description: 'Research topic (all, ml, llm, agi, asi, ani, aci, or custom)'
         required: true
-        default: 'ml'
+        default: 'all'
         type: choice
         options:
+          - all
           - ml
           - llm
           - agi
@@ -46,7 +47,7 @@ env:
 
 jobs:
   research-ml:
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.topic == 'ml')
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.topic == 'ml' || github.event.inputs.topic == 'all'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: false
@@ -129,7 +130,7 @@ jobs:
         "
 
   research-llm:
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.topic == 'llm')
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.topic == 'llm' || github.event.inputs.topic == 'all'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: false
@@ -206,7 +207,7 @@ jobs:
         "
 
   research-agi:
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.topic == 'agi')
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.topic == 'agi' || github.event.inputs.topic == 'all'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: false
@@ -283,7 +284,7 @@ jobs:
         "
 
   research-asi:
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.topic == 'asi')
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.topic == 'asi' || github.event.inputs.topic == 'all'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: false
@@ -360,7 +361,7 @@ jobs:
         "
 
   research-ani:
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.topic == 'ani')
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.topic == 'ani' || github.event.inputs.topic == 'all'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: false
@@ -437,7 +438,7 @@ jobs:
         "
 
   research-aci:
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.topic == 'aci')
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.topic == 'aci' || github.event.inputs.topic == 'all'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: false
