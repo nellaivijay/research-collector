@@ -24,6 +24,7 @@ on:
 env:
   PYTHONUNBUFFERED: 1
   HF_TOKEN: ${{ secrets.HF_TOKEN }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   cleanup:
