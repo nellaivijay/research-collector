@@ -7,16 +7,18 @@ from datetime import datetime
 class HuggingFaceExporter:
     """Export research results to Hugging Face Datasets."""
     
-    def __init__(self, repo_id: Optional[str] = None, token: Optional[str] = None):
+    def __init__(self, repo_id: Optional[str] = None, token: Optional[str] = None, append: bool = False):
         """
         Initialize Hugging Face exporter.
         
         Args:
             repo_id: Hugging Face repository ID (username/dataset-name)
             token: Hugging Face authentication token
+            append: If True, append to existing dataset instead of overwriting
         """
         self.repo_id = repo_id
         self.token = token
+        self.append = append
         
         try:
             from datasets import Dataset, DatasetDict
@@ -53,7 +55,30 @@ class HuggingFaceExporter:
             raise ValueError("Hugging Face token is empty. Please provide a valid token.")
         
         # Convert results to dataset format
-        dataset = self._convert_to_dataset(results)
+        new_dataset = self._convert_to_dataset(results)
+        
+        # If append mode, load existing dataset and combine
+        if self.append:
+            try:
+                print(f"Loading existing dataset from Hugging Face Hub: {repo_id}")
+                existing_dataset_dict = self.DatasetDict.load_from_hub(repo_id, token=self.token)
+                existing_dataset = existing_dataset_dict["train"]
+                
+                # Combine datasets
+                print(f"Appending {len(new_dataset)} new items to {len(existing_dataset)} existing items")
+                combined_dataset = self.Dataset.concatenate_datasets([existing_dataset, new_dataset])
+                
+                # Remove duplicates based on ID
+                combined_dataset = combined_dataset.unique("id")
+                print(f"After deduplication: {len(combined_dataset)} items")
+                
+                dataset = combined_dataset
+            except Exception as e:
+                print(f"Could not load existing dataset (may not exist yet): {e}")
+                print("Creating new dataset instead...")
+                dataset = new_dataset
+        else:
+            dataset = new_dataset
         
         # Create DatasetDict with train split
         dataset_dict = self.DatasetDict({
@@ -66,8 +91,10 @@ class HuggingFaceExporter:
             "from_date": results.get("from_date", ""),
             "to_date": results.get("to_date", ""),
             "sources_used": results.get("sources_used", []),
-            "total_items": len(results.get("items", [])),
-            "exported_at": datetime.now().isoformat()
+            "total_items": len(dataset),
+            "new_items": len(new_dataset),
+            "exported_at": datetime.now().isoformat(),
+            "mode": "append" if self.append else "overwrite"
         }
         
         # Push to Hub
@@ -76,7 +103,7 @@ class HuggingFaceExporter:
             dataset_dict.push_to_hub(
                 repo_id=repo_id,
                 token=self.token,
-                commit_message=f"Research results for {metadata['topic']}"
+                commit_message=f"Research results for {metadata['topic']} ({metadata['mode']})"
             )
             
             # Update dataset card

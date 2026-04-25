@@ -26,7 +26,8 @@ def cli():
 @click.option("--list-topics", is_flag=True, help="List all available predefined topics")
 @click.option("--no-cache", is_flag=True, help="Disable caching")
 @click.option("--no-history", is_flag=True, help="Disable search history")
-def research(topic, query, days, sources, export, output, hf_token, depth, include_urls, list_topics, no_cache, no_history):
+@click.option("--append", is_flag=True, help="Append to existing HuggingFace dataset instead of overwriting (for huggingface export only)")
+def research(topic, query, days, sources, export, output, hf_token, depth, include_urls, list_topics, no_cache, no_history, append):
     """Research a topic across multiple sources."""
     try:
         from tqdm import tqdm
@@ -178,7 +179,7 @@ def research(topic, query, days, sources, export, output, hf_token, depth, inclu
             "csv": CSVExporter(),
             "bibliography": BibliographyExporter(),
             "html": HTMLExporter(),
-            "huggingface": HuggingFaceExporter(token=hf_token)
+            "huggingface": HuggingFaceExporter(token=hf_token, append=append)
         }
         
         exporter = exporters.get(export.lower(), MarkdownExporter())
