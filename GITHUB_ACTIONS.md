@@ -178,7 +178,33 @@ This document describes the GitHub Actions workflows configured for Research-Col
 - ✅ Security auditing
 - ✅ Weekly reporting
 
-### 10. Verify Generated Artifacts (`.github/workflows/verify-artifacts.yml`)
+### 10. Dataset Cleanup (`.github/workflows/cleanup-datasets.yml`)
+
+**Purpose**: Truncate dataset records while preserving repository structure
+
+**Triggers**:
+- Manual workflow dispatch
+- Can be scheduled (currently disabled)
+
+**Jobs**:
+- **truncate-dataset-records**: Remove data files from Hugging Face datasets
+
+**Features**:
+- ✅ Truncates records instead of deleting entire repositories
+- ✅ Preserves README.md, .gitattributes, and dataset_card.json
+- ✅ Configurable dataset selection (all or specific datasets)
+- ✅ Detailed cleanup logging and reporting
+- ✅ Maintains dataset URLs and integration points
+
+**Usage**:
+1. Go to Actions → Dataset Cleanup workflow
+2. Click "Run workflow"
+3. Select datasets to clean (all or specific: ml, llm, agi, asi, aci, ani)
+4. Click "Run workflow"
+
+**Note**: See [Dataset Cleanup Guide](docs/DATASET_CLEANUP.md) for detailed documentation.
+
+### 11. Verify Generated Artifacts (`.github/workflows/verify-artifacts.yml`)
 
 **Purpose**: Verify generated export artifacts
 
@@ -198,7 +224,7 @@ This document describes the GitHub Actions workflows configured for Research-Col
 - ✅ Template syntax checking
 - ✅ Jinja2 template verification
 
-### 11. Verify Package (`.github/workflows/verify-package.yml`)
+### 12. Verify Package (`.github/workflows/verify-package.yml`)
 
 **Purpose**: Verify package structure and installation
 
@@ -218,7 +244,7 @@ This document describes the GitHub Actions workflows configured for Research-Col
 - ✅ Import validation
 - ✅ Development installation test
 
-### 12. Scheduled Research (`.github/workflows/scheduled-research.yml`)
+### 13. Scheduled Research (`.github/workflows/scheduled-research.yml`)
 
 **Purpose**: Run automated research on key topics and export to Hugging Face Datasets
 
@@ -255,7 +281,7 @@ This document describes the GitHub Actions workflows configured for Research-Col
 - ✅ Dataset validation to ensure data quality
 - ✅ Manual trigger for custom research
 
-### 13. Code Quality Workflow (`.github/workflows/code-quality.yml`)
+### 14. Code Quality Workflow (`.github/workflows/code-quality.yml`)
 
 **Purpose**: Type checking and documentation building
 
@@ -272,7 +298,7 @@ This document describes the GitHub Actions workflows configured for Research-Col
 - ✅ Documentation validation
 - ✅ Type coverage reporting
 
-### 14. Docker Workflow (`.github/workflows/docker.yml`)
+### 15. Docker Workflow (`.github/workflows/docker.yml`)
 
 **Purpose**: Build and test Docker images
 
