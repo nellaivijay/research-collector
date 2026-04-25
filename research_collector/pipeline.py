@@ -53,6 +53,14 @@ class Pipeline:
             from research_collector.sources.arxiv import ArxivSource
             sources["arxiv"] = ArxivSource(self.config)
         
+        if self.config.is_source_enabled("medium"):
+            from research_collector.sources.medium import MediumSource
+            sources["medium"] = MediumSource(self.config)
+        
+        if self.config.is_source_enabled("kaggle"):
+            from research_collector.sources.kaggle import KaggleSource
+            sources["kaggle"] = KaggleSource(self.config)
+        
         # Professional sources
         if self.config.is_source_enabled("stackoverflow"):
             from research_collector.sources.stackoverflow import StackOverflowSource

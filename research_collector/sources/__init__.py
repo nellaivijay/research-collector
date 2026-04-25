@@ -10,6 +10,8 @@ from research_collector.sources.reddit import RedditSource
 from research_collector.sources.hackernews import HackerNewsSource
 from research_collector.sources.github import GitHubSource
 from research_collector.sources.arxiv import ArxivSource
+from research_collector.sources.medium import MediumSource
+from research_collector.sources.kaggle import KaggleSource
 
 __all__ = [
     "PubMedSource",
@@ -22,4 +24,6 @@ __all__ = [
     "HackerNewsSource",
     "GitHubSource",
     "ArxivSource",
+    "MediumSource",
+    "KaggleSource",
 ]

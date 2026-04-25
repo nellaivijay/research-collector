@@ -131,6 +131,12 @@ def research(topic, query, days, sources, export, output, hf_token, depth, inclu
         has_code_count = 0
         has_doi_count = 0
         
+        # New metrics
+        trending_categories = {"hot": 0, "warm": 0, "cool": 0, "cold": 0}
+        quality_scores = []
+        sentiment_categories = {"positive": 0, "neutral": 0, "negative": 0}
+        related_items_count = 0
+        
         for item in results.get("items", []):
             metadata = item.get("metadata", {})
             ml_subfields.update(metadata.get("ml_subfields", []))
@@ -139,6 +145,24 @@ def research(topic, query, days, sources, export, output, hf_token, depth, inclu
                 has_code_count += 1
             if metadata.get("has_doi"):
                 has_doi_count += 1
+            
+            # Trending metrics
+            trending_cat = metadata.get("trending_category", "cold")
+            if trending_cat in trending_categories:
+                trending_categories[trending_cat] += 1
+            
+            # Quality metrics
+            quality = metadata.get("data_quality", {})
+            if quality:
+                quality_scores.append(quality.get("overall_quality_score", 0))
+            
+            # Sentiment metrics
+            sentiment = metadata.get("sentiment_category", "neutral")
+            if sentiment in sentiment_categories:
+                sentiment_categories[sentiment] += 1
+            
+            # Cross-references
+            related_items_count += metadata.get("related_count", 0)
         
         click.echo(f"\nContent types:")
         for ct in sorted(content_types):
@@ -154,6 +178,32 @@ def research(topic, query, days, sources, export, output, hf_token, depth, inclu
         click.echo(f"\nQuality indicators:")
         click.echo(f"  • Items with code:     {has_code_count:4d} ({has_code_count/total_items*100:.1f}%)")
         click.echo(f"  • Items with DOI:      {has_doi_count:4d} ({has_doi_count/total_items*100:.1f}%)")
+        
+        # Trending metrics
+        click.echo(f"\nTrending analysis:")
+        for category, count in trending_categories.items():
+            if count > 0:
+                click.echo(f"  • {category:20s}: {count:4d} items")
+        
+        # Quality metrics
+        if quality_scores:
+            avg_quality = sum(quality_scores) / len(quality_scores)
+            click.echo(f"\nData quality:")
+            click.echo(f"  • Average quality score: {avg_quality:.2f}/100")
+            click.echo(f"  • Min quality:          {min(quality_scores):.2f}/100")
+            click.echo(f"  • Max quality:          {max(quality_scores):.2f}/100")
+        
+        # Sentiment metrics
+        click.echo(f"\nSentiment analysis:")
+        for sentiment, count in sentiment_categories.items():
+            if count > 0:
+                click.echo(f"  • {sentiment:20s}: {count:4d} items")
+        
+        # Cross-references
+        if related_items_count > 0:
+            click.echo(f"\nCross-references:")
+            click.echo(f"  • Total related items:  {related_items_count:4d}")
+            click.echo(f"  • Avg related per item:  {related_items_count/total_items:.2f}")
     
     click.echo("\n" + "="*60 + "\n")
     

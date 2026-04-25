@@ -49,6 +49,7 @@ class Config:
                 "professional": {
                     "stackoverflow": True,
                     "github": True,
+                    "kaggle": True,
                 },
                 "social": {
                     "reddit": True,
@@ -57,6 +58,7 @@ class Config:
                 "news": {
                     "gdelt": True,
                     "newsapi": False,
+                    "medium": True,
                 }
             },
             "time_ranges": {

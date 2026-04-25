@@ -26,7 +26,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
@@ -35,7 +35,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-dev.txt
 
-    - name: Run E2E test: ${{ matrix.test-suite }}
+    - name: "Run E2E test: ${{ matrix.test-suite }}"
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
@@ -43,7 +43,7 @@ jobs:
 
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: e2e-results-${{ matrix.test-suite }}
         path: tests/e2e/results/

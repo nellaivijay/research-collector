@@ -248,6 +248,18 @@ This dataset contains research results aggregated from multiple sources by the R
 - `metadata_sentiment_polarity`: Sentiment polarity score (-1 to 1)
 - `metadata_sentiment_subjectivity`: Sentiment subjectivity score (0 to 1)
 - `metadata_sentiment_category`: Sentiment category (positive, negative, neutral)
+- `metadata_summary`: Automatic summary of content (extractive)
+- `metadata_summary_length`: Length of summary in characters
+- `metadata_data_quality`: Data quality metrics (JSON dict)
+  - `completeness_score`: Field completeness percentage (0-100)
+  - `consistency_score`: Internal consistency score (0-100)
+  - `validity_score`: Data validity score (0-100)
+  - `overall_quality_score`: Overall data quality score (0-100)
+- `metadata_trending_score`: Engagement velocity score
+- `metadata_trending_category`: Trending category (hot, warm, cool, cold)
+- `metadata_engagement_score`: Raw engagement score
+- `metadata_related_items`: Related items with similarity scores (JSON array)
+- `metadata_related_count`: Number of related items
 
 ### Source-Specific Metadata
 - **PubMed**: `metadata_journal`, `metadata_doi`, `metadata_mesh_terms`, `metadata_publication_types`, `metadata_abstract_length`
@@ -256,6 +268,8 @@ This dataset contains research results aggregated from multiple sources by the R
 - **Reddit**: `metadata_subreddit`, `metadata_link_flair_text`, `metadata_upvote_ratio`, `metadata_total_awards`, `metadata_is_gilded`
 - **Stack Overflow**: `metadata_tags`, `metadata_answer_count`, `metadata_has_accepted_answer`, `metadata_view_count`, `metadata_owner_reputation`
 - **Semantic Scholar**: `metadata_citation_count`, `metadata_influential_citation_count`, `metadata_fields_of_study`, `metadata_has_open_access`
+- **Medium**: `metadata_author`, `metadata_publication`, `metadata_read_time`, `metadata_claps`
+- **Kaggle**: `metadata_votes`, `metadata_usability_rating`, `metadata_file_count`
 
 ## Usage Examples
 
@@ -285,6 +299,19 @@ sorted_items = train_data.sort("score", reverse=True)
 
 # Filter by date
 recent_items = train_data.filter(lambda x: x.get("metadata_days_since", 999) < 30)
+
+# Filter by trending category
+trending_items = train_data.filter(lambda x: x.get("metadata_trending_category") == "hot")
+
+# Filter by data quality
+high_quality = train_data.filter(lambda x: x.get("metadata_data_quality", {}).get("overall_quality_score", 0) > 0.7)
+
+# Filter by sentiment
+positive_items = train_data.filter(lambda x: x.get("metadata_sentiment_category") == "positive")
+
+# Get related items
+item_with_related = train_data[0]
+related_items = item_with_related.get("metadata_related_items", [])
 ```
 
 ## Data Quality Features
@@ -295,14 +322,22 @@ recent_items = train_data.filter(lambda x: x.get("metadata_days_since", 999) < 3
 - **Temporal Features**: Year, month, week, quarter, days since publication
 - **Keyword Extraction**: Automatic extraction of technical keywords
 - **Content Type Detection**: Automatic classification of item type
+- **Sentiment Analysis**: Sentiment polarity, subjectivity, and category classification
+- **Automatic Summarization**: Extractive summaries for quick content overview
+- **Data Quality Metrics**: Completeness, consistency, and validity scores for each item
+- **Trending Metrics**: Engagement velocity analysis with trending categories
+- **Cross-References**: Related item detection based on shared subfields, keywords, and tags
+- **Fuzzy Deduplication**: Intelligent duplicate detection with metadata merging
+- **Metadata Completeness**: Fallback logic to infer missing metadata fields
 
 ## Data Sources
 
 This dataset aggregates research from:
 - **Academic**: PubMed, arXiv, Semantic Scholar, Crossref, Papers with Code
-- **Professional**: GitHub, Stack Overflow
+- **Professional**: GitHub, Stack Overflow, Kaggle
 - **Social**: Reddit, Hacker News
 - **News**: GDELT
+- **Blogs**: Medium, Towards Data Science
 
 ## Limitations
 
