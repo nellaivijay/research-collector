@@ -70,9 +70,11 @@ To manually trigger a research job:
 2. Click **Run pipeline**
 3. Select branch: `main`
 4. For manual job, add variables:
-   - `TOPIC`: `ml` (or llm, agi, asi, ani, aci)
+   - `TOPIC`: `all` (default) or specific topic (ml, llm, agi, asi, ani, aci)
    - `DAYS`: `7` (or any number)
 5. Click **Run pipeline**
+
+**Note**: When `TOPIC="all"`, the job will run research for all 6 topics sequentially.
 
 ## Cleanup Workflow
 
