@@ -103,7 +103,8 @@ jobs:
           --output $DATASET_OWNER/ml-research-daily \
           --no-cache \
           --no-history \
-          --append 2>&1 | tee research-output.log || {
+          --append \
+          --include-urls 2>&1 | tee research-output.log || {
           echo "Research failed with exit code $?"
           echo "=== Research Output ==="
           cat research-output.log
@@ -185,7 +186,8 @@ jobs:
           --output $DATASET_OWNER/llm-research-daily \
           --no-cache \
           --no-history \
-          --append 2>&1 | tee research-output.log || {
+          --append \
+          --include-urls 2>&1 | tee research-output.log || {
           echo "Research failed with exit code $?"
           echo "=== Research Output ==="
           cat research-output.log
@@ -262,7 +264,8 @@ jobs:
           --output $DATASET_OWNER/agi-research-daily \
           --no-cache \
           --no-history \
-          --append 2>&1 | tee research-output.log || {
+          --append \
+          --include-urls 2>&1 | tee research-output.log || {
           echo "Research failed with exit code $?"
           echo "=== Research Output ==="
           cat research-output.log
@@ -339,7 +342,8 @@ jobs:
           --output $DATASET_OWNER/asi-research-daily \
           --no-cache \
           --no-history \
-          --append 2>&1 | tee research-output.log || {
+          --append \
+          --include-urls 2>&1 | tee research-output.log || {
           echo "Research failed with exit code $?"
           echo "=== Research Output ==="
           cat research-output.log
@@ -416,7 +420,8 @@ jobs:
           --output $DATASET_OWNER/ani-research-daily \
           --no-cache \
           --no-history \
-          --append 2>&1 | tee research-output.log || {
+          --append \
+          --include-urls 2>&1 | tee research-output.log || {
           echo "Research failed with exit code $?"
           echo "=== Research Output ==="
           cat research-output.log
@@ -493,7 +498,8 @@ jobs:
           --output $DATASET_OWNER/aci-research-daily \
           --no-cache \
           --no-history \
-          --append 2>&1 | tee research-output.log || {
+          --append \
+          --include-urls 2>&1 | tee research-output.log || {
           echo "Research failed with exit code $?"
           echo "=== Research Output ==="
           cat research-output.log
@@ -576,7 +582,8 @@ jobs:
           --output $DATASET_OWNER/custom-research \
           --no-cache \
           --no-history \
-          --append 2>&1 | tee research-output.log || {
+          --append \
+          --include-urls 2>&1 | tee research-output.log || {
           echo "Research failed with exit code $?"
           echo "=== Research Output ==="
           cat research-output.log
