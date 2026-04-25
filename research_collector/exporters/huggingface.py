@@ -185,7 +185,6 @@ class HuggingFaceExporter:
 license: mit
 task_categories:
 - text-retrieval
-- information-retrieval
 - text-classification
 language:
 - en
