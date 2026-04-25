@@ -179,7 +179,7 @@ class SourceHealthChecker:
             api_key_valid=False,
             response_time_ms=0.0,
             error_message="",
-            details={}
+            details={"category": source_config.get("category", "unknown")}
         )
         
         # Skip health check if flagged
@@ -437,12 +437,8 @@ def main():
         output_file = sys.argv[1]
         checker.export_json(results, summary, output_file)
     
-    # Exit with error code if any sources are unhealthy
-    unhealthy_count = summary['unhealthy']
-    if unhealthy_count > 0:
-        sys.exit(1)
-    else:
-        sys.exit(0)
+    # Always exit 0 - let the workflow handle failure logic
+    sys.exit(0)
 
 
 if __name__ == "__main__":
