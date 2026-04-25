@@ -304,7 +304,7 @@ recent_items = train_data.filter(lambda x: x.get("metadata_days_since", 999) < 3
 trending_items = train_data.filter(lambda x: x.get("metadata_trending_category") == "hot")
 
 # Filter by data quality
-high_quality = train_data.filter(lambda x: x.get("metadata_data_quality", {}).get("overall_quality_score", 0) > 0.7)
+high_quality = train_data.filter(lambda x: x.get("metadata_data_quality", {{}}).get("overall_quality_score", 0) > 0.7)
 
 # Filter by sentiment
 positive_items = train_data.filter(lambda x: x.get("metadata_sentiment_category") == "positive")
@@ -356,16 +356,7 @@ MIT License
 
 ## Citation
 
-If you use this dataset, please cite:
-```bibtex
-@dataset{{research_collector_{metadata['topic'].lower().replace(' ', '_')}_2026,
-  author = {{Research-Collector}},
-  title = {{{metadata['topic']}}} Research Dataset}},
-  year = {{2026}},
-  publisher = {{Hugging Face}},
-  howpublished = {{https://huggingface.co/datasets/{repo_id}}}
-}
-```
+If you use this dataset, please cite the repository URL: https://huggingface.co/datasets/{repo_id}
 """
         
         # Upload dataset card
