@@ -107,6 +107,9 @@ class PubMedSource:
                     continue
                     
                 pubmed_data = medline_citation.find("PubmedData")
+                if pubmed_data is None:
+                    continue
+                    
                 article_id = pubmed_data.find(".//PMID")
                 if article_id is None:
                     continue
