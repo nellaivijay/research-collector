@@ -22,12 +22,13 @@ def cli():
 @click.option("--output", help="Output file path (or HF repo ID for huggingface format)")
 @click.option("--hf-token", help="Hugging Face authentication token (or set HF_TOKEN env var)")
 @click.option("--depth", default="default", help="Search depth: quick, default, standard, deep, historical, extended")
+@click.option("--max-results", type=int, help="Maximum results per source (default: 20, max: 100)")
 @click.option("--include-urls", is_flag=True, help="Include source URLs in results (default: no)")
 @click.option("--list-topics", is_flag=True, help="List all available predefined topics")
 @click.option("--no-cache", is_flag=True, help="Disable caching")
 @click.option("--no-history", is_flag=True, help="Disable search history")
 @click.option("--append", is_flag=True, help="Append to existing HuggingFace dataset instead of overwriting (for huggingface export only)")
-def research(topic, query, days, sources, export, output, hf_token, depth, include_urls, list_topics, no_cache, no_history, append):
+def research(topic, query, days, sources, export, output, hf_token, depth, max_results, include_urls, list_topics, no_cache, no_history, append):
     """Research a topic across multiple sources."""
     try:
         from tqdm import tqdm
@@ -82,9 +83,21 @@ def research(topic, query, days, sources, export, output, hf_token, depth, inclu
     
     source_list = sources.split(",") if sources else None
     
+    # Validate and set max_results
+    if max_results is not None:
+        if max_results < 1:
+            click.echo("Error: --max-results must be at least 1")
+            return
+        if max_results > 100:
+            click.echo("Error: --max-results cannot exceed 100")
+            return
+    else:
+        max_results = config.get("limits.max_results_per_source", 20)
+    
     click.echo(f"\nSearching for: {search_topic}")
     click.echo(f"Time range: {from_date.strftime('%Y-%m-%d')} to {to_date.strftime('%Y-%m-%d')}")
     click.echo(f"Sources: {', '.join(source_list) if source_list else 'all enabled'}")
+    click.echo(f"Max results per source: {max_results}")
     click.echo()
     
     # Show progress
@@ -97,7 +110,8 @@ def research(topic, query, days, sources, export, output, hf_token, depth, inclu
                 to_date=to_date,
                 sources=source_list,
                 depth=depth,
-                include_urls=include_urls
+                include_urls=include_urls,
+                max_results_per_source=max_results
             )
             pbar.update(90)
     else:
@@ -108,7 +122,8 @@ def research(topic, query, days, sources, export, output, hf_token, depth, inclu
             to_date=to_date,
             sources=source_list,
             depth=depth,
-            include_urls=include_urls
+            include_urls=include_urls,
+            max_results_per_source=max_results
         )
     
     # Show detailed source breakdown

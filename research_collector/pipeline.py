@@ -93,11 +93,12 @@ class Pipeline:
         to_date: datetime,
         sources: Optional[List[str]] = None,
         depth: str = "default",
-        include_urls: bool = False
+        include_urls: bool = False,
+        max_results_per_source: Optional[int] = None
     ) -> Dict[str, Any]:
         """
         Run research pipeline for a topic.
-        
+
         Args:
             topic: Research topic
             from_date: Start date
@@ -105,7 +106,8 @@ class Pipeline:
             sources: List of sources to use (None = all enabled)
             depth: Search depth (quick, default, deep)
             include_urls: Whether to include source URLs in results
-        
+            max_results_per_source: Maximum results per source (None = use config default)
+
         Returns:
             Research results with metadata
         """
@@ -145,7 +147,8 @@ class Pipeline:
                         topic,
                         from_date,
                         to_date,
-                        depth
+                        depth,
+                        max_results_per_source
                     )
                     futures[future] = source_name
             

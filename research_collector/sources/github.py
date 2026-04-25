@@ -1,7 +1,7 @@
 """GitHub source for Research-Collector."""
 
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import requests
 from research_collector.config import Config
 
@@ -16,14 +16,22 @@ class GitHubSource:
         self.base_url = "https://api.github.com"
     
     def search(
-        self, 
-        topic: str, 
-        from_date: datetime, 
-        to_date: datetime, 
-        depth: str = "default"
+        self,
+        topic: str,
+        from_date: datetime,
+        to_date: datetime,
+        depth: str = "default",
+        max_results: Optional[int] = None
     ) -> List[Dict[str, Any]]:
         """Search GitHub for repositories."""
         try:
+            # Get max results from config or parameter
+            if max_results is None:
+                max_results = self.config.get("limits.max_results_per_source_github", 20)
+            
+            # Ensure max_results is within reasonable bounds
+            max_results = min(max(max_results, 1), 100)
+            
             # Format date for GitHub search (YYYY-MM-DD)
             from_date_str = from_date.strftime("%Y-%m-%d")
             to_date_str = to_date.strftime("%Y-%m-%d")
@@ -39,7 +47,7 @@ class GitHubSource:
                 "q": query,
                 "sort": "updated",
                 "order": "desc",
-                "per_page": 200  # Increased from 100 to 200 for better coverage
+                "per_page": min(max_results, 100)  # GitHub API max is 100 per page
             }
             
             response = requests.get(
@@ -127,7 +135,8 @@ class GitHubSource:
                 
                 formatted_results.append(formatted_result)
             
-            return formatted_results
+            # Limit results to max_results
+            return formatted_results[:max_results]
             
         except requests.exceptions.RequestException as e:
             print(f"Error fetching GitHub data: {e}")

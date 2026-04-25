@@ -1,7 +1,7 @@
 """Stack Overflow source for Research-Collector."""
 
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import requests
 from research_collector.config import Config
 
@@ -16,11 +16,12 @@ class StackOverflowSource:
         self.base_url = "https://api.stackexchange.com/2.3"
     
     def search(
-        self, 
-        topic: str, 
-        from_date: datetime, 
-        to_date: datetime, 
-        depth: str = "default"
+        self,
+        topic: str,
+        from_date: datetime,
+        to_date: datetime,
+        depth: str = "default",
+        max_results: Optional[int] = None
     ) -> List[Dict[str, Any]]:
         """Search Stack Overflow for questions and answers."""
         try:

@@ -1,7 +1,7 @@
 """Kaggle source for Research-Collector."""
 
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from research_collector.config import Config
 
 
@@ -15,11 +15,12 @@ class KaggleSource:
         self.base_url = "https://www.kaggle.com/api/v1"
     
     def search(
-        self, 
-        topic: str, 
-        from_date: datetime, 
-        to_date: datetime, 
-        depth: str = "default"
+        self,
+        topic: str,
+        from_date: datetime,
+        to_date: datetime,
+        depth: str = "default",
+        max_results: Optional[int] = None
     ) -> List[Dict[str, Any]]:
         """Search Kaggle for datasets and notebooks."""
         try:

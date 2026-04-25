@@ -1,7 +1,7 @@
 """Hacker News source for Research-Collector."""
 
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import requests
 from research_collector.config import Config
 
@@ -15,11 +15,12 @@ class HackerNewsSource:
         self.base_url = "https://hacker-news.firebaseio.com/v0"
     
     def search(
-        self, 
-        topic: str, 
-        from_date: datetime, 
-        to_date: datetime, 
-        depth: str = "default"
+        self,
+        topic: str,
+        from_date: datetime,
+        to_date: datetime,
+        depth: str = "default",
+        max_results: Optional[int] = None
     ) -> List[Dict[str, Any]]:
         """Search Hacker News for discussions."""
         try:

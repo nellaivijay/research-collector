@@ -1,7 +1,7 @@
 """PubMed source for Research-Collector."""
 
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import requests
 import urllib.parse
 from research_collector.config import Config
@@ -23,11 +23,12 @@ class PubMedSource:
         self.email = config.get_api_key("crossref") or "education@example.com"  # Using crossref field for email
     
     def search(
-        self, 
-        topic: str, 
-        from_date: datetime, 
-        to_date: datetime, 
-        depth: str = "default"
+        self,
+        topic: str,
+        from_date: datetime,
+        to_date: datetime,
+        depth: str = "default",
+        max_results: Optional[int] = None
     ) -> List[Dict[str, Any]]:
         """
         Search PubMed for research articles.

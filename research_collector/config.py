@@ -81,6 +81,10 @@ class Config:
                     "engagement": 0.3,
                 }
             },
+            "limits": {
+                "max_results_per_source": 20,
+                "max_results_per_source_github": 20,
+            },
             "predefined_topics": {
                 "agi": {
                     "name": "Artificial General Intelligence",

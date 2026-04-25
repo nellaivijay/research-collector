@@ -30,6 +30,17 @@ on:
           - '7'
           - '14'
           - '30'
+      max_results:
+        description: 'Maximum results per source (default: 20, max: 100)'
+        required: false
+        default: '20'
+        type: choice
+        options:
+          - '10'
+          - '20'
+          - '30'
+          - '50'
+          - '100'
       custom_query:
         description: 'Custom search query (if topic=custom)'
         required: false
@@ -99,6 +110,7 @@ jobs:
         python -m research_collector research \
           --topic ml \
           --days ${{ github.event.inputs.days || '7' }} \
+          --max-results ${{ github.event.inputs.max_results || '20' }} \
           --export=huggingface \
           --output $DATASET_OWNER/ml-research-daily \
           --no-cache \
@@ -182,6 +194,7 @@ jobs:
         python -m research_collector research \
           --topic llm \
           --days 7 \
+          --max-results ${{ github.event.inputs.max_results || '20' }} \
           --export=huggingface \
           --output $DATASET_OWNER/llm-research-daily \
           --no-cache \
@@ -260,6 +273,7 @@ jobs:
         python -m research_collector research \
           --topic agi \
           --days 7 \
+          --max-results ${{ github.event.inputs.max_results || '20' }} \
           --export=huggingface \
           --output $DATASET_OWNER/agi-research-daily \
           --no-cache \
@@ -338,6 +352,7 @@ jobs:
         python -m research_collector research \
           --topic asi \
           --days 7 \
+          --max-results ${{ github.event.inputs.max_results || '20' }} \
           --export=huggingface \
           --output $DATASET_OWNER/asi-research-daily \
           --no-cache \
@@ -416,6 +431,7 @@ jobs:
         python -m research_collector research \
           --topic ani \
           --days 7 \
+          --max-results ${{ github.event.inputs.max_results || '20' }} \
           --export=huggingface \
           --output $DATASET_OWNER/ani-research-daily \
           --no-cache \
@@ -494,6 +510,7 @@ jobs:
         python -m research_collector research \
           --topic aci \
           --days 7 \
+          --max-results ${{ github.event.inputs.max_results || '20' }} \
           --export=huggingface \
           --output $DATASET_OWNER/aci-research-daily \
           --no-cache \
@@ -577,6 +594,7 @@ jobs:
         python -m research_collector research \
           --query "${{ github.event.inputs.custom_query }}" \
           --days ${{ github.event.inputs.days || '7' }} \
+          --max-results ${{ github.event.inputs.max_results || '20' }} \
           $SOURCES_ARG \
           --export=huggingface \
           --output $DATASET_OWNER/custom-research \
