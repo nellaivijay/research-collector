@@ -34,7 +34,7 @@ class RedditSource:
             params = {
                 "q": topic,
                 "sort": "relevance",
-                "limit": 25,
+                "limit": 100,  # Increased from 25 to 100
                 "t": "week"  # Time filter: hour, day, week, month, year, all
             }
             
@@ -59,7 +59,25 @@ class RedditSource:
                     
                     # Get selftext (post content) or use title if no selftext
                     selftext = post.get("selftext", "")
-                    content = selftext[:500] if selftext else post.get("title", "")
+                    content = selftext[:1000] if selftext else post.get("title", "")
+                    
+                    # Extract additional metadata
+                    subreddit = post.get("subreddit", "unknown")
+                    link_flair_text = post.get("link_flair_text", "")
+                    link_flair_css_class = post.get("link_flair_css_class", "")
+                    is_self = post.get("is_self", False)
+                    url = post.get("url", "")
+                    domain = post.get("domain", "")
+                    
+                    # Calculate engagement metrics
+                    upvote_ratio = post.get("upvote_ratio", 0)
+                    total_awards = post.get("total_awards_received", 0)
+                    
+                    # Parse created timestamp for temporal features
+                    try:
+                        days_since_post = (datetime.now(post_date.tzinfo) - post_date).days if post_date.tzinfo else 0
+                    except:
+                        days_since_post = 0
                     
                     formatted_result = {
                         "id": f"reddit_{post.get('id', 'unknown')}",
@@ -73,10 +91,30 @@ class RedditSource:
                         "comments": post.get("num_comments", 0),
                         "content": content,
                         "metadata": {
-                            "subreddit": post.get("subreddit", "unknown"),
+                            "subreddit": subreddit,
                             "score": post.get("score", 0),
                             "num_comments": post.get("num_comments", 0),
-                            "over_18": post.get("over_18", False)
+                            "over_18": post.get("over_18", False),
+                            "link_flair_text": link_flair_text,
+                            "link_flair_css_class": link_flair_css_class,
+                            "has_flair": bool(link_flair_text),
+                            "is_self": is_self,
+                            "is_link": not is_self and bool(url),
+                            "external_url": url if not is_self else "",
+                            "domain": domain,
+                            "upvote_ratio": upvote_ratio,
+                            "total_awards": total_awards,
+                            "has_awards": total_awards > 0,
+                            "gilded": post.get("gilded", 0),
+                            "is_gilded": post.get("gilded", 0) > 0,
+                            "days_since_post": days_since_post,
+                            "content_length": len(content),
+                            "has_external_link": bool(url and not url.startswith("https://reddit.com")),
+                            "stickied": post.get("stickied", False),
+                            "pinned": post.get("pinned", False),
+                            "locked": post.get("locked", False),
+                            "archived": post.get("archived", False),
+                            "quarantined": post.get("quarantined", False)
                         }
                     }
                     
@@ -89,7 +127,7 @@ class RedditSource:
                 except Exception:
                     continue
             
-            return results[:20]  # Limit results for educational purposes
+            return results  # Return all results (no limit)
             
         except requests.exceptions.RequestException as e:
             print(f"Error fetching Reddit data: {e}")

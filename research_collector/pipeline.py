@@ -49,6 +49,10 @@ class Pipeline:
             from research_collector.sources.paperswithcode import PapersWithCodeSource
             sources["paperswithcode"] = PapersWithCodeSource(self.config)
         
+        if self.config.is_source_enabled("arxiv"):
+            from research_collector.sources.arxiv import ArxivSource
+            sources["arxiv"] = ArxivSource(self.config)
+        
         # Professional sources
         if self.config.is_source_enabled("stackoverflow"):
             from research_collector.sources.stackoverflow import StackOverflowSource
@@ -155,8 +159,12 @@ class Pipeline:
         # Normalize and score results
         normalized_results = self._normalize_results(all_results, topic)
         
+        # Enrich results with additional metadata
+        from research_collector.enrichment import enrich_results
+        enriched_results = enrich_results(normalized_results)
+        
         # Cluster and rank
-        clustered_results = self._cluster_results(normalized_results)
+        clustered_results = self._cluster_results(enriched_results)
         ranked_results = self._rank_results(clustered_results, topic)
         
         # Filter URLs if not requested

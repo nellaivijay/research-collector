@@ -56,7 +56,7 @@ class PubMedSource:
                 "db": "pubmed",
                 "term": query,
                 "retmode": "json",
-                "retmax": 20  # Limit results for educational purposes
+                "retmax": 100  # Increased from 20 to 100 for better coverage
             }
             
             # Add API key if available for higher rate limits
@@ -77,13 +77,13 @@ class PubMedSource:
             if not id_list:
                 return []
             
-            # Step 2: Fetch details for found articles
-            summaries_url = f"{self.base_url}/esummary.fcgi"
+            # Step 2: Fetch full details using efetch (includes abstracts)
+            fetch_url = f"{self.base_url}/efetch.fcgi"
             params = {
                 "db": "pubmed",
                 "id": ",".join(id_list),
-                "retmode": "json",
-                "retmax": 20
+                "retmode": "xml",
+                "retmax": 100
             }
             
             if self.api_key:
@@ -92,46 +92,117 @@ class PubMedSource:
                 params["tool"] = "research-collector"
                 params["email"] = self.email
             
-            response = requests.get(summaries_url, params=params, timeout=10)
+            response = requests.get(fetch_url, params=params, timeout=10)
             response.raise_for_status()
             
-            summaries_data = response.json()
-            results = summaries_data.get("result", {})
+            # Parse XML response
+            import xml.etree.ElementTree as ET
+            root = ET.fromstring(response.text)
             
             # Convert to our format
             formatted_results = []
-            for pubmed_id in id_list:
-                if pubmed_id == "uids":
+            for article in root.findall(".//PubmedArticle"):
+                medline_citation = article.find("MedlineCitation")
+                if medline_citation is None:
                     continue
                     
-                article = results.get(pubmed_id, {})
-                if not article:
+                pubmed_data = medline_citation.find("PubmedData")
+                article_id = pubmed_data.find(".//PMID")
+                if article_id is None:
+                    continue
+                    
+                pubmed_id = article_id.text
+                
+                # Get article info
+                article_info = medline_citation.find("Article")
+                if article_info is None:
                     continue
                 
+                # Extract title
+                article_title = article_info.find(".//ArticleTitle")
+                title = article_title.text if article_title is not None else "No title"
+                
+                # Extract abstract
+                abstract_text = article_info.find(".//AbstractText")
+                abstract = abstract_text.text if abstract_text is not None else "No abstract available"
+                
                 # Extract authors
-                authors = article.get("authors", [])
-                author_list = ", ".join([a.get("name", "Unknown") for a in authors[:3]])
-                if len(authors) > 3:
-                    author_list += " et al."
+                authors = article_info.findall(".//Author")
+                author_list = []
+                for author in authors[:10]:
+                    last_name = author.find("LastName")
+                    fore_name = author.find("ForeName")
+                    if last_name is not None and fore_name is not None:
+                        author_list.append(f"{fore_name.text} {last_name.text}")
+                    elif last_name is not None:
+                        author_list.append(last_name.text)
+                
+                author_str = ", ".join(author_list)
+                if len(authors) > 10:
+                    author_str += " et al."
                 
                 # Extract publication date
-                pub_date = article.get("pubdate", "Unknown")
+                pub_date_elem = article_info.find(".//PubDate")
+                pub_date = "Unknown"
+                if pub_date_elem is not None:
+                    year = pub_date_elem.find("Year")
+                    month = pub_date_elem.find("Month")
+                    day = pub_date_elem.find("Day")
+                    if year is not None:
+                        pub_date = year.text
+                        if month is not None:
+                            pub_date += f"-{month.zfill(2) if len(month.text) == 1 else month.text}"
+                            if day is not None:
+                                pub_date += f"-{day.zfill(2) if len(day.text) == 1 else day.text}"
+                
+                # Extract journal
+                journal_elem = article_info.find(".//Journal/Title")
+                journal = journal_elem.text if journal_elem is not None else "Unknown"
+                
+                # Extract DOI if available
+                doi = ""
+                for article_id in pubmed_data.findall(".//ArticleId"):
+                    if article_id.get("IdType") == "doi":
+                        doi = article_id.text
+                        break
+                
+                # Extract MeSH terms
+                mesh_terms = []
+                mesh_heading_list = medline_citation.find(".//MeshHeadingList")
+                if mesh_heading_list is not None:
+                    for mesh in mesh_heading_list.findall("MeshHeading"):
+                        descriptor = mesh.find("DescriptorName")
+                        if descriptor is not None:
+                            mesh_terms.append(descriptor.text)
+                
+                # Extract publication type
+                pub_types = []
+                pub_type_list = article_info.find(".//PublicationTypeList")
+                if pub_type_list is not None:
+                    for pub_type in pub_type_list.findall("PublicationType"):
+                        if pub_type is not None:
+                            pub_types.append(pub_type.text)
                 
                 formatted_result = {
                     "id": f"pubmed_{pubmed_id}",
-                    "title": article.get("title", "No title"),
+                    "title": title,
                     "url": f"https://pubmed.ncbi.nlm.nih.gov/{pubmed_id}/",
-                    "author": author_list,
+                    "author": author_str or "Unknown",
                     "published_date": pub_date,
-                    "citations": 0,  # PubMed doesn't provide citation counts in basic API
+                    "citations": 0,  # PubMed doesn't provide citation counts
                     "upvotes": 0,
                     "downloads": 0,
                     "comments": 0,
-                    "content": self._extract_abstract(article),
+                    "content": abstract,
                     "metadata": {
-                        "journal": article.get("source", "Unknown"),
+                        "journal": journal,
                         "pubmed_id": pubmed_id,
-                        "year": pub_date[:4] if pub_date != "Unknown" else "Unknown"
+                        "year": pub_date[:4] if pub_date != "Unknown" else "Unknown",
+                        "doi": doi,
+                        "mesh_terms": mesh_terms,
+                        "publication_types": pub_types,
+                        "abstract_length": len(abstract),
+                        "has_doi": bool(doi)
                     }
                 }
                 
@@ -146,9 +217,3 @@ class PubMedSource:
             print(f"Error processing PubMed data: {e}")
             return []
     
-    def _extract_abstract(self, article: Dict) -> str:
-        """Extract abstract from article data."""
-        # Try to get abstract from article data
-        # Note: Basic esummary doesn't include abstracts, would need efetch
-        # For educational purposes, we'll return a placeholder
-        return "Abstract not available in basic API view. Use PubMed link for full details."

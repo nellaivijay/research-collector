@@ -123,7 +123,12 @@ class HuggingFaceExporter:
             # Add metadata fields if present
             if "metadata" in item:
                 for key, value in item["metadata"].items():
-                    row[f"metadata_{key}"] = value
+                    # Handle nested dictionaries and lists
+                    if isinstance(value, (dict, list)):
+                        import json
+                        row[f"metadata_{key}"] = json.dumps(value)
+                    else:
+                        row[f"metadata_{key}"] = value
             
             dataset_rows.append(row)
         
@@ -138,11 +143,23 @@ class HuggingFaceExporter:
         """
         api = self.HfApi(token=self.token)
         
+        # Calculate size category based on total items
+        total_items = metadata['total_items']
+        if total_items < 1000:
+            size_category = "n<1K"
+        elif total_items < 10000:
+            size_category = "1K<n<10K"
+        elif total_items < 100000:
+            size_category = "10K<n<100K"
+        else:
+            size_category = "100K<n"
+        
         card_content = f"""---
 license: mit
 task_categories:
 - text-retrieval
 - information-retrieval
+- text-classification
 language:
 - en
 - multilingual
@@ -151,14 +168,16 @@ tags:
 - academic
 - data-collection
 - multi-source
+- machine-learning
+- ai
 pretty_name: Research Collector Dataset
 size_categories:
-- n<1K
+- {size_category}
 ---
 
 # Research Collector Dataset
 
-This dataset contains research results aggregated from multiple sources by the Research-Collector tool.
+This dataset contains research results aggregated from multiple sources by the Research-Collector tool. Each item is enriched with comprehensive metadata, ML subfield classifications, quality scores, and temporal features.
 
 ## Dataset Details
 
@@ -170,43 +189,118 @@ This dataset contains research results aggregated from multiple sources by the R
 
 ## Dataset Structure
 
-Each item contains:
+### Core Fields
 - `id`: Unique identifier
 - `title`: Title of the research item
-- `source`: Source platform (e.g., pubmed, reddit, stackoverflow)
+- `source`: Source platform (e.g., pubmed, arxiv, github, reddit, stackoverflow)
 - `url`: URL to original content
 - `author`: Author(s)
-- `published_date`: Publication date
+- `published_date`: Publication date (ISO 8601 format)
 - `citations`: Number of citations (if available)
 - `upvotes`: Number of upvotes (if available)
 - `downloads`: Number of downloads (if available)
 - `comments`: Number of comments (if available)
-- `content`: Content/abstract
+- `content`: Content/abstract/description
 - `score`: Relevance score
-- Additional metadata fields as `metadata_*`
 
-## Usage
+### Enriched Metadata Fields
+- `metadata_year`: Publication year
+- `metadata_month`: Publication month
+- `metadata_day`: Publication day
+- `metadata_week`: Week of year
+- `metadata_quarter`: Quarter of year
+- `metadata_days_since`: Days since publication
+- `metadata_ml_subfields`: ML subfield classifications (JSON array)
+- `metadata_subfield_count`: Number of ML subfields
+- `metadata_keywords`: Extracted keywords (JSON array)
+- `metadata_keyword_count`: Number of keywords
+- `metadata_quality_scores`: Quality score metrics (JSON dict)
+- `metadata_content_type`: Content type (paper, preprint, repository, discussion, qa, news)
+- `metadata_has_code`: Whether item contains code
+- `metadata_has_doi`: Whether item has DOI
+
+### Source-Specific Metadata
+- **PubMed**: `metadata_journal`, `metadata_doi`, `metadata_mesh_terms`, `metadata_publication_types`, `metadata_abstract_length`
+- **arXiv**: `metadata_arxiv_id`, `metadata_primary_category`, `metadata_categories`, `metadata_journal_ref`
+- **GitHub**: `metadata_stars`, `metadata_forks`, `metadata_language`, `metadata_license`, `metadata_topics`, `metadata_has_readme`
+- **Reddit**: `metadata_subreddit`, `metadata_link_flair_text`, `metadata_upvote_ratio`, `metadata_total_awards`, `metadata_is_gilded`
+- **Stack Overflow**: `metadata_tags`, `metadata_answer_count`, `metadata_has_accepted_answer`, `metadata_view_count`, `metadata_owner_reputation`
+- **Semantic Scholar**: `metadata_citation_count`, `metadata_influential_citation_count`, `metadata_fields_of_study`, `metadata_has_open_access`
+
+## Usage Examples
 
 ```python
 from datasets import load_dataset
 
+# Load dataset
 dataset = load_dataset("{repo_id}")
 train_data = dataset["train"]
 
-# Example: Filter by source
+# Filter by source
 pubmed_items = train_data.filter(lambda x: x["source"] == "pubmed")
+github_items = train_data.filter(lambda x: x["source"] == "github")
 
-# Example: Sort by score
+# Filter by content type
+papers = train_data.filter(lambda x: x.get("metadata_content_type") == "paper")
+repositories = train_data.filter(lambda x: x.get("metadata_content_type") == "repository")
+
+# Filter by ML subfield
+cv_papers = train_data.filter(lambda x: "computer-vision" in x.get("metadata_ml_subfields", []))
+
+# Filter by quality
+high_quality = train_data.filter(lambda x: x.get("metadata_quality_scores", {{}}).get("overall_quality_score", 0) > 0.7)
+
+# Sort by score
 sorted_items = train_data.sort("score", reverse=True)
+
+# Filter by date
+recent_items = train_data.filter(lambda x: x.get("metadata_days_since", 999) < 30)
 ```
+
+## Data Quality Features
+
+- **Standardized Dates**: All dates normalized to ISO 8601 format
+- **ML Subfield Classification**: Automatic classification into 15+ ML subfields
+- **Quality Scoring**: Multi-dimensional quality assessment (abstract length, code availability, DOI, engagement, recency)
+- **Temporal Features**: Year, month, week, quarter, days since publication
+- **Keyword Extraction**: Automatic extraction of technical keywords
+- **Content Type Detection**: Automatic classification of item type
+
+## Data Sources
+
+This dataset aggregates research from:
+- **Academic**: PubMed, arXiv, Semantic Scholar, Crossref, Papers with Code
+- **Professional**: GitHub, Stack Overflow
+- **Social**: Reddit, Hacker News
+- **News**: GDELT
+
+## Limitations
+
+- Data is limited to the specified time range
+- Some sources may have rate limits or API restrictions
+- Citation counts may vary between sources
+- ML subfield classification is based on keyword matching and may not be perfect
 
 ## Source
 
-Generated by [Research-Collector](https://github.com/yourusername/research-collector), an educational multi-source research aggregation tool.
+Generated by [Research-Collector](https://github.com/nellaivijay/research-collector), an educational multi-source research aggregation tool.
 
 ## License
 
 MIT License
+
+## Citation
+
+If you use this dataset, please cite:
+```bibtex
+@dataset{{research_collector_{metadata['topic'].lower().replace(' ', '_')}_2026,
+  author = {{Research-Collector}},
+  title = {{{metadata['topic']} Research Dataset}},
+  year = {{2026}},
+  publisher = {{Hugging Face}},
+  howpublished = {{https://huggingface.co/datasets/{repo_id}}}
+}}
+```
 """
         
         # Upload dataset card

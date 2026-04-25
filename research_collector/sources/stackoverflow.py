@@ -37,7 +37,7 @@ class StackOverflowSource:
                 "q": topic,
                 "site": "stackoverflow",
                 "filter": "withbody",  # Include question bodies
-                "pagesize": 20,
+                "pagesize": 100,  # Increased from 20 to 100
                 "fromdate": from_timestamp,
                 "todate": to_timestamp
             }
@@ -72,7 +72,28 @@ class StackOverflowSource:
                     
                     # Get question body or excerpt
                     body = question.get("body_markdown", "")
-                    content = body[:500] if body else question.get("title", "")
+                    content = body[:1000] if body else question.get("title", "")
+                    
+                    # Extract additional metadata
+                    owner_reputation = owner.get("reputation", 0)
+                    owner_user_type = owner.get("user_type", "")
+                    accepted_answer_id = question.get("accepted_answer_id")
+                    favorite_count = question.get("favorite_count", 0)
+                    closed_date = question.get("closed_date")
+                    last_activity_date = question.get("last_activity_date")
+                    last_edit_date = question.get("last_edit_date")
+                    
+                    # Calculate temporal features
+                    try:
+                        days_since_creation = (datetime.now(question_date.tzinfo) - question_date).days if question_date.tzinfo else 0
+                        if last_activity_date:
+                            last_activity = datetime.fromtimestamp(last_activity_date)
+                            days_since_activity = (datetime.now(last_activity.tzinfo) - last_activity).days if last_activity.tzinfo else 0
+                        else:
+                            days_since_activity = 0
+                    except:
+                        days_since_creation = 0
+                        days_since_activity = 0
                     
                     formatted_result = {
                         "id": f"so_{question.get('question_id', 'unknown')}",
@@ -90,7 +111,25 @@ class StackOverflowSource:
                             "answer_count": answer_count,
                             "score": score,
                             "view_count": question.get("view_count", 0),
-                            "is_answered": question.get("is_answered", False)
+                            "is_answered": question.get("is_answered", False),
+                            "has_accepted_answer": bool(accepted_answer_id),
+                            "accepted_answer_id": accepted_answer_id,
+                            "favorite_count": favorite_count,
+                            "is_favorited": favorite_count > 0,
+                            "owner_reputation": owner_reputation,
+                            "owner_user_type": owner_user_type,
+                            "owner_user_id": owner.get("user_id"),
+                            "closed_date": closed_date,
+                            "is_closed": bool(closed_date),
+                            "last_activity_date": last_activity_date,
+                            "last_edit_date": last_edit_date,
+                            "is_edited": bool(last_edit_date),
+                            "days_since_creation": days_since_creation,
+                            "days_since_activity": days_since_activity,
+                            "content_length": len(content),
+                            "has_code": "<code>" in content or "```" in content,
+                            "question_id": question.get("question_id"),
+                            "community_owned": question.get("community_owned_date") is not None
                         }
                     }
                     

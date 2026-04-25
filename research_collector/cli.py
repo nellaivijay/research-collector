@@ -110,6 +110,52 @@ def research(topic, query, days, sources, export, output, hf_token, depth, inclu
             include_urls=include_urls
         )
     
+    # Show detailed source breakdown
+    click.echo("\n" + "="*60)
+    click.echo("RESEARCH RESULTS SUMMARY")
+    click.echo("="*60)
+    source_counts = results.get("metadata", {}).get("source_counts", {})
+    total_items = results.get("metadata", {}).get("total_items", 0)
+    
+    click.echo(f"\nTotal items found: {total_items}")
+    click.echo("\nResults by source:")
+    for source, count in source_counts.items():
+        if count > 0:
+            click.echo(f"  • {source:20s}: {count:4d} items")
+    
+    # Show enrichment statistics
+    if total_items > 0:
+        ml_subfields = set()
+        content_types = set()
+        has_code_count = 0
+        has_doi_count = 0
+        
+        for item in results.get("items", []):
+            metadata = item.get("metadata", {})
+            ml_subfields.update(metadata.get("ml_subfields", []))
+            content_types.add(metadata.get("content_type", "unknown"))
+            if metadata.get("has_code"):
+                has_code_count += 1
+            if metadata.get("has_doi"):
+                has_doi_count += 1
+        
+        click.echo(f"\nContent types:")
+        for ct in sorted(content_types):
+            count = sum(1 for item in results.get("items", []) if item.get("metadata", {}).get("content_type") == ct)
+            click.echo(f"  • {ct:20s}: {count:4d} items")
+        
+        if ml_subfields:
+            click.echo(f"\nML subfields detected:")
+            for subfield in sorted(ml_subfields):
+                count = sum(1 for item in results.get("items", []) if subfield in item.get("metadata", {}).get("ml_subfields", []))
+                click.echo(f"  • {subfield:20s}: {count:4d} items")
+        
+        click.echo(f"\nQuality indicators:")
+        click.echo(f"  • Items with code:     {has_code_count:4d} ({has_code_count/total_items*100:.1f}%)")
+        click.echo(f"  • Items with DOI:      {has_doi_count:4d} ({has_doi_count/total_items*100:.1f}%)")
+    
+    click.echo("\n" + "="*60 + "\n")
+    
     # Output results
     if output:
         # Use the specified export format

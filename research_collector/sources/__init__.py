@@ -9,6 +9,7 @@ from research_collector.sources.news import GDELTSource
 from research_collector.sources.reddit import RedditSource
 from research_collector.sources.hackernews import HackerNewsSource
 from research_collector.sources.github import GitHubSource
+from research_collector.sources.arxiv import ArxivSource
 
 __all__ = [
     "PubMedSource",
@@ -20,4 +21,5 @@ __all__ = [
     "RedditSource",
     "HackerNewsSource",
     "GitHubSource",
+    "ArxivSource",
 ]
