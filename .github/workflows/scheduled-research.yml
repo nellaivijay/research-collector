@@ -58,6 +58,8 @@ env:
   REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
   REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
   REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
+  KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+  KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
 
 jobs:
   research-ml:
