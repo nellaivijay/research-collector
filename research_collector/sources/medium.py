@@ -12,13 +12,15 @@ class MediumSource:
     def __init__(self, config: Config):
         """Initialize Medium source."""
         self.config = config
-        # Medium RSS feeds - only working publication feeds
+        # Medium RSS feeds - working publication feeds
         # Note: Medium tag-based feeds (medium.com/tag/*/feed) are deprecated and return 404
         self.feeds = {
             'towards-data-science': 'https://towardsdatascience.com/feed',
-            # Add other working Medium publication feeds as needed
-            # 'towards-ai': 'https://towardsai.com/feed',  # Add if available
-            # 'medium-blog': 'https://blog.medium.com/feed',  # Add if available
+            'towards-ai': 'https://towardsai.com/feed',
+            'medium-ai-blog': 'https://medium.com/machine-learning-mastery/feed',
+            'data-science-medium': 'https://medium.com/data-science-group-ii/feed',
+            'ai-research-feed': 'https://medium.com/the-ai-blog/feed',
+            # Add more working Medium publication feeds as needed
         }
     
     def search(
@@ -33,8 +35,11 @@ class MediumSource:
         try:
             results = []
             
-            # Use all available feeds (currently only Towards Data Science)
-            # Medium tag-based feeds are deprecated, so we use publication-specific feeds
+            # Extract keywords from topic if it contains OR (for expanded search)
+            search_terms = topic.split(" OR ") if " OR " in topic else [topic]
+            search_terms = [term.strip().lower() for term in search_terms]
+            
+            # Use all available feeds
             relevant_feeds = list(self.feeds.values())
             
             # Fetch from each relevant feed
@@ -53,6 +58,15 @@ class MediumSource:
                             
                             # Filter by date range
                             if pub_dt < from_date or pub_dt > to_date:
+                                continue
+                            
+                            # Topic filtering - check if title or content contains any search terms
+                            title = entry.get('title', '').lower()
+                            content = entry.get('summary', entry.get('description', '')).lower()
+                            
+                            # Check if any search term matches title or content
+                            topic_match = any(term in title or term in content for term in search_terms)
+                            if not topic_match:
                                 continue
                             
                             # Extract content

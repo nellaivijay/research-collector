@@ -36,8 +36,15 @@ class ArxivSource:
             from_date_str = from_date.strftime("%Y%m%d")
             to_date_str = to_date.strftime("%Y%m%d")
             
-            # Build search query
-            query = f'all:{topic} AND submittedDate:[{from_date_str}0000 TO {to_date_str}2359]'
+            # Build search query - handle OR queries for broader coverage
+            if " OR " in topic:
+                # arXiv supports OR queries in the format: (term1 OR term2 OR term3)
+                search_terms = topic.split(" OR ")
+                search_terms = [term.strip() for term in search_terms[:3]]  # Use first 3 terms
+                or_query = " OR ".join([f'all:{term}' for term in search_terms])
+                query = f'({or_query}) AND submittedDate:[{from_date_str}0000 TO {to_date_str}2359]'
+            else:
+                query = f'all:{topic} AND submittedDate:[{from_date_str}0000 TO {to_date_str}2359]'
             
             params = {
                 "search_query": query,

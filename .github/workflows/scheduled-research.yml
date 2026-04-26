@@ -114,8 +114,8 @@ jobs:
         # Run research and capture output
         python -m research_collector research \
           --topic ml \
-          --days ${{ github.event.inputs.days || '7' }} \
-          --max-results ${{ github.event.inputs.max_results || '20' }} \
+          --days ${{ github.event.inputs.days || '14' }} \
+          --max-results ${{ github.event.inputs.max_results || '50' }} \
           --export=huggingface \
           --output $DATASET_OWNER/ml-research-daily \
           --no-cache \
@@ -198,8 +198,8 @@ jobs:
         # Run research and capture output
         python -m research_collector research \
           --topic llm \
-          --days 7 \
-          --max-results ${{ github.event.inputs.max_results || '20' }} \
+          --days 14 \
+          --max-results ${{ github.event.inputs.max_results || '50' }} \
           --export=huggingface \
           --output $DATASET_OWNER/llm-research-daily \
           --no-cache \
@@ -277,8 +277,8 @@ jobs:
         # Run research and capture output
         python -m research_collector research \
           --topic agi \
-          --days 7 \
-          --max-results ${{ github.event.inputs.max_results || '20' }} \
+          --days 14 \
+          --max-results ${{ github.event.inputs.max_results || '50' }} \
           --export=huggingface \
           --output $DATASET_OWNER/agi-research-daily \
           --no-cache \
@@ -356,8 +356,8 @@ jobs:
         # Run research and capture output
         python -m research_collector research \
           --topic asi \
-          --days 7 \
-          --max-results ${{ github.event.inputs.max_results || '20' }} \
+          --days 14 \
+          --max-results ${{ github.event.inputs.max_results || '50' }} \
           --export=huggingface \
           --output $DATASET_OWNER/asi-research-daily \
           --no-cache \
@@ -435,8 +435,8 @@ jobs:
         # Run research and capture output
         python -m research_collector research \
           --topic ani \
-          --days 7 \
-          --max-results ${{ github.event.inputs.max_results || '20' }} \
+          --days 14 \
+          --max-results ${{ github.event.inputs.max_results || '50' }} \
           --export=huggingface \
           --output $DATASET_OWNER/ani-research-daily \
           --no-cache \
@@ -514,8 +514,8 @@ jobs:
         # Run research and capture output
         python -m research_collector research \
           --topic aci \
-          --days 7 \
-          --max-results ${{ github.event.inputs.max_results || '20' }} \
+          --days 14 \
+          --max-results ${{ github.event.inputs.max_results || '50' }} \
           --export=huggingface \
           --output $DATASET_OWNER/aci-research-daily \
           --no-cache \
@@ -598,8 +598,8 @@ jobs:
         # Run research and capture output
         python -m research_collector research \
           --query "${{ github.event.inputs.custom_query }}" \
-          --days ${{ github.event.inputs.days || '7' }} \
-          --max-results ${{ github.event.inputs.max_results || '20' }} \
+          --days ${{ github.event.inputs.days || '14' }} \
+          --max-results ${{ github.event.inputs.max_results || '50' }} \
           $SOURCES_ARG \
           --export=huggingface \
           --output $DATASET_OWNER/custom-research \

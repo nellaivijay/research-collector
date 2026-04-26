@@ -58,8 +58,11 @@ def research(topic, query, days, sources, export, output, hf_token, depth, max_r
             keywords = predefined['keywords']
             click.echo(f"Using predefined topic: {predefined['name']}")
             click.echo(f"Keywords: {', '.join(keywords)}")
-            # Use the first keyword as the main search term
-            search_query = keywords[0]
+            # Use multiple keywords for better coverage - join with OR for broader search
+            # Different sources handle this differently, so we use the first as primary
+            # and pass all keywords for sources that can use them
+            search_query = keywords[0]  # Primary search term
+            all_keywords = keywords  # All keywords for expanded search
         else:
             click.echo(f"Unknown predefined topic: {topic}")
             click.echo("Use --list-topics to see available topics")
@@ -67,10 +70,19 @@ def research(topic, query, days, sources, export, output, hf_token, depth, max_r
     elif query:
         search_query = query
         search_topic = query
+        all_keywords = [query]  # Single keyword for custom queries
     else:
         click.echo("Error: Either --topic or --query must be specified")
         click.echo("Use --list-topics to see available predefined topics")
         return
+    
+    # For predefined topics, use expanded search query with multiple keywords
+    if topic and predefined:
+        # Create an expanded search query using multiple keywords
+        # This helps sources that support OR queries or broader searches
+        if len(keywords) > 1:
+            search_query = f"{keywords[0]} OR {' OR '.join(keywords[1:3])}"  # Use first 3 keywords
+            click.echo(f"Expanded search query: {search_query}")
     
     pipeline = Pipeline(config, use_cache=not no_cache, save_history=not no_history)
     
