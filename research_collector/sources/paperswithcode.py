@@ -26,6 +26,10 @@ class PapersWithCodeSource:
     ) -> List[Dict[str, Any]]:
         """Search Papers With Code for ML papers."""
         try:
+            # Papers With Code API - use first keyword only if OR is present
+            # Papers With Code API doesn't support complex OR queries
+            search_query = topic.split(" OR ")[0].strip() if " OR " in topic else topic
+            
             # Papers With Code API
             search_url = f"{self.base_url}/papers/"
             
@@ -34,7 +38,7 @@ class PapersWithCodeSource:
             to_date_str = to_date.strftime("%Y-%m-%d")
             
             params = {
-                "q": topic,
+                "q": search_query,
                 "fields": "title,authors,publishedDate,repositoryUrl,stars,citationCount,abstract",
                 "filter": f"published_date:{from_date_str}:{to_date_str}",
                 "limit": 200  # Increased from 100 to 200 for better coverage
@@ -43,7 +47,13 @@ class PapersWithCodeSource:
             response = requests.get(search_url, params=params, timeout=10)
             response.raise_for_status()
             
-            # Check if response is valid JSON
+            # Check if response is valid JSON (Papers With Code API might be down/changed)
+            content_type = response.headers.get('content-type', '')
+            if 'text/html' in content_type:
+                print(f"Papers With Code API returned HTML instead of JSON - API may be unavailable or changed")
+                print(f"Status code: {response.status_code}")
+                return []
+                
             try:
                 data = response.json()
             except ValueError as e:

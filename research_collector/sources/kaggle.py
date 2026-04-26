@@ -33,10 +33,14 @@ class KaggleSource:
             
             results = []
             
+            # Kaggle API doesn't support OR queries well
+            # Use first keyword only if OR is present
+            search_query = topic.split(" OR ")[0].strip() if " OR " in topic else topic
+            
             # Search for datasets
             datasets_url = f"{self.base_url}/datasets/search"
             params = {
-                "search": topic,
+                "search": search_query,
                 "size": 200,  # Increased limit
                 "fileType": "csv"  # Focus on CSV datasets
             }

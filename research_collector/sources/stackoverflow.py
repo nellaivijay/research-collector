@@ -32,10 +32,14 @@ class StackOverflowSource:
             from_timestamp = int(from_date.timestamp())
             to_timestamp = int(to_date.timestamp())
             
+            # Stack Exchange API doesn't support OR queries in q parameter
+            # Use first keyword only if OR is present
+            search_query = topic.split(" OR ")[0].strip() if " OR " in topic else topic
+            
             params = {
                 "order": "desc",
                 "sort": "relevance",
-                "q": topic,
+                "q": search_query,
                 "site": "stackoverflow",
                 "filter": "withbody",  # Include question bodies
                 "pagesize": 200,  # Increased from 100 to 200 for better coverage
