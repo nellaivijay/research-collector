@@ -21,7 +21,7 @@ datasets>=2.14.0
 
 # Documentation
 sphinx>=6.0.0
-sphinx-rtd-theme>=1.2.0
+sphinx-rtd-theme>=3.1.0
 
 # Build
 build>=0.10.0
