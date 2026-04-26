@@ -170,13 +170,31 @@ class Pipeline:
         # Normalize and score results
         normalized_results = self._normalize_results(all_results, topic)
         
+        # Debug: Check arXiv items after normalization
+        arxiv_count_after_norm = sum(1 for item in normalized_results if item.get("source") == "arxiv")
+        print(f"DEBUG: After normalization - Total items: {len(normalized_results)}, arXiv items: {arxiv_count_after_norm}")
+        
         # Enrich results with additional metadata
         from research_collector.enrichment import enrich_results
         enriched_results = enrich_results(normalized_results)
         
+        # Debug: Check arXiv items after enrichment
+        arxiv_count_after_enrich = sum(1 for item in enriched_results if item.get("source") == "arxiv")
+        preprint_count = sum(1 for item in enriched_results if item.get("metadata", {}).get("content_type") == "preprint")
+        print(f"DEBUG: After enrichment - Total items: {len(enriched_results)}, arXiv items: {arxiv_count_after_enrich}, preprint items: {preprint_count}")
+        
         # Cluster and rank
         clustered_results = self._cluster_results(enriched_results)
+        
+        # Debug: Check arXiv items after clustering
+        arxiv_count_after_cluster = sum(1 for item in clustered_results if item.get("source") == "arxiv")
+        print(f"DEBUG: After clustering - Total items: {len(clustered_results)}, arXiv items: {arxiv_count_after_cluster}")
+        
         ranked_results = self._rank_results(clustered_results, topic)
+        
+        # Debug: Check arXiv items after ranking
+        arxiv_count_after_rank = sum(1 for item in ranked_results if item.get("source") == "arxiv")
+        print(f"DEBUG: After ranking - Total items: {len(ranked_results)}, arXiv items: {arxiv_count_after_rank}")
         
         # Validate results and log summary
         from research_collector.validation import validate_results, log_data_summary, filter_invalid_items
@@ -190,8 +208,16 @@ class Pipeline:
         # Filter out items with critical issues
         ranked_results = filter_invalid_items(ranked_results)
         
+        # Debug: Check arXiv items after validation/filtering
+        arxiv_count_after_filter = sum(1 for item in ranked_results if item.get("source") == "arxiv")
+        print(f"DEBUG: After filtering - Total items: {len(ranked_results)}, arXiv items: {arxiv_count_after_filter}")
+        
         # Ensure minimum arXiv items (guarantee at least 20 arXiv papers)
         ranked_results = self._ensure_arxiv_priority(ranked_results, all_results)
+        
+        # Debug: Check final arXiv count
+        final_arxiv_count = sum(1 for item in ranked_results if item.get("source") == "arxiv")
+        print(f"DEBUG: Final results - Total items: {len(ranked_results)}, arXiv items: {final_arxiv_count}")
         
         # Filter URLs if not requested
         if not include_urls:
