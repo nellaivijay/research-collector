@@ -37,7 +37,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
-    - name: Health check: ${{ matrix.api.name }}
+    - name: "Health check: ${{ matrix.api.name }}"
       run: |
         python << 'EOF'
         import requests
