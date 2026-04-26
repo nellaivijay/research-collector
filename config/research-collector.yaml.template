@@ -45,130 +45,388 @@ scoring:
     relevance: 0.4
     recency: 0.3
     engagement: 0.3
-  
-  # Preferred researchers/collaborators for author boosting
-  # Papers by these researchers will receive a score boost
+
+  # Preferred researchers for author boosting
   preferred_researchers:
+    # Add key researchers in your field
     # - "Geoffrey Hinton"
     # - "Yann LeCun"
     # - "Yoshua Bengio"
     # - "Andrew Ng"
-    # Add your preferred researchers here
-  
+    # - "Ilya Sutskever"
+    # - "Dario Amodei"
+    # - "Demis Hassabis"
+
   # Domain-specific keyword weights for enhanced relevance scoring
   # Higher weights = more important for your research domain
   keyword_weights:
-    # AI/ML Core Concepts
+    # ===== AGI - Artificial General Intelligence =====
+    "artificial general intelligence": 6
+    "AGI": 6
+    "world models": 6
+    "frontier models": 5
+    "human-level AI": 5
+    "general AI": 5
+    "reasoning": 5
+    "common sense reasoning": 5
+    "transfer learning": 5
+    "few-shot learning": 5
+    "zero-shot learning": 5
+    "continual learning": 4
+    "meta-learning": 5
+    "causal reasoning": 4
+    "abstract reasoning": 4
+    "planning": 4
+    "problem solving": 4
+    "neurosymbolic AI": 4
+    "cognitive architecture": 4
+    "memory systems": 4
+    "domain adaptation": 4
+    "cross-domain": 4
+    "multitask": 4
+    "generalization": 5
+    "AI safety": 4
+    "alignment": 4
+    "interpretability": 4
+    "explainability": 4
+
+    # ===== ACI - Artificial Collective Intelligence =====
+    "artificial collective intelligence": 6
+    "agentic collective intelligence": 6
+    "ACI": 6
+    "multi-agent systems": 6
+    "swarm intelligence": 5
+    "collective AI": 5
+    "agent-to-agent communication": 5
+    "autonomous agents": 5
+    "multi-agent reinforcement learning": 5
+    "coordination": 4
+    "cooperation": 4
+    "emergent behavior": 5
+    "decentralized systems": 4
+    "agent swarms": 4
+    "collective decision making": 4
+    "distributed AI": 4
+    "agent ecosystems": 4
+    "collaborative AI": 4
+
+    # ===== ASI - Artificial Super Intelligence =====
+    "artificial super intelligence": 6
+    "ASI": 6
+    "superintelligence": 6
+    "AI alignment": 6
+    "recursive self-improvement": 5
+    "mechanistic interpretability": 5
+    "intelligence explosion": 5
+    "existential risk": 5
+    "AI safety": 5
+    "control problem": 4
+    "instrumental convergence": 4
+    "orthogonality thesis": 4
+    "singularity": 5
+    "AI governance": 4
+    "value alignment": 4
+    "corrigibility": 3
+
+    # ===== Physical & Embodied AI =====
+    "physical AI": 6
+    "embodied AI": 6
+    "robotics foundation models": 6
+    "spatial intelligence": 5
+    "sim-to-real transfer": 5
+    "embodied agents": 5
+    "robotics": 5
+    "humanoid robotics": 5
+    "manipulation": 5
+    "navigation": 4
+    "SLAM": 4
+    "computer vision": 5
+    "depth estimation": 4
+    "3D perception": 4
+    "sensor fusion": 4
+    "motor control": 4
+    "locomotion": 4
+    "grasping": 4
+    "embodied cognition": 4
+    "physical reasoning": 4
+    "world modeling": 4
+    "robot learning": 5
+
+    # ===== Next-Gen Compute & Accelerators =====
+    "language processing unit": 6
+    "LPU": 6
+    "next-generation GPU": 5
+    "AI accelerators": 5
+    "neuromorphic computing": 5
+    "compute scaling": 5
+    "hardware-software co-design": 4
+    "TPU": 5
+    "AI chips": 4
+    "custom silicon": 4
+    "inference acceleration": 4
+    "training acceleration": 4
+    "memory bandwidth": 4
+    "interconnects": 3
+    "data center AI": 3
+    "edge AI": 4
+    "quantum computing": 4
+    "photonic computing": 3
+    "analog computing": 3
+    "model compression": 4
+
+    # ===== ML - Machine Learning =====
+    "machine learning": 6
+    "deep learning": 6
+    "reinforcement learning": 5
+    "diffusion models": 5
+    "state space models": 6
+    "federated learning": 4
+    "supervised learning": 4
+    "unsupervised learning": 4
+    "self-supervised learning": 5
+    "semi-supervised learning": 3
     "transformer": 5
     "attention mechanism": 5
-    "neural network": 4
-    "deep learning": 4
-    "machine learning": 3
-    
-    # LLM Specific
-    "large language model": 6
-    "GPT": 5
-    "LLM": 5
-    "foundation model": 5
-    "parameter-efficient": 4
-    "fine-tuning": 4
-    
-    # AGI/Advanced AI
-    "artificial general intelligence": 6
-    "AGI": 5
-    "consciousness": 4
-    "reasoning": 4
-    "planning": 3
-    
-    # Training Techniques
-    "reinforcement learning": 4
-    "supervised learning": 3
-    "self-supervised": 4
-    "transfer learning": 3
+    "convolutional neural network": 4
+    "recurrent neural network": 3
+    "generative models": 4
+    "normalizing flows": 3
+    "energy-based models": 3
+    "graph neural networks": 4
+    "geometric deep learning": 3
+    "causal machine learning": 4
+    "online learning": 3
+    "meta-learning": 4
     "few-shot learning": 4
-    "zero-shot": 4
-    
-    # Architecture
-    "architecture": 3
+    "transfer learning": 4
+
+    # ===== LLM - Large Language Models & Context Scaling =====
+    "large language model": 6
+    "LLM": 6
+    "monolithic context ingestion": 6
+    "long context window": 6
+    "foundation model": 6
+    "mixture of experts": 5
+    "RAG": 5
+    "context scaling": 5
+    "transformer models": 5
+    "RLHF": 5
+    "generative AI": 5
+    "text generation": 4
+    "prompt engineering": 5
+    "in-context learning": 5
+    "chain-of-thought": 5
+    "instruction tuning": 4
+    "safety": 4
+    "hallucination": 5
+    "factuality": 4
+    "multimodal": 5
+    "vision-language": 4
+    "code generation": 5
+    "parameter-efficient": 4
+    "quantization": 4
+    "distillation": 4
+    "emergent behavior": 5
     "scaling laws": 5
-    "emergent behavior": 4
-    "capabilities": 3
+    "agents": 5
+    "tool use": 4
+    "function calling": 4
 
 # Predefined research topics with corresponding keywords and priorities
 # Customize or add your own topics here
 predefined_topics:
   agi:
     name: "Artificial General Intelligence"
-    priority: "high"  # high, medium, low
-    description: "Research on human-level AI and general intelligence"
+    priority: "high"
+    description: "Research on human-level AI, general intelligence, world models, and universal AI"
     keywords:
       - "artificial general intelligence"
       - "AGI"
       - "general AI"
       - "human-level AI"
-      - "strong AI"
-      - "universal AI"
-  
+      - "world models"
+      - "frontier models"
+      - "reasoning"
+      - "common sense reasoning"
+      - "transfer learning"
+      - "few-shot learning"
+      - "zero-shot learning"
+      - "continual learning"
+      - "meta-learning"
+      - "causal reasoning"
+      - "abstract reasoning"
+      - "planning"
+      - "problem solving"
+      - "neurosymbolic AI"
+      - "cognitive architecture"
+      - "memory systems"
+
   aci:
-    name: "Artificial Conscious Intelligence"
-    priority: "medium"
-    description: "Research on machine consciousness and sentient AI"
+    name: "Artificial Collective Intelligence"
+    priority: "high"
+    description: "Research on multi-agent systems, swarm intelligence, and agentic collective behaviors"
     keywords:
-      - "artificial consciousness"
-      - "machine consciousness"
-      - "AI consciousness"
-      - "sentient AI"
-      - "conscious AI"
+      - "artificial collective intelligence"
+      - "agentic collective intelligence"
       - "ACI"
-  
+      - "multi-agent systems"
+      - "swarm intelligence"
+      - "collective AI"
+      - "agent-to-agent communication"
+      - "autonomous agents"
+      - "multi-agent reinforcement learning"
+      - "coordination"
+      - "cooperation"
+      - "emergent behavior"
+      - "decentralized systems"
+      - "agent swarms"
+      - "collective decision making"
+      - "distributed AI"
+      - "agent ecosystems"
+      - "collaborative AI"
+
   asi:
     name: "Artificial Super Intelligence"
     priority: "medium"
-    description: "Research on superintelligent AI systems"
+    description: "Research on superintelligent AI, singularity, and alignment"
     keywords:
       - "artificial super intelligence"
-      - "superintelligent AI"
       - "ASI"
       - "superintelligence"
-      - "beyond human AI"
-  
-  ani:
-    name: "Artificial Narrow Intelligence"
-    priority: "low"
-    description: "Research on specialized, task-specific AI systems"
+      - "intelligence explosion"
+      - "recursive self-improvement"
+      - "AI alignment"
+      - "mechanistic interpretability"
+      - "existential risk"
+      - "AI safety"
+      - "control problem"
+      - "instrumental convergence"
+      - "orthogonality thesis"
+      - "singularity"
+      - "AI governance"
+      - "value alignment"
+      - "corrigibility"
+
+  physical_ai:
+    name: "Physical & Embodied AI"
+    priority: "high"
+    description: "Research on robotics, embodied cognition, and AI systems interacting with the physical world"
     keywords:
-      - "artificial narrow intelligence"
-      - "weak AI"
-      - "ANI"
-      - "specialized AI"
-      - "task-specific AI"
-      - "narrow AI"
-  
+      - "physical AI"
+      - "embodied AI"
+      - "robotics foundation models"
+      - "spatial intelligence"
+      - "sim-to-real transfer"
+      - "embodied agents"
+      - "robotics"
+      - "humanoid robotics"
+      - "manipulation"
+      - "navigation"
+      - "SLAM"
+      - "computer vision"
+      - "depth estimation"
+      - "3D perception"
+      - "sensor fusion"
+      - "motor control"
+      - "locomotion"
+      - "grasping"
+      - "embodied cognition"
+      - "physical reasoning"
+      - "world modeling"
+      - "robot learning"
+
+  compute_infra:
+    name: "Next-Gen Compute & Accelerators"
+    priority: "high"
+    description: "Research on AI hardware, GPUs, LPUs, and specialized compute infrastructure"
+    keywords:
+      - "language processing unit"
+      - "LPU"
+      - "next-generation GPU"
+      - "AI accelerators"
+      - "neuromorphic computing"
+      - "compute scaling"
+      - "hardware-software co-design"
+      - "TPU"
+      - "AI chips"
+      - "custom silicon"
+      - "inference acceleration"
+      - "training acceleration"
+      - "memory bandwidth"
+      - "interconnects"
+      - "data center AI"
+      - "edge AI"
+      - "quantum computing"
+      - "photonic computing"
+      - "analog computing"
+      - "model compression"
+
   ml:
     name: "Machine Learning"
     priority: "high"
-    description: "Core machine learning research and algorithms"
+    description: "Core machine learning research, algorithms, and architectures"
     keywords:
       - "machine learning"
-      - "ML"
       - "deep learning"
-      - "neural networks"
+      - "reinforcement learning"
+      - "diffusion models"
+      - "state space models"
+      - "federated learning"
       - "supervised learning"
       - "unsupervised learning"
-      - "reinforcement learning"
-  
+      - "self-supervised learning"
+      - "semi-supervised learning"
+      - "neural networks"
+      - "transformer"
+      - "attention mechanism"
+      - "convolutional neural network"
+      - "recurrent neural network"
+      - "generative models"
+      - "normalizing flows"
+      - "energy-based models"
+      - "graph neural networks"
+      - "geometric deep learning"
+      - "causal machine learning"
+      - "online learning"
+      - "meta-learning"
+      - "transfer learning"
+
   llm:
-    name: "Large Language Models"
+    name: "Large Language Models & Context Scaling"
     priority: "high"
-    description: "Research on large language models and foundation models"
+    description: "Research on LLMs, context handling, and generation strategies"
     keywords:
-      - "large language models"
+      - "large language model"
       - "LLM"
-      - "language models"
-      - "GPT"
+      - "foundation model"
       - "transformer models"
-      - "foundation models"
-  
+      - "monolithic context ingestion"
+      - "long context window"
+      - "context scaling"
+      - "RAG"
+      - "mixture of experts"
+      - "RLHF"
+      - "generative AI"
+      - "text generation"
+      - "prompt engineering"
+      - "in-context learning"
+      - "chain-of-thought"
+      - "instruction tuning"
+      - "safety"
+      - "hallucination"
+      - "factuality"
+      - "multimodal"
+      - "vision-language"
+      - "code generation"
+      - "parameter-efficient"
+      - "quantization"
+      - "distillation"
+      - "emergent behavior"
+      - "scaling laws"
+      - "agents"
+      - "tool use"
+      - "function calling"
+
   # Add your custom topics here
   # example:
   # custom_topic:
