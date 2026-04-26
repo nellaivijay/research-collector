@@ -35,6 +35,7 @@ setup(
         "numpy>=1.24.0",
         "rich>=13.0.0",
         "click>=8.0.0",
+        "tenacity>=8.2.0",
     ],
     extras_require={
         "dev": [

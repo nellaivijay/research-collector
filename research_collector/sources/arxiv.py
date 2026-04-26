@@ -4,6 +4,8 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 import requests
 import feedparser
+import time
+from tenacity import retry, wait_fixed, stop_after_attempt
 from research_collector.config import Config
 
 
@@ -14,7 +16,12 @@ class ArxivSource:
         """Initialize arXiv source."""
         self.config = config
         self.base_url = "http://export.arxiv.org/api/query"
+        # Custom User-Agent is REQUIRED by arXiv to avoid silent timeouts/blocks
+        self.headers = {
+            'User-Agent': 'research-collector/1.0 (mailto:education@example.com)'
+        }
     
+    @retry(wait=wait_fixed(5), stop=stop_after_attempt(3))
     def search(
         self,
         topic: str,
@@ -40,8 +47,11 @@ class ArxivSource:
                 "sortOrder": "descending"
             }
             
-            response = requests.get(self.base_url, params=params, timeout=10)
+            response = requests.get(self.base_url, params=params, headers=self.headers, timeout=(5, 30))
             response.raise_for_status()
+            
+            # Mandatory 3-second delay to comply with arXiv's rate limit
+            time.sleep(3)
             
             # Parse XML response using feedparser
             feed = feedparser.parse(response.content)

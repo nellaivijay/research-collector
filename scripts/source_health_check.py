@@ -228,6 +228,12 @@ class SourceHealthChecker:
                 # Medium RSS feeds require proper user agent
                 headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
                 response = requests.get(api_url, timeout=10, headers=headers)
+            elif name == "arXiv":
+                # arXiv requires custom User-Agent and longer timeout
+                headers["User-Agent"] = "research-collector/1.0 (mailto:education@example.com)"
+                response = requests.get(api_url, params=test_params, headers=headers, timeout=(5, 30))
+                # Rate limiting for arXiv
+                time.sleep(3)
             elif name == "Kaggle":
                 # Kaggle API requires authentication
                 if not self.api_keys.get("KAGGLE_USERNAME") or not self.api_keys.get("KAGGLE_KEY"):
@@ -300,7 +306,7 @@ class SourceHealthChecker:
         except requests.exceptions.Timeout:
             health.status = "unhealthy"
             health.api_available = False
-            health.error_message = "Request timed out after 10 seconds"
+            health.error_message = "Request timed out"
             health.details["timeout"] = True
             
         except requests.exceptions.ConnectionError:
