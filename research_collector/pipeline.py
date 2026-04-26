@@ -178,6 +178,18 @@ class Pipeline:
         clustered_results = self._cluster_results(enriched_results)
         ranked_results = self._rank_results(clustered_results, topic)
         
+        # Validate results and log summary
+        from research_collector.validation import validate_results, log_data_summary, filter_invalid_items
+        
+        # Log data summary for monitoring
+        log_data_summary(ranked_results, topic)
+        
+        # Validate results
+        validation_result = validate_results(ranked_results)
+        
+        # Filter out items with critical issues
+        ranked_results = filter_invalid_items(ranked_results)
+        
         # Filter URLs if not requested
         if not include_urls:
             for result in ranked_results:
@@ -191,7 +203,8 @@ class Pipeline:
             "items": ranked_results,
             "metadata": {
                 "total_items": len(ranked_results),
-                "source_counts": {name: len(results) for name, results in all_results.items()}
+                "source_counts": {name: len(results) for name, results in all_results.items()},
+                "validation": validation_result
             }
         }
         
