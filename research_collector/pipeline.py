@@ -190,6 +190,9 @@ class Pipeline:
         # Filter out items with critical issues
         ranked_results = filter_invalid_items(ranked_results)
         
+        # Ensure minimum arXiv items (guarantee at least 20 arXiv papers)
+        ranked_results = self._ensure_arxiv_priority(ranked_results, all_results)
+        
         # Filter URLs if not requested
         if not include_urls:
             for result in ranked_results:
@@ -266,3 +269,52 @@ class Pipeline:
         """Rank results by relevance and engagement."""
         from research_collector.scoring import rank_results
         return rank_results(results, topic, self.config)
+    
+    def _ensure_arxiv_priority(self, ranked_results: List[Dict], all_results: Dict[str, List]) -> List[Dict]:
+        """
+        Ensure minimum number of arXiv items in final results.
+        
+        Args:
+            ranked_results: Current ranked and filtered results
+            all_results: Original results by source before ranking/filtering
+            
+        Returns:
+            Results with guaranteed minimum arXiv items
+        """
+        MIN_ARXIV_ITEMS = 20
+        
+        # Count current arXiv items in ranked results
+        current_arxiv_count = sum(1 for item in ranked_results if item.get("source") == "arxiv")
+        
+        # If we already have enough arXiv items, return as-is
+        if current_arxiv_count >= MIN_ARXIV_ITEMS:
+            return ranked_results
+        
+        # Get original arXiv items before deduplication/filtering
+        original_arxiv_items = all_results.get("arxiv", [])
+        
+        if not original_arxiv_items:
+            return ranked_results  # No arXiv items available
+        
+        # Normalize original arXiv items to match ranked format
+        from research_collector.normalization import normalize_results
+        normalized_arxiv = normalize_results({"arxiv": original_arxiv_items}, "")
+        
+        # Add missing arXiv items (top ranked ones)
+        needed = MIN_ARXIV_ITEMS - current_arxiv_count
+        arxiv_to_add = normalized_arxiv[:needed]
+        
+        # Add scores to arXiv items for consistency
+        for item in arxiv_to_add:
+            item["score"] = item.get("score", 0.5)  # Default score for priority items
+        
+        # Combine results, maintaining ranking order
+        # Insert arXiv items at the beginning to ensure they're included
+        final_results = arxiv_to_add + [item for item in ranked_results if item.get("source") != "arxiv"]
+        
+        # Re-sort by score to maintain ranking while preserving arXiv priority
+        final_results = sorted(final_results, key=lambda x: x["score"], reverse=True)
+        
+        print(f"Added {needed} arXiv items to ensure minimum {MIN_ARXIV_ITEMS} arXiv papers")
+        
+        return final_results
