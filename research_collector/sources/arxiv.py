@@ -65,6 +65,9 @@ class ArxivSource:
             
             formatted_results = []
             for entry in feed.entries:
+                # Limit results if max_results is specified
+                if max_results and len(formatted_results) >= max_results:
+                    break
                 # Extract arXiv ID from URL
                 arxiv_id = entry.id.split("/")[-1]
                 
