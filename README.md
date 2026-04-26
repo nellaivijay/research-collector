@@ -15,7 +15,7 @@ This tool is designed for educational purposes to help students and researchers:
 
 ## Key Features
 
-- **15+ Data Sources**: Academic (PubMed, Crossref, Papers With Code), Professional (Stack Overflow), Social (Reddit), News (GDELT)
+- **15+ Data Sources**: Academic (PubMed, Crossref, Papers With Code, INSPIRE-HEP), Professional (Stack Overflow), Social (Reddit), News (GDELT)
 - **Flexible Time Windows**: Research any time period - last 3 days, 7 days (default), 15 days, 30 days, 90 days, 365 days, or custom ranges
 - **Engagement-Based Ranking**: Results scored by citations, upvotes, answers, downloads - not SEO
 - **Cross-Platform Clustering**: Same story across multiple sources merged into unified insights
@@ -23,6 +23,60 @@ This tool is designed for educational purposes to help students and researchers:
 - **Local-First Privacy**: All processing happens locally, your research stays private
 - **Extensible Architecture**: Plugin system for custom sources and scoring algorithms
 - **Educational Documentation**: Comprehensive examples and explanations for learning
+
+## Advanced Features
+
+### 🎯 Domain-Specific Scoring
+Configure weighted keywords for your research domain to improve relevance:
+```yaml
+scoring:
+  keyword_weights:
+    "transformer": 5
+    "large language model": 6
+    "reinforcement learning": 4
+```
+
+### 👥 Collaborator/Author Boosting
+Boost papers from preferred researchers:
+```yaml
+scoring:
+  preferred_researchers:
+    - "Geoffrey Hinton"
+    - "Yann LeCun"
+    - "Yoshua Bengio"
+```
+
+### 📄 Full-Text Extraction
+Extract full text from arXiv papers for better similarity scoring (resource-intensive):
+```yaml
+advanced:
+  enable_fulltext_extraction: true
+```
+
+### 🔄 Seen Papers Cache
+Prevent duplicate processing with automatic paper tracking:
+```yaml
+advanced:
+  enable_seen_papers_cache: true
+  seen_papers_cache_ttl_days: 30
+```
+
+### 📊 Figure Caption Analysis
+Extract and analyze figure/table captions for image-based relevance scoring
+
+### 🎨 Enhanced Topic Management
+Organize research topics with priorities and detailed descriptions:
+```yaml
+predefined_topics:
+  llm:
+    name: "Large Language Models"
+    priority: "high"
+    description: "Research on LLMs and foundation models"
+    keywords: ["large language models", "LLM", "GPT"]
+```
+
+### 🚀 GitHub Actions Caching
+Optimized CI/CD with multi-layer caching for faster runs and lower costs
 
 ## Quick Start
 

@@ -91,6 +91,22 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-hf-
     
+    - name: Restore seen papers cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/seen_papers.json
+        key: seen-papers-${{ github.run_id }}
+        restore-keys: |
+          seen-papers-
+    
+    - name: Restore API response cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/research-collector
+        key: api-cache-${{ github.run_id }}
+        restore-keys: |
+          api-cache-
+    
     - name: Validate HF_TOKEN
       run: |
         if [ -z "$HF_TOKEN" ]; then
@@ -132,6 +148,20 @@ jobs:
         DURATION=$((END_TIME - START_TIME))
         echo "Research completed in ${DURATION}s"
         echo "duration=${DURATION}" >> $GITHUB_OUTPUT
+    
+    - name: Save seen papers cache
+      if: always()
+      uses: actions/cache@v4
+      with:
+        path: /tmp/seen_papers.json
+        key: seen-papers-${{ github.run_id }}
+    
+    - name: Save API response cache
+      if: always()
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/research-collector
+        key: api-cache-${{ github.run_id }}
     
     - name: Validate dataset
       if: success()
@@ -175,6 +205,22 @@ jobs:
         key: ${{ runner.os }}-hf-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-hf-
+    
+    - name: Restore seen papers cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/seen_papers.json
+        key: seen-papers-${{ github.run_id }}
+        restore-keys: |
+          seen-papers-
+    
+    - name: Restore API response cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/research-collector
+        key: api-cache-${{ github.run_id }}
+        restore-keys: |
+          api-cache-
     
     - name: Validate HF_TOKEN
       run: |
@@ -255,6 +301,22 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-hf-
     
+    - name: Restore seen papers cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/seen_papers.json
+        key: seen-papers-${{ github.run_id }}
+        restore-keys: |
+          seen-papers-
+    
+    - name: Restore API response cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/research-collector
+        key: api-cache-${{ github.run_id }}
+        restore-keys: |
+          api-cache-
+    
     - name: Validate HF_TOKEN
       run: |
         if [ -z "$HF_TOKEN" ]; then
@@ -333,6 +395,22 @@ jobs:
         key: ${{ runner.os }}-hf-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-hf-
+    
+    - name: Restore seen papers cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/seen_papers.json
+        key: seen-papers-${{ github.run_id }}
+        restore-keys: |
+          seen-papers-
+    
+    - name: Restore API response cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/research-collector
+        key: api-cache-${{ github.run_id }}
+        restore-keys: |
+          api-cache-
     
     - name: Validate HF_TOKEN
       run: |
@@ -413,6 +491,22 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-hf-
     
+    - name: Restore seen papers cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/seen_papers.json
+        key: seen-papers-${{ github.run_id }}
+        restore-keys: |
+          seen-papers-
+    
+    - name: Restore API response cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/research-collector
+        key: api-cache-${{ github.run_id }}
+        restore-keys: |
+          api-cache-
+    
     - name: Validate HF_TOKEN
       run: |
         if [ -z "$HF_TOKEN" ]; then
@@ -492,6 +586,22 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-hf-
     
+    - name: Restore seen papers cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/seen_papers.json
+        key: seen-papers-${{ github.run_id }}
+        restore-keys: |
+          seen-papers-
+    
+    - name: Restore API response cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/research-collector
+        key: api-cache-${{ github.run_id }}
+        restore-keys: |
+          api-cache-
+    
     - name: Validate HF_TOKEN
       run: |
         if [ -z "$HF_TOKEN" ]; then
@@ -570,6 +680,22 @@ jobs:
         key: ${{ runner.os }}-hf-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-hf-
+    
+    - name: Restore seen papers cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/seen_papers.json
+        key: seen-papers-${{ github.run_id }}
+        restore-keys: |
+          seen-papers-
+    
+    - name: Restore API response cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/research-collector
+        key: api-cache-${{ github.run_id }}
+        restore-keys: |
+          api-cache-
     
     - name: Validate HF_TOKEN
       run: |

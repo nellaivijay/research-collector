@@ -7,12 +7,14 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from research_collector.config import Config
 from research_collector.cache import Cache
 from research_collector.history import HistoryManager
+from research_collector.seen_papers import SeenPapersCache
+from research_collector.fulltext import enhance_results_with_fulltext
 
 
 class Pipeline:
     """Main research pipeline orchestrator."""
     
-    def __init__(self, config: Config, use_cache: bool = True, save_history: bool = True):
+    def __init__(self, config: Config, use_cache: bool = True, save_history: bool = True, use_seen_papers_cache: bool = True):
         """
         Initialize the research pipeline.
         
@@ -20,6 +22,7 @@ class Pipeline:
             config: Configuration object
             use_cache: Whether to use caching for API responses
             save_history: Whether to save search history
+            use_seen_papers_cache: Whether to use seen papers cache to prevent duplicates
         """
         self.config = config
         self.sources = self._load_sources()
@@ -27,6 +30,17 @@ class Pipeline:
         self.cache = Cache() if use_cache else None
         self.save_history = save_history
         self.history = HistoryManager() if save_history else None
+        
+        # Initialize seen papers cache
+        seen_cache_enabled = config.get("advanced.enable_seen_papers_cache", True)
+        self.use_seen_papers_cache = use_seen_papers_cache and seen_cache_enabled
+        
+        if self.use_seen_papers_cache:
+            cache_path = config.get("advanced.seen_papers_cache_path", "/tmp/seen_papers.json")
+            ttl_days = config.get("advanced.seen_papers_cache_ttl_days", 30)
+            self.seen_papers_cache = SeenPapersCache(cache_path=cache_path, ttl_days=ttl_days)
+        else:
+            self.seen_papers_cache = None
     
     def _load_sources(self) -> Dict[str, Any]:
         """Load available source modules."""
@@ -52,6 +66,10 @@ class Pipeline:
         if self.config.is_source_enabled("arxiv"):
             from research_collector.sources.arxiv import ArxivSource
             sources["arxiv"] = ArxivSource(self.config)
+        
+        if self.config.is_source_enabled("inspire_hep"):
+            from research_collector.sources.inspire_hep import INSPIREHEPSource
+            sources["inspire_hep"] = INSPIREHEPSource(self.config)
         
         if self.config.is_source_enabled("medium"):
             from research_collector.sources.medium import MediumSource
@@ -174,6 +192,24 @@ class Pipeline:
         arxiv_count_after_norm = sum(1 for item in normalized_results if item.get("source") == "arxiv")
         print(f"DEBUG: After normalization - Total items: {len(normalized_results)}, arXiv items: {arxiv_count_after_norm}")
         
+        # Filter out seen papers if cache is enabled
+        if self.use_seen_papers_cache and self.seen_papers_cache:
+            original_count = len(normalized_results)
+            normalized_results = self.seen_papers_cache.filter_unseen(normalized_results)
+            filtered_count = len(normalized_results)
+            if original_count > filtered_count:
+                print(f"Filtered out {original_count - filtered_count} previously seen papers")
+                # Debug: Check arXiv items after filtering seen papers
+                arxiv_count_after_seen_filter = sum(1 for item in normalized_results if item.get("source") == "arxiv")
+                print(f"DEBUG: After seen papers filter - Total items: {filtered_count}, arXiv items: {arxiv_count_after_seen_filter}")
+        
+        # Enhance with full-text extraction if enabled (resource-intensive)
+        enable_fulltext = config.get("advanced.enable_fulltext_extraction", False)
+        if enable_fulltext:
+            print("Enhancing results with full-text extraction...")
+            normalized_results = enhance_results_with_fulltext(normalized_results, enable_fulltext=True)
+            print(f"Full-text extraction completed for {len(normalized_results)} items")
+        
         # Enrich results with additional metadata
         from research_collector.enrichment import enrich_results
         enriched_results = enrich_results(normalized_results)
@@ -239,6 +275,12 @@ class Pipeline:
         
         # Save to history
         self._save_to_history(topic, from_date, to_date, sources, depth, results)
+        
+        # Mark papers as seen if cache is enabled
+        if self.use_seen_papers_cache and self.seen_papers_cache:
+            self.seen_papers_cache.mark_batch_seen(ranked_results)
+            cache_stats = self.seen_papers_cache.get_stats()
+            print(f"Seen papers cache stats: {cache_stats}")
         
         return results
     

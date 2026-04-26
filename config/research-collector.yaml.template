@@ -8,6 +8,7 @@ sources:
     semantic_scholar: true
     paperswithcode: true
     arxiv: true
+    inspire_hep: true  # High-energy physics literature database
   
   professional:
     stackoverflow: true
@@ -44,12 +45,62 @@ scoring:
     relevance: 0.4
     recency: 0.3
     engagement: 0.3
+  
+  # Preferred researchers/collaborators for author boosting
+  # Papers by these researchers will receive a score boost
+  preferred_researchers:
+    # - "Geoffrey Hinton"
+    # - "Yann LeCun"
+    # - "Yoshua Bengio"
+    # - "Andrew Ng"
+    # Add your preferred researchers here
+  
+  # Domain-specific keyword weights for enhanced relevance scoring
+  # Higher weights = more important for your research domain
+  keyword_weights:
+    # AI/ML Core Concepts
+    "transformer": 5
+    "attention mechanism": 5
+    "neural network": 4
+    "deep learning": 4
+    "machine learning": 3
+    
+    # LLM Specific
+    "large language model": 6
+    "GPT": 5
+    "LLM": 5
+    "foundation model": 5
+    "parameter-efficient": 4
+    "fine-tuning": 4
+    
+    # AGI/Advanced AI
+    "artificial general intelligence": 6
+    "AGI": 5
+    "consciousness": 4
+    "reasoning": 4
+    "planning": 3
+    
+    # Training Techniques
+    "reinforcement learning": 4
+    "supervised learning": 3
+    "self-supervised": 4
+    "transfer learning": 3
+    "few-shot learning": 4
+    "zero-shot": 4
+    
+    # Architecture
+    "architecture": 3
+    "scaling laws": 5
+    "emergent behavior": 4
+    "capabilities": 3
 
-# Predefined research topics with corresponding keywords
+# Predefined research topics with corresponding keywords and priorities
 # Customize or add your own topics here
 predefined_topics:
   agi:
     name: "Artificial General Intelligence"
+    priority: "high"  # high, medium, low
+    description: "Research on human-level AI and general intelligence"
     keywords:
       - "artificial general intelligence"
       - "AGI"
@@ -60,6 +111,8 @@ predefined_topics:
   
   aci:
     name: "Artificial Conscious Intelligence"
+    priority: "medium"
+    description: "Research on machine consciousness and sentient AI"
     keywords:
       - "artificial consciousness"
       - "machine consciousness"
@@ -70,6 +123,8 @@ predefined_topics:
   
   asi:
     name: "Artificial Super Intelligence"
+    priority: "medium"
+    description: "Research on superintelligent AI systems"
     keywords:
       - "artificial super intelligence"
       - "superintelligent AI"
@@ -79,6 +134,8 @@ predefined_topics:
   
   ani:
     name: "Artificial Narrow Intelligence"
+    priority: "low"
+    description: "Research on specialized, task-specific AI systems"
     keywords:
       - "artificial narrow intelligence"
       - "weak AI"
@@ -89,6 +146,8 @@ predefined_topics:
   
   ml:
     name: "Machine Learning"
+    priority: "high"
+    description: "Core machine learning research and algorithms"
     keywords:
       - "machine learning"
       - "ML"
@@ -100,6 +159,8 @@ predefined_topics:
   
   llm:
     name: "Large Language Models"
+    priority: "high"
+    description: "Research on large language models and foundation models"
     keywords:
       - "large language models"
       - "LLM"
@@ -112,6 +173,8 @@ predefined_topics:
   # example:
   # custom_topic:
   #   name: "Your Custom Topic"
+  #   priority: "medium"
+  #   description: "Description of your research interest"
   #   keywords:
   #     - "keyword1"
   #     - "keyword2"
@@ -138,3 +201,7 @@ advanced:
   clustering_similarity_threshold: 0.85
   enable_caching: true
   cache_ttl_hours: 24
+  enable_seen_papers_cache: true
+  seen_papers_cache_ttl_days: 30
+  seen_papers_cache_path: /tmp/seen_papers.json
+  enable_fulltext_extraction: false  # Resource-intensive, enable for better similarity scoring
