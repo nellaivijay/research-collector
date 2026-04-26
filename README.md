@@ -24,27 +24,66 @@ This tool is designed for educational purposes to help students and researchers:
 - **Extensible Architecture**: Plugin system for custom sources and scoring algorithms
 - **Educational Documentation**: Comprehensive examples and explanations for learning
 
+## Recent Updates
+
+### 🚀 Advanced Research Features (Latest)
+- **Domain-Specific Scoring**: 120+ weighted keywords across 7 research topics with 1-6 relevance scale
+- **Collaborator Boosting**: Track preferred researchers with automatic 2x score multiplier
+- **Seen Papers Cache**: Prevent duplicate processing with configurable TTL and GitHub Actions persistence
+- **Full-Text Extraction**: Extract arXiv paper content and figure captions for better similarity scoring
+- **Enhanced Topics**: 7 modern AI research topics (AGI, ACI, ASI, Physical AI, Compute Infra, ML, LLM)
+- **INSPIRE-HEP Integration**: New academic source for high-energy physics literature
+- **Multi-Layer Caching**: GitHub Actions caching for seen papers, API responses, and models
+- **Figure Caption Analysis**: Image-based relevance scoring from extracted captions
+
+### 📊 Topic Restructuring
+- **ACI**: Evolved from "Artificial Conscious Intelligence" to "Artificial Collective Intelligence" (multi-agent systems)
+- **ANI**: Removed (covered by other topics)
+- **Physical AI**: New topic for robotics and embodied AI
+- **Compute Infra**: New topic for AI hardware and accelerators
+- **Enhanced Coverage**: 163 unique keywords in predefined topics, 120 weighted keywords in scoring
+
 ## Advanced Features
 
 ### 🎯 Domain-Specific Scoring
-Configure weighted keywords for your research domain to improve relevance:
+Configure weighted keywords (1-6 scale) for your research domain to improve relevance:
 ```yaml
 scoring:
   keyword_weights:
-    "transformer": 5
+    # Core terms (weight 6)
+    "artificial general intelligence": 6
     "large language model": 6
-    "reinforcement learning": 4
+    # Very important (weight 5)
+    "world models": 5
+    "reasoning": 5
+    # Important concepts (weight 4)
+    "meta-learning": 4
+    "causal reasoning": 4
 ```
 
+**Features:**
+- 120+ pre-configured weighted keywords across 7 topics
+- Organized by research domain (AGI, ACI, ASI, Physical AI, Compute Infra, ML, LLM)
+- Duplicate-free keyword set for optimal performance
+- 70% weight to domain keywords, 30% to base topic matching
+
 ### 👥 Collaborator/Author Boosting
-Boost papers from preferred researchers:
+Boost papers from preferred researchers with automatic score multiplier:
 ```yaml
 scoring:
   preferred_researchers:
     - "Geoffrey Hinton"
     - "Yann LeCun"
     - "Yoshua Bengio"
+    - "Ilya Sutskever"
+    - "Dario Amodei"
 ```
+
+**Features:**
+- Case-insensitive author name matching
+- Automatic 2x score boost for preferred researchers
+- Marks boosted papers for tracking
+- Supports last name and full name variants
 
 ### 📄 Full-Text Extraction
 Extract full text from arXiv papers for better similarity scoring (resource-intensive):
@@ -53,30 +92,73 @@ advanced:
   enable_fulltext_extraction: true
 ```
 
+**Features:**
+- Extracts full text from arXiv HTML papers (up to 18,000 characters)
+- Extracts figure and table captions for image-based relevance
+- BeautifulSoup-based HTML parsing
+- Configurable resource-intensive option
+
 ### 🔄 Seen Papers Cache
 Prevent duplicate processing with automatic paper tracking:
 ```yaml
 advanced:
   enable_seen_papers_cache: true
   seen_papers_cache_ttl_days: 30
+  seen_papers_cache_path: /tmp/seen_papers.json
 ```
 
+**Features:**
+- Tracks papers by DOI, arXiv ID, URL, or title hash
+- Configurable TTL (default 30 days)
+- Automatic expired entry cleanup
+- Batch operations for efficiency
+- GitHub Actions caching for persistence
+
 ### 📊 Figure Caption Analysis
-Extract and analyze figure/table captions for image-based relevance scoring
+Extract and analyze figure/table captions for image-based relevance scoring:
+- Automatic caption extraction from arXiv papers
+- Figure and table caption analysis
+- Integration with weighted keyword system
+- 10% weight in final relevance score
 
 ### 🎨 Enhanced Topic Management
-Organize research topics with priorities and detailed descriptions:
+Organize research topics with priorities, descriptions, and comprehensive keywords:
 ```yaml
 predefined_topics:
   llm:
-    name: "Large Language Models"
+    name: "Large Language Models & Context Scaling"
     priority: "high"
-    description: "Research on LLMs and foundation models"
-    keywords: ["large language models", "LLM", "GPT"]
+    description: "Research on LLMs, context handling, and generation strategies"
+    keywords:
+      - "large language model"
+      - "LLM"
+      - "long context window"
+      - "RAG"
+      - "mixture of experts"
 ```
 
+**Features:**
+- 7 predefined topics covering modern AI research
+- Priority levels (high/medium/low)
+- Detailed descriptions for each topic
+- 20-32 keywords per topic
+- Focus on frontier research areas
+
 ### 🚀 GitHub Actions Caching
-Optimized CI/CD with multi-layer caching for faster runs and lower costs
+Optimized CI/CD with multi-layer caching for faster runs and lower costs:
+- Seen papers cache restoration/saving
+- API response cache for reduced calls
+- Hugging Face model caching
+- Multi-layer caching strategy
+- Applied to all workflow jobs
+
+### 🔬 INSPIRE-HEP Integration
+New academic source for high-energy physics literature:
+- INSPIRE-HEP API integration
+- Author, abstract, and citation count extraction
+- arXiv eprint linking
+- DOI extraction
+- Configurable source option
 
 ## Quick Start
 
@@ -152,20 +234,17 @@ python -m research_collector interactive
 
 ## Predefined Research Topics
 
-Research-Collector includes predefined research topics with corresponding keywords for common AI and technology research areas:
+Research-Collector includes predefined research topics with corresponding keywords for modern AI and technology research areas:
 
 ### Available Topics
 
-- **agi**: Artificial General Intelligence (AGI, general AI, human-level AI, strong AI)
-- **aci**: Artificial Conscious Intelligence (machine consciousness, sentient AI, conscious AI)
-- **asi**: Artificial Super Intelligence (superintelligent AI, ASI, superintelligence)
-- **ani**: Artificial Narrow Intelligence (weak AI, ANI, specialized AI, task-specific AI)
-- **ml**: Machine Learning (deep learning, neural networks, supervised/unsupervised learning)
-- **llm**: Large Language Models (language models, GPT, transformer models, foundation models)
-- **rl**: Reinforcement Learning (Q-learning, policy gradient, reward learning)
-- **cv**: Computer Vision (image recognition, object detection, visual AI)
-- **nlp**: Natural Language Processing (text analysis, language understanding, computational linguistics)
-- **robotics**: Robotics and Automation (robotic systems, autonomous systems, mechatronics)
+- **agi**: Artificial General Intelligence (world models, frontier models, reasoning, cognitive architecture)
+- **aci**: Artificial Collective Intelligence (multi-agent systems, swarm intelligence, agent coordination)
+- **asi**: Artificial Super Intelligence (superintelligence, AI alignment, existential risk, governance)
+- **physical_ai**: Physical & Embodied AI (robotics, embodied cognition, spatial intelligence, sim-to-real transfer)
+- **compute_infra**: Next-Gen Compute & Accelerators (LPUs, AI accelerators, neuromorphic computing, hardware-software co-design)
+- **ml**: Machine Learning (deep learning, state space models, diffusion models, federated learning)
+- **llm**: Large Language Models & Context Scaling (long context window, RAG, mixture of experts, agents, tool use)
 
 ### Using Predefined Topics
 
@@ -182,17 +261,37 @@ python -m research_collector research --topic ml --days=30 --sources=academic
 
 ### Customizing Topics
 
-You can add your own predefined topics in the configuration file:
+You can add your own predefined topics in the configuration file with priorities and descriptions:
 
 ```yaml
 predefined_topics:
   my_topic:
     name: "My Custom Research Topic"
+    priority: "high"  # high, medium, low
+    description: "Description of your research interest"
     keywords:
       - "keyword1"
       - "keyword2"
       - "keyword3"
 ```
+
+### Topic Priorities
+
+Topics can be assigned priorities to influence their importance in research:
+- **high**: Primary research focus areas (AGI, ACI, Physical AI, Compute Infra, ML, LLM)
+- **medium**: Secondary interest areas (ASI)
+- **low**: Nice-to-have areas
+
+### Keyword Weights
+
+Each topic has associated keyword weights (1-6 scale) for relevance scoring:
+- **6**: Core topic terms (highest priority)
+- **5**: Very important concepts and methodologies
+- **4**: Important related concepts
+- **3**: Supporting technologies and approaches
+- **2**: Peripheral but relevant concepts
+
+The configuration includes 120+ weighted keywords organized by topic for highly relevant research results.
 
 ## Source Categories
 
@@ -275,15 +374,17 @@ sources:
     semantic_scholar: true
     paperswithcode: true
     arxiv: true
+    inspire_hep: true  # High-energy physics literature
   professional:
     stackoverflow: true
     github: true
+    kaggle: true  # Requires KAGGLE_USERNAME and KAGGLE_KEY
   social:
-    reddit: true
+    reddit: true  # Requires Reddit OAuth2 credentials
     hackernews: true
   news:
     gdelt: true
-    newsapi: false  # Requires API key
+    newsapi: false  # Requires NEWSAPI_API_KEY
 
 time_ranges:
   default: 7
@@ -303,6 +404,45 @@ scoring:
     relevance: 0.4
     recency: 0.3
     engagement: 0.3
+  
+  # Preferred researchers for author boosting
+  preferred_researchers:
+    - "Geoffrey Hinton"
+    - "Ilya Sutskever"
+    # Add your key researchers
+  
+  # Domain-specific keyword weights (1-6 scale)
+  keyword_weights:
+    "artificial general intelligence": 6
+    "AGI": 6
+    "world models": 6
+    "large language model": 6
+    "LLM": 6
+    "reasoning": 5
+    "transformer": 5
+    # ... 120+ pre-configured keywords
+
+# Predefined topics with priorities and descriptions
+predefined_topics:
+  agi:
+    name: "Artificial General Intelligence"
+    priority: "high"
+    description: "Research on human-level AI and general intelligence"
+    keywords:
+      - "artificial general intelligence"
+      - "AGI"
+      - "world models"
+      - "reasoning"
+      # ... 21 keywords
+
+advanced:
+  max_results_per_source: 100
+  clustering_similarity_threshold: 0.85
+  enable_caching: true
+  cache_ttl_hours: 24
+  enable_seen_papers_cache: true
+  seen_papers_cache_ttl_days: 30
+  enable_fulltext_extraction: false  # Resource-intensive
 
 api_keys:
   # Optional: Add API keys for enhanced rate limits
@@ -311,6 +451,11 @@ api_keys:
   semantic_scholar: ${SEMANTIC_SCHOLAR_API_KEY}
   newsapi: ${NEWSAPI_API_KEY}
   stackexchange: ${STACKEXCHANGE_API_KEY}
+  reddit: ${REDDIT_CLIENT_ID}
+  reddit_secret: ${REDDIT_CLIENT_SECRET}
+  reddit_user_agent: ${REDDIT_USER_AGENT}
+  kaggle_username: ${KAGGLE_USERNAME}
+  kaggle_key: ${KAGGLE_KEY}
 ```
 
 ## API Keys (Optional)
@@ -430,6 +575,13 @@ research-collector/
 │   ├── __init__.py
 │   ├── cli.py                 # Command-line interface
 │   ├── config.py              # Configuration management
+│   ├── pipeline.py             # Search orchestration
+│   ├── scoring.py             # Scoring algorithms with domain weights
+│   ├── normalization.py       # Data normalization
+│   ├── clustering.py          # Deduplication
+│   ├── synthesis.py           # Result synthesis
+│   ├── fulltext.py            # Full-text and figure extraction
+│   ├── seen_papers.py         # Paper deduplication cache
 │   ├── sources/               # Source modules
 │   │   ├── __init__.py
 │   │   ├── pubmed.py
@@ -437,24 +589,29 @@ research-collector/
 │   │   ├── crossref.py
 │   │   ├── paperswithcode.py
 │   │   ├── semantic_scholar.py
+│   │   ├── arxiv.py
+│   │   ├── inspire_hep.py     # INSPIRE-HEP academic source
 │   │   ├── reddit.py
 │   │   ├── hackernews.py
 │   │   ├── news.py
-│   │   └── github.py
-│   ├── pipeline.py             # Search orchestration
-│   ├── normalization.py       # Data normalization
-│   ├── scoring.py             # Scoring algorithms
-│   ├── clustering.py          # Deduplication
-│   ├── synthesis.py           # Result synthesis
+│   │   ├── github.py
+│   │   ├── kaggle.py
+│   │   ├── medium.py
+│   │   └── ...
 │   └── exporters/             # Export formats
 │       ├── markdown.py
 │       ├── json.py
 │       ├── csv.py
-│       └── bibliography.py
+│       ├── bibliography.py
+│       └── ...
 ├── tests/                     # Test suite
 ├── examples/                  # Usage examples
 ├── docs/                      # Documentation
 ├── config/                    # Configuration files
+│   └── research-collector.yaml.template
+├── .github/workflows/         # GitHub Actions workflows
+│   ├── scheduled-research.yml  # Daily automated research
+│   └── ...
 ├── requirements.txt
 ├── setup.py
 └── README.md
@@ -506,16 +663,18 @@ See `.github/workflows/` for:
 ### Scheduled Research with Hugging Face
 
 The scheduled research workflow automatically:
-- Runs daily research on 6 topics (ML, LLM, AGI, ASI, ANI, ACI)
+- Runs daily research on 7 topics (ML, LLM, AGI, ASI, ACI, Physical AI, Compute Infra)
 - Exports results to Hugging Face Datasets:
   - `{repository-owner}/ml-research-daily`
   - `{repository-owner}/llm-research-daily`
   - `{repository-owner}/agi-research-daily`
   - `{repository-owner}/asi-research-daily`
-  - `{repository-owner}/ani-research-daily`
   - `{repository-owner}/aci-research-daily`
+  - `{repository-owner}/physical-ai-research-daily`
+  - `{repository-owner}/compute-infra-research-daily`
 - Includes automatic dataset validation and error handling
 - Supports manual triggers for custom research (exports to `{repository-owner}/custom-research`)
+- Uses advanced features: seen papers cache, domain-specific scoring, author boosting
 
 **Setup**: See [GITHUB_ACTIONS.md](./GITHUB_ACTIONS.md) for detailed setup instructions.
 
