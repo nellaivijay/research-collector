@@ -260,14 +260,25 @@ class SourceHealthChecker:
                 health.api_key_valid = True
                 
                 # Determine status based on response time
-                if response_time < 1000:
-                    health.status = "healthy"
-                elif response_time < 3000:
-                    health.status = "degraded"
-                    health.error_message = f"Slow response time: {response_time:.2f}ms"
+                # arXiv has more lenient thresholds due to known slow infrastructure
+                if name == "arXiv":
+                    if response_time < 5000:
+                        health.status = "healthy"
+                    elif response_time < 10000:
+                        health.status = "degraded"
+                        health.error_message = f"Slow response time: {response_time:.2f}ms"
+                    else:
+                        health.status = "degraded"
+                        health.error_message = f"Very slow response time: {response_time:.2f}ms"
                 else:
-                    health.status = "degraded"
-                    health.error_message = f"Very slow response time: {response_time:.2f}ms"
+                    if response_time < 1000:
+                        health.status = "healthy"
+                    elif response_time < 3000:
+                        health.status = "degraded"
+                        health.error_message = f"Slow response time: {response_time:.2f}ms"
+                    else:
+                        health.status = "degraded"
+                        health.error_message = f"Very slow response time: {response_time:.2f}ms"
                 
                 health.details["message"] = f"API responded successfully in {response_time:.2f}ms"
                 
