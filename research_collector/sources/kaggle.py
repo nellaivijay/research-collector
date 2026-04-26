@@ -11,7 +11,8 @@ class KaggleSource:
     def __init__(self, config: Config):
         """Initialize Kaggle source."""
         self.config = config
-        self.api_key = config.get_api_key("kaggle")
+        self.username = config.get_api_key("kaggle_username")
+        self.api_key = config.get_api_key("kaggle_key")
         self.base_url = "https://www.kaggle.com/api/v1"
     
     def search(
@@ -41,8 +42,12 @@ class KaggleSource:
             }
             
             headers = {}
-            if self.api_key:
-                headers["Authorization"] = f"Bearer {self.api_key}"
+            if self.username and self.api_key:
+                # Kaggle uses basic authentication with username/key
+                import base64
+                credentials = f"{self.username}:{self.api_key}"
+                encoded_credentials = base64.b64encode(credentials.encode()).decode()
+                headers["Authorization"] = f"Basic {encoded_credentials}"
             
             response = requests.get(datasets_url, params=params, headers=headers, timeout=10)
             response.raise_for_status()

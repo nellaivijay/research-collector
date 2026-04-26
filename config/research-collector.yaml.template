@@ -12,17 +12,18 @@ sources:
   professional:
     stackoverflow: true
     github: true
+    kaggle: true  # Requires KAGGLE_USERNAME and KAGGLE_KEY
     devto: false
     hashnode: false
   
   social:
-    reddit: true
+    reddit: true  # Requires REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USER_AGENT
     hackernews: true
     bluesky: false
     threads: false
   
   news:
-    gdelt: true
+    gdelt: true  # Health check skipped due to large file streaming requirements
     newsapi: false  # Requires NEWSAPI_API_KEY
 
 time_ranges:
@@ -125,6 +126,11 @@ api_keys:
   # newsapi: ${NEWSAPI_API_KEY}
   # stackexchange: ${STACKEXCHANGE_API_KEY}
   # github: ${GITHUB_TOKEN}
+  # reddit: ${REDDIT_CLIENT_ID}
+  # reddit_secret: ${REDDIT_CLIENT_SECRET}
+  # reddit_user_agent: ${REDDIT_USER_AGENT}
+  # kaggle_username: ${KAGGLE_USERNAME}
+  # kaggle_key: ${KAGGLE_KEY}
 
 # Advanced settings
 advanced:

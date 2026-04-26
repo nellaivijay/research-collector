@@ -96,7 +96,7 @@ class SourceHealthChecker:
             {
                 "name": "Stack Overflow",
                 "api_url": "https://api.stackexchange.com/2.3/search/advanced",
-                "test_params": {"order": "desc", "sort": "activity", "accepted": True, "answers": 1, "tagged": "machine-learning", "pagesize": 1},
+                "test_params": {"order": "desc", "sort": "activity", "accepted": True, "answers": 1, "tagged": "machine-learning", "pagesize": 1, "site": "stackoverflow"},
                 "api_key_env": "STACKEXCHANGE_API_KEY",
                 "requires_key": False,
                 "category": "professional"
@@ -131,7 +131,8 @@ class SourceHealthChecker:
                 "test_params": {},
                 "api_key_env": None,
                 "requires_key": False,
-                "category": "news"
+                "category": "news",
+                "skip_health_check": True  # Skip due to large file downloads and streaming requirements
             },
             {
                 "name": "Medium",

@@ -270,6 +270,15 @@ export CROSSREF_API_KEY=your_email@example.com
 export SEMANTIC_SCHOLAR_API_KEY=your_key_here
 export NEWSAPI_API_KEY=your_key_here
 export STACKEXCHANGE_API_KEY=your_key_here
+
+# Reddit OAuth2 (required for Reddit source)
+export REDDIT_CLIENT_ID=your_client_id
+export REDDIT_CLIENT_SECRET=your_client_secret
+export REDDIT_USER_AGENT="research-collector/1.0 (by /u/your_reddit_username)"
+
+# Kaggle API (required for Kaggle source)
+export KAGGLE_USERNAME=your_kaggle_username
+export KAGGLE_KEY=your_kaggle_api_key
 ```
 
 ## Hugging Face Integration
