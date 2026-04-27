@@ -33,7 +33,7 @@ jobs:
         docker save research-collector:test | gzip > research-collector.tar.gz
 
     - name: Upload Docker image artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v7
       with:
         name: docker-image
         path: research-collector.tar.gz
